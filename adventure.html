@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Adventure</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="js/adventure.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+  <h1>Adventurer Log</h1>
+  <p>Hear all about an adventurer's adventure!</p> 
+</div>
+  
+<div class="container">
+
+  <!-- Description & Personality -->
+    <h1>Timmy</h1>
+    <h6>the Novice Knight</h6>
+
+
+    <blockquote class="blockquote">I'm excited for my first adventure!</blockquote>
+
+  <!-- Stats row -->
+  <div class="row">
+    <div class="col border">
+      <p>Stats:</p>
+      <ul>
+        <li>ATK: 5</li>
+        <li>DEF: 5</li>
+        <li>HP: 10/10</li>
+      </ul>
+    </div>
+    <div class="col border">
+      <p>I am bringing a <span class="bg-dark text-white">BEEF STEW</span> with me.</p>
+    </div>
+  </div>
+
+  <!-- Adventure log row -->
+  <div class="row">
+    <button onclick="doAdventure()" class="btn btn-primary">Go Adventuring</button>
+    <div class="card-body">
+      <div class="card-title">Log</div>
+      <p id="log" class="card-text"></p>
+    </div>
+  </div>
+    
+</div>
+
+</body>
+</html>
