@@ -45,4 +45,18 @@ class BakedGood
     {
         this.name = name;
     }
-} 
+}
+
+function loadInventory(container)
+{
+    var inventory = new Inventory();
+    inventory.addIngredient(new Ingredient("Eggs"), 1);
+    inventory.addIngredient(new Ingredient("Flour"), 1);
+    inventory.addIngredient(new Ingredient("Salt"), 1);
+    inventory.addIngredient(new Ingredient("Sugar"), 1);
+
+    inventory.Ingredients.forEach(element => {
+        
+    });
+    container.append("<div>" + "</div>");
+}
