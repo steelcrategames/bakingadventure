@@ -6,19 +6,33 @@ const LOG_TYPES = {
     BAD: "bg-danger"
 }
 
-var currentAdventurer = createRandomAdventurer();
+var currentAdventurer = {};
 
 function createRandomAdventurer()
 {
+    var appetites = [ "small", "medium", "large" ];
+    var skillLevels = [ "Novice", "Apprentice", "Experienced", "Savvy" ];
+    var titles = [ "Knight", "Squire", "Bard", "Adventurer", "Farmer" ];
+
+    var title = skillLevels[Math.floor(Math.random() * skillLevels.length)] + " " + titles[Math.floor(Math.random() * titles.length)];
+
+    var name = String.fromCharCode(65+Math.floor(Math.random() * 26)) + "immy";
+
     return {
-        name: "Timmy",
-        title: "the Novice Night",
-        quote: "Timmy's the name and adventuring is my game!",
-        atk: 2,
-        def: 1,
-        appetite: "small"
+        name: name,
+        title: "the " + title,
+        quote: name + "'s the name and adventuring is my game!",
+        atk: getRndInteger(1, 5),
+        def:  getRndInteger(1, 5),
+        hp:  getRndInteger(3, 8),
+        appetite: appetites[Math.floor(Math.random() * appetites.length)]
     };
 }
+
+//Random integer, in range [min, max]
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+  }
 
 function updateAdventurerStatBox()
 {
@@ -27,12 +41,14 @@ function updateAdventurerStatBox()
     document.getElementById("adventurerQuote").innerText = currentAdventurer.quote;
     document.getElementById("adventurerATK").innerText = currentAdventurer.atk;
     document.getElementById("adventurerDEF").innerText = currentAdventurer.def;
+    document.getElementById("adventurerHP").innerText = currentAdventurer.hp;
     document.getElementById("adventurerAppetite").innerText = currentAdventurer.appetite;
 }
 
 //First meeting of an adventurer - do an introduction
 function doAdventurerIntro()
 {
+    currentAdventurer = createRandomAdventurer();
     updateAdventurerStatBox();
     document.getElementById("adventurerStatBox").style.display = "block";
 
