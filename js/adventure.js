@@ -6,15 +6,59 @@ const LOG_TYPES = {
     BAD: "bg-danger"
 }
 
-function doAdventure() 
+var currentAdventurer = createRandomAdventurer();
+
+function createRandomAdventurer()
+{
+    return {
+        name: "Timmy",
+        title: "the Novice Night",
+        quote: "Timmy's the name and adventuring is my game!",
+        atk: 2,
+        def: 1,
+        appetite: "small"
+    };
+}
+
+function updateAdventurerStatBox()
+{
+    document.getElementById("adventurerName").innerText = currentAdventurer.name;
+    document.getElementById("adventurerTitle").innerText = currentAdventurer.title;
+    document.getElementById("adventurerQuote").innerText = currentAdventurer.quote;
+    document.getElementById("adventurerATK").innerText = currentAdventurer.atk;
+    document.getElementById("adventurerDEF").innerText = currentAdventurer.def;
+    document.getElementById("adventurerAppetite").innerText = currentAdventurer.appetite;
+}
+
+//First meeting of an adventurer - do an introduction
+function doAdventurerIntro()
+{
+    updateAdventurerStatBox();
+    document.getElementById("adventurerStatBox").style.display = "block";
+
+    clearLog();
+    log("Hi, I'm " + currentAdventurer.name);
+    log("I just moved into the area and heard about a great restaurant. People say it's the place to go for new adventurers!");
+    log("I just bought my first armor and am really excited to go on a quest.");
+}
+
+//Before each quest - describe what lies ahead
+function doQuestIntro()
 {
     clearLog();
-    log("Timmy beings his adventure!");
-    log("Timmy encounters troll!", LOG_TYPES.INFO);
-    log("Troll attacks Timmy! Timmy is hurt!", LOG_TYPES.BAD);
-    log("Timmy flees from Troll and gets away safely.", LOG_TYPES.WARN);
-    log("Timmy returns to town without further excitement.");
-    log("Adventure complete!", LOG_TYPES.GOOD);
+    log("I'm heading out to my first quest in the goblin cave.");
+    log("I'm a bit nervous. Do you have anything that might help soothe my nerves?");
+}
+
+//After each quest - recap what happened
+function doQuestRecap()
+{
+    clearLog();
+    log("I just returned from the goblin cave.");
+    log("Even the entrance was scary but I was strangely calm.", LOG_TYPES.INFO);
+    log("On the first level, I was attacked by two goblins but kept my wits and managed to press on.", LOG_TYPES.GOOD);
+    log("On the second level, I was poisoned and started to feel really sick so I had to escape.", LOG_TYPES.BAD);
+    log("I did not complete my quest.");
 }
 
 function log(msg, type)
