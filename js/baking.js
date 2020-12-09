@@ -57,20 +57,29 @@ class BakedGood
 var inventory;
 var selected = new Array();
 
-function loadInventory(container)
+function loadIngredients(data)
 {
     inventory = new Inventory();
-    inventory.addIngredient(new Ingredient("Eggs"), 1);
-    inventory.addIngredient(new Ingredient("Flour"), 1);
-    inventory.addIngredient(new Ingredient("Salt"), 1);
-    inventory.addIngredient(new Ingredient("Sugar"), 1);
+
+    var dataCSV = $.csv.toObjects(data);
+    for(var i=0; i < dataCSV.length; i++)
+    {
+        inventory.addIngredient(new Ingredient(dataCSV[i]["Name"]), 1);
+    }
+}
+
+function loadInventory(container, data)
+{
+    loadIngredients(data);
 
     inventory.IngredientAmounts.forEach((value, key) => {
         var id = key.name;
         var item = document.createElement("div");
         item.setAttribute("id", id);
-        item.setAttribute("class", "inventory-item");
-        item.innerText = key.name;
+        item.setAttribute("class", "p-2");
+        item.append(document.createElement("p").innerText = key.name);
+        item.append(document.createElement("br"));
+        item.append(document.createElement("p").innerText = value);
         $(item).click(function() {
             if(selected.indexOf(item.id) > -1)
             {
@@ -89,5 +98,11 @@ function loadInventory(container)
 }
 
 $( document ).ready(function() {
-    loadInventory($("#ingredients"));
+    $.ajax({
+        type: "GET",
+        url: "data/ingredients.csv",
+        dataType: "text",
+        success: function(data) {loadInventory($("#ingredients"), data);}
+     });
+    
 });
