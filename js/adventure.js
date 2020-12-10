@@ -40,8 +40,6 @@ const ADVENTURE_STATES = {
         onExit: exitActiveCustomerState
     },
 
-
-
     end_of_day:
     {
         onEnter: enterEndOfDayState,
@@ -112,74 +110,11 @@ window.onload = () => {
     adventureStateMachine.changeState(ADVENTURE_STATES.new_day);
 }
 
-function createRandomAdventurer()
-{
-    const appetites = [ "small", "medium", "large" ];
-    const skillLevels = [ "Novice", "Apprentice", "Experienced", "Savvy" ];
-    const titles = [ "Knight", "Squire", "Bard", "Adventurer", "Farmer" ];
 
-    let name = String.fromCharCode(65+Math.floor(Math.random() * 26)) + "immy";
-    let title = "the " + skillLevels[Math.floor(Math.random() * skillLevels.length)] + " " + titles[Math.floor(Math.random() * titles.length)];
-    let quote = name + "'s the name and adventuring is my game!";
-
-    let appetite = appetites[Math.floor(Math.random() * appetites.length)];
-
-    return new Adventurer(name, title, quote, appetite);
-}
-
-//Random integer, in range [min, max]
-function getRndInteger(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) ) + min;
-}
-
-function showButton(buttonName)
-{
-    document.getElementById(buttonName).style.display = "block";
-}
-
-function hideButton(buttonName)
-{
-    document.getElementById(buttonName).style.display = "none";
-}
-
-function hideAllButtons()
-{
-    var elements = document.getElementsByClassName("btn")
-
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].style.display = "none";
-    }
-}
-
-function updateAdventurerStatBox()
-{
-    if (currentAdventurer == null)
-    {
-        document.getElementById("adventurerStatBox").style.display = "none";
-    }
-    else
-    {
-        document.getElementById("adventurerStatBox").style.display = "block";
-
-        document.getElementById("adventurerName").innerText = currentAdventurer.name;
-        document.getElementById("adventurerTitle").innerText = currentAdventurer.title;
-        document.getElementById("adventurerQuote").innerText = currentAdventurer.quote;
-        document.getElementById("adventurerATK").innerText = currentAdventurer.atk;
-        document.getElementById("adventurerDEF").innerText = currentAdventurer.def;
-        document.getElementById("adventurerHP").innerText = currentAdventurer.hp;
-        document.getElementById("adventurerAppetite").innerText = currentAdventurer.appetite;
-
-        if (currentAdventurer.food != null)
-        {
-            document.getElementById("adventurerFood").innerText = currentAdventurer.food.name;
-        }
-        else
-        {
-            document.getElementById("adventurerFood").innerText = "none";
-        }
-    }
-}
-
+//====================================
+// New Day state
+//====================================
+// Update the day. Create adventurers if none exist.
 function startNewDay()
 {
     hideAllButtons();
@@ -204,6 +139,7 @@ function startNewDay()
 //====================================
 // Empty Restaurant state
 //====================================
+// Waiting for a customer, if there are any left today. Otherwise, closing up shop for the day!
 function enterEmptyRestaurantState()
 {
     hideAllButtons();
@@ -232,7 +168,6 @@ function greetAdventurer()
     {
         adventureStateMachine.changeState(ADVENTURE_STATES.quest_recap);
     }
-    
 }
 
 function exitEmptyRestaurantState()
@@ -265,6 +200,7 @@ function doAdventurerIntro()
 //====================================
 // Quest recap state
 //====================================
+// Recap how yesterday's quest went, taking into consideration the food that was cooked
 function doQuestRecap()
 {
     updateAdventurerStatBox();
@@ -272,7 +208,7 @@ function doQuestRecap()
     log(`Hello again! It's me ${currentAdventurer.name} from yesterday.`);
     if (currentAdventurer.food != null)
     {
-        log(`You gave me ${currentAdventurer.food} to help me on my quest.`);
+        log(`You gave me ${currentAdventurer.food.name} to help me on my quest.`);
     }
     else
     {
@@ -307,7 +243,6 @@ function doQuestRecap()
 //====================================
 // Describe Quest state
 //====================================
-
 //Before each quest - describe what lies ahead
 function doDescribeQuest()
 {
@@ -331,12 +266,12 @@ function doDescribeQuest()
 //====================================
 // Active customer state
 //====================================
+// Cook for a customer, or send them on their way
 function enterActiveCustomerState()
 {
     showButton("giveFoodToAdventurerButton");
     showButton("waveByeButton");
 }
-
 
 function giveFoodToAdventurer()
 {
@@ -375,6 +310,7 @@ function exitActiveCustomerState()
 //====================================
 // End of Day state
 //=========================
+// No more customers left
 function enterEndOfDayState()
 {
     showButton("startNextDayButton");
@@ -399,6 +335,57 @@ function exitEndOfDayState()
 
 
 
+//====================================
+// Adventurer stuff
+//=========================
+function createRandomAdventurer()
+{
+    const appetites = [ "small", "medium", "large" ];
+    const skillLevels = [ "Novice", "Apprentice", "Experienced", "Savvy" ];
+    const titles = [ "Knight", "Squire", "Bard", "Adventurer", "Farmer" ];
+
+    let name = String.fromCharCode(65+Math.floor(Math.random() * 26)) + "immy";
+    let title = "the " + skillLevels[Math.floor(Math.random() * skillLevels.length)] + " " + titles[Math.floor(Math.random() * titles.length)];
+    let quote = name + "'s the name and adventuring is my game!";
+
+    let appetite = appetites[Math.floor(Math.random() * appetites.length)];
+
+    return new Adventurer(name, title, quote, appetite);
+}
+
+function updateAdventurerStatBox()
+{
+    if (currentAdventurer == null)
+    {
+        document.getElementById("adventurerStatBox").style.display = "none";
+    }
+    else
+    {
+        document.getElementById("adventurerStatBox").style.display = "block";
+
+        document.getElementById("adventurerName").innerText = currentAdventurer.name;
+        document.getElementById("adventurerTitle").innerText = currentAdventurer.title;
+        document.getElementById("adventurerQuote").innerText = currentAdventurer.quote;
+        document.getElementById("adventurerATK").innerText = currentAdventurer.atk;
+        document.getElementById("adventurerDEF").innerText = currentAdventurer.def;
+        document.getElementById("adventurerHP").innerText = currentAdventurer.hp;
+        document.getElementById("adventurerAppetite").innerText = currentAdventurer.appetite;
+
+        if (currentAdventurer.food != null)
+        {
+            document.getElementById("adventurerFood").innerText = currentAdventurer.food.name;
+        }
+        else
+        {
+            document.getElementById("adventurerFood").innerText = "none";
+        }
+    }
+}
+
+
+//====================================
+// Utility stuff
+//=========================
 function log(msg, type)
 {
     var log = document.getElementById("log");
@@ -414,4 +401,29 @@ function clearLog()
 {
     var log = document.getElementById("log");
     log.innerHTML = '';
+}
+
+
+//Random integer, in range [min, max]
+function getRndInteger(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+
+function showButton(buttonName)
+{
+    document.getElementById(buttonName).style.display = "block";
+}
+
+function hideButton(buttonName)
+{
+    document.getElementById(buttonName).style.display = "none";
+}
+
+function hideAllButtons()
+{
+    var elements = document.getElementsByClassName("btn")
+
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = "none";
+    }
 }
