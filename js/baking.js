@@ -105,10 +105,12 @@ function bake(container)
     var serveButton = document.createElement("button");
     serveButton.innerText = "Serve";
     serveButton.setAttribute("class","btn btn-primary");
+    $(serveButton).click(function() { bakingComplete(); });
     container.append(serveButton);
 }
 
-$( document ).ready(function() {
+function loadBakingScreen()
+{
     $.ajax({
         type: "GET",
         url: "data/ingredients.csv",
@@ -117,4 +119,8 @@ $( document ).ready(function() {
      });
     
      $("#bakeButton").click(function() { bake($("#bakeResult")) });
-});
+}
+
+/*$( document ).ready(function() {
+
+});*/
