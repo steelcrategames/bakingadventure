@@ -21,9 +21,18 @@ function talkToAdventurerReturnVisit()
 
 function setupScreens()
 {
-    showView("screen-visitor", screens);
+    loadScreen("screen-visitor.html", function() {
+        loadScreen("screen-dialogue.html", function() {
+            showView("screen-visitor", screens);
+        });
+    });
 }
 window.onload = setupScreens;
+
+function loadScreen(screenFile, callback)
+{
+    $("#body").append($("<div>").load(screenFile, callback));
+}
 
 function showView(viewID, viewList)
 {
