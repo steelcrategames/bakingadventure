@@ -106,7 +106,8 @@ var currentAdventurerIndex = 0;
 var adventureStateMachine = new StateMachine(ADVENTURE_STATES);
 
 
-window.onload = () => {
+function loadAdventureScreen()
+{
     adventureStateMachine.changeState(ADVENTURE_STATES.new_day);
 }
 
@@ -275,6 +276,8 @@ function enterActiveCustomerState()
 
 function giveFoodToAdventurer()
 {
+    startBaking();
+
     let testFood = {
         name: "Beef Stew",
         atk_bonus: 1
@@ -421,7 +424,7 @@ function hideButton(buttonName)
 
 function hideAllButtons()
 {
-    var elements = document.getElementsByClassName("btn")
+    var elements = document.getElementsByClassName("adv-btn")
 
     for (var i = 0; i < elements.length; i++) {
         elements[i].style.display = "none";

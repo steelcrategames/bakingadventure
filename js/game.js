@@ -1,4 +1,4 @@
-let screens = ["screen-visitor", "screen-dialogue", "baking"]; // TODO: replace this with a find all with class
+let screens = ["screen-visitor", "screen-dialogue", "baking", "adventure"]; // TODO: replace this with a find all with class
 let dialogViews = ["dialogue-first-visit1", "dialogue-heading-out", "dialogue-return-visit1"]; // TODO: replace this with a find all with class
 
 function talkToAdventurerFirstVisit()
@@ -27,7 +27,7 @@ function startBaking()
 
 function bakingComplete()
 {
-    talkToAdventurerReturnVisit();
+    showView("adventure", screens);
 }
 
 function setupScreens()
@@ -35,7 +35,10 @@ function setupScreens()
     loadScreen("screen-visitor.html", function() {
         loadScreen("screen-dialogue.html", function() {
             loadScreen("baking.html", function() {
-                showView("screen-visitor", screens);
+                loadScreen("adventure.html", function() {
+                    showView("adventure", screens);
+                    loadAdventureScreen();
+                });
             });
         });
     });

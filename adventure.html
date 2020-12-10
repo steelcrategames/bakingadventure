@@ -1,23 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Adventure</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="js/adventure.js"></script>
-</head>
-<body>
-
-<div class="jumbotron text-center">
-  <h1>My First Restaurant</h1>
+<div class="container" id="adventure">
   <p id="dayDisplay">Day 1</p> 
-</div>
-  
-<div class="container">
 
   <!-- Description & Personality -->
   <div id="adventurerStatBox" style="display: none;">
@@ -52,17 +34,12 @@
 
   <!-- Commands -->
   <div class="row">
-    <button id="greetAdventurerButton" onclick="greetAdventurer()" class="btn btn-primary">Greet Adventurer</button>
-    <button id="doDescribeQuestButton" onclick="doDescribeQuest()" class="btn btn-primary">Describe Next Quest</button>
-    <button id="giveFoodToAdventurerButton" onclick="giveFoodToAdventurer()" class="btn btn-primary">Give Test Food To Adventurer</button>
-    <button id="waveByeButton" onclick="waveBye()" class="btn btn-primary">Wave Bye</button>
-    <button id="doQuestRecapButton" onclick="doQuestRecap()" class="btn btn-primary">Go on Quest and Recap</button>
-    <button id="endDayButton" onclick="doEndDay()" class="btn btn-primary">End of the day - Time to Close</button>
-    <button id="startNextDayButton" onclick="doStartNextDay()" class="btn btn-primary">Start Next Day</button>
+    <button id="greetAdventurerButton" onclick="greetAdventurer()" class="btn btn-primary adv-btn">Greet Adventurer</button>
+    <button id="doDescribeQuestButton" onclick="doDescribeQuest()" class="btn btn-primary adv-btn">Describe Next Quest</button>
+    <button id="giveFoodToAdventurerButton" onclick="giveFoodToAdventurer()" class="btn btn-primary adv-btn">Give Test Food To Adventurer</button>
+    <button id="waveByeButton" onclick="waveBye()" class="btn btn-primary adv-btn">Wave Bye</button>
+    <button id="doQuestRecapButton" onclick="doQuestRecap()" class="btn btn-primary adv-btn">Go on Quest and Recap</button>
+    <button id="endDayButton" onclick="doEndDay()" class="btn btn-primary adv-btn">End of the day - Time to Close</button>
+    <button id="startNextDayButton" onclick="doStartNextDay()" class="btn btn-primary adv-btn">Start Next Day</button>
   </div>
-
-
 </div>
-
-</body>
-</html>
