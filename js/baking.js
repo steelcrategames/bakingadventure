@@ -76,7 +76,7 @@ function loadInventory(container, data)
         var id = key.name;
         var item = document.createElement("div");
         item.setAttribute("id", id);
-        item.setAttribute("class", "p-2");
+        item.setAttribute("class", "p-4 inventory-item");
         item.append(document.createElement("p").innerText = key.name);
         item.append(document.createElement("br"));
         item.append(document.createElement("p").innerText = value);
@@ -86,7 +86,7 @@ function loadInventory(container, data)
                 selected.splice(selected.indexOf(item.id), 1);
                 item.style.backgroundColor = "#FFFFFF";
             }
-            else
+            else if (selected.length < 4)
             {
                 selected.push(item.id);
                 item.style.backgroundColor = "#2F4F4F";
