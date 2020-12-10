@@ -1,37 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Example</title>
+  <title>Baking Adventure</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="js/game.js"></script>
+  <style>
+    .screen {
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    #screen-visitor {
+    }
+
+    .chef-graphic, .adventurer-graphic {
+      width: 200px;
+    }
+    .table-graphic {
+      width: 250px;
+    }
+  </style>
 </head>
 <body>
 
 <div class="jumbotron text-center">
-  <h1>My First Bootstrap Page</h1>
-  <p>Resize this responsive page to see the effect!</p> 
+  <h1>Baking Adventure</h1>
 </div>
   
-<div class="container">
-  <div class="row">
-    <div class="col-sm-4">
-      <h3>Column 1</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Column 2</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
-    </div>
-    <div class="col-sm-4">
-      <h3>Column 3</h3>        
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...</p>
+<div id="screen-visitor" class="screen">
+  <img src="img/chef.png" class="chef-graphic" />
+  <br />
+  <img src="img/table.png" class="table-graphic" />
+  <br />
+  <img src="img/adventurer.jpg" class="adventurer-graphic" />
+  <br />
+  <br />
+  <button class="btn btn-primary" type="button" onclick="talkToAdventurerFirstVisit()">Talk to Adventurer (First Visit)</button>
+  <button class="btn btn-primary" type="button" onclick="talkToAdventurerReturnVisit()">Talk to Adventurer (Return Visit)</button>
+</div>
+
+<div id="screen-dialog-adventurer" class="screen">
+  <div class="d-flex justify-content-center">
+    <div class="card mb-3" style="max-width: 700px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="img/adventurer.jpg" class="chef-graphic">
+        </div>
+        <div class="col-md-8" style="text-align: left;">
+
+          <div id="dialog-first-visit1">
+            <div class="card-body">
+              <h5 class="card-title">Gronk</h5>
+              <p class="card-text">Hi, I'm Gronk!</p>
+              <p class="card-text">I just moved into the area and heard about a great restaurant, people say it's the place to go for new adventurers.</p>
+              <p class="card-text">I just bought my first armor and am really excited to go on a quest.</p>
+              <button class="btn btn-primary" type="button" onclick="dialogHeadingOut()">▼</button>
+            </div>
+          </div>
+
+          <div id="dialog-return-visit1">
+            <div class="card-body" >
+              <h5 class="card-title">Gronk</h5>
+              <p class="card-text">I just returned from the goblin cave.</p>
+              <p class="card-text">Even the entrance was scary but I was strangely calm.</p>
+              <p class="card-text">On the first level I was attacked by two goblins but kept my wits and managed to press on.</p>
+              <p class="card-text">On the second level I was <span style="color: orangered;">poisoned</span> and started to feel really sick so I had to escape.</p>
+            </div>
+          </div>
+
+          <div id="dialog-heading-out">
+            <div class="card-body" >
+              <h5 class="card-title">Gronk</h5>
+              <p class="card-text">I'm heading out to my first quest in <span style="color: orangered;">the goblin cave</span>.</p>
+              <p class="card-text">I'm a bit nervous, do you have anything that might help <span style="color: orangered;">soothe my nerves</span>.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 </div>
