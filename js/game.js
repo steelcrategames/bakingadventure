@@ -27,7 +27,7 @@ function startBaking()
 
 function bakingComplete()
 {
-    showView("screen-visitor", screens);
+    talkToAdventurerReturnVisit();
 }
 
 function setupScreens()
