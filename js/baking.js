@@ -3,31 +3,38 @@ class Inventory
     constructor()
     {
         this.Ingredients = new Map();
+        this.IngredientAmounts = new Map();
     }
 
     hasIngredient(ingredient)
     {
-        return this.Ingredients.has(ingredient);
+        return this.IngredientAmounts.has(ingredient);
     }
 
     addIngredient(ingredient, quantity)
     {
         if(!this.hasIngredient(ingredient))
         {
-            this.Ingredients.set(ingredient, quantity);
+            this.IngredientAmounts.set(ingredient, quantity);
+            this.Ingredients.set(ingredient.name, ingredient);
         }
         else
         {
-            var q = this.Ingredients.get(ingredient) + quantity;
+            var q = this.IngredientAmounts.get(ingredient) + quantity;
             if(q < 0)
                 q = 0;
-            this.Ingredients.set(ingredient, q);
+            this.IngredientAmounts.set(ingredient, q);
         }
     }
 
     removeIngredient(ingredient, quantity)
     {
         this.addIngredient(ingredient, -quantity);
+    }
+
+    getIngredient(name)
+    {
+        return this.Ingredients.get(name);
     }
 }
 
@@ -47,16 +54,55 @@ class BakedGood
     }
 }
 
-function loadInventory(container)
-{
-    var inventory = new Inventory();
-    inventory.addIngredient(new Ingredient("Eggs"), 1);
-    inventory.addIngredient(new Ingredient("Flour"), 1);
-    inventory.addIngredient(new Ingredient("Salt"), 1);
-    inventory.addIngredient(new Ingredient("Sugar"), 1);
+var inventory;
+var selected = new Array();
 
-    inventory.Ingredients.forEach(element => {
-        
-    });
-    container.append("<div>" + "</div>");
+function loadIngredients(data)
+{
+    inventory = new Inventory();
+
+    var dataCSV = $.csv.toObjects(data);
+    for(var i=0; i < dataCSV.length; i++)
+    {
+        inventory.addIngredient(new Ingredient(dataCSV[i]["Name"]), 1);
+    }
 }
+
+function loadInventory(container, data)
+{
+    loadIngredients(data);
+
+    inventory.IngredientAmounts.forEach((value, key) => {
+        var id = key.name;
+        var item = document.createElement("div");
+        item.setAttribute("id", id);
+        item.setAttribute("class", "p-2");
+        item.append(document.createElement("p").innerText = key.name);
+        item.append(document.createElement("br"));
+        item.append(document.createElement("p").innerText = value);
+        $(item).click(function() {
+            if(selected.indexOf(item.id) > -1)
+            {
+                selected.splice(selected.indexOf(item.id), 1);
+                item.style.backgroundColor = "#FFFFFF";
+            }
+            else
+            {
+                selected.push(item.id);
+                item.style.backgroundColor = "#2F4F4F";
+            }
+          });
+        container.append(item);
+    });
+    
+}
+
+$( document ).ready(function() {
+    $.ajax({
+        type: "GET",
+        url: "data/ingredients.csv",
+        dataType: "text",
+        success: function(data) {loadInventory($("#ingredients"), data);}
+     });
+    
+});
