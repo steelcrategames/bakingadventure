@@ -7,21 +7,15 @@ const LOG_TYPES = {
 }
 
 const ADVENTURE_STATES = {
+    new_day:
+    {
+        onEnter: startNewDay
+    },
+
     empty_restaurant: 
     {
-        onEnter: () => {
-                clearLog();
-                log("The restaurant is empty");
-                showButton("meetNewAdventurerButton");
-
-                hideButton("doQuestIntroButton");
-                hideButton("giveFoodToAdventurerButton");
-                hideButton("doQuestRecapButton");
-             },
-             onExit: () => 
-             {
-                hideButton("meetNewAdventurerButton");
-             }
+        onEnter: enterEmptyRestaurantState,
+        onExit: exitEmptyRestaurantState
     },
 
     intro: 
@@ -29,21 +23,29 @@ const ADVENTURE_STATES = {
         onEnter: doAdventurerIntro
     },
 
-    describe_quest: 
-    {
-        onEnter: () => showButton("doQuestIntroButton"),
-        onExit: () => hideButton("doQuestIntroButton")
-    },
-
-    cooking:
-    {
-        onEnter: () => showButton("giveFoodToAdventurerButton"),
-        onExit: () => hideButton("giveFoodToAdventurerButton")
-    },
-
     quest_recap: 
     {
         onEnter: doQuestRecap
+    },
+
+    describe_quest: 
+    {
+        onEnter: () => showButton("doDescribeQuestButton"),
+        onExit: () => hideButton("doDescribeQuestButton")
+    },
+
+    active_customer:
+    {
+        onEnter: enterActiveCustomerState,
+        onExit: exitActiveCustomerState
+    },
+
+
+
+    end_of_day:
+    {
+        onEnter: enterEndOfDayState,
+        onExit: exitEndOfDayState
     }
 }
 
@@ -87,6 +89,9 @@ class Adventurer
         this.appetite = appetite;
 
         this.food = null;
+
+        this.has_done_intro = false;
+        this.num_quests_completed = 0;
     }
 
     setFood(food)
@@ -95,11 +100,16 @@ class Adventurer
     }
 }
 
+const ADVENTURERS_PER_DAY = 2;
+var day = 0;
+var adventurers = [];
 var currentAdventurer = {};
-    var adventureStateMachine = new StateMachine(ADVENTURE_STATES);
+var currentAdventurerIndex = 0;
+var adventureStateMachine = new StateMachine(ADVENTURE_STATES);
+
 
 window.onload = () => {
-    adventureStateMachine.changeState(ADVENTURE_STATES.empty_restaurant);
+    adventureStateMachine.changeState(ADVENTURE_STATES.new_day);
 }
 
 function createRandomAdventurer()
@@ -109,7 +119,7 @@ function createRandomAdventurer()
     const titles = [ "Knight", "Squire", "Bard", "Adventurer", "Farmer" ];
 
     let name = String.fromCharCode(65+Math.floor(Math.random() * 26)) + "immy";
-    let title = "the" + skillLevels[Math.floor(Math.random() * skillLevels.length)] + " " + titles[Math.floor(Math.random() * titles.length)];
+    let title = "the " + skillLevels[Math.floor(Math.random() * skillLevels.length)] + " " + titles[Math.floor(Math.random() * titles.length)];
     let quote = name + "'s the name and adventuring is my game!";
 
     let appetite = appetites[Math.floor(Math.random() * appetites.length)];
@@ -132,56 +142,201 @@ function hideButton(buttonName)
     document.getElementById(buttonName).style.display = "none";
 }
 
+function hideAllButtons()
+{
+    var elements = document.getElementsByClassName("btn")
+
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.display = "none";
+    }
+}
+
 function updateAdventurerStatBox()
 {
-    document.getElementById("adventurerName").innerText = currentAdventurer.name;
-    document.getElementById("adventurerTitle").innerText = currentAdventurer.title;
-    document.getElementById("adventurerQuote").innerText = currentAdventurer.quote;
-    document.getElementById("adventurerATK").innerText = currentAdventurer.atk;
-    document.getElementById("adventurerDEF").innerText = currentAdventurer.def;
-    document.getElementById("adventurerHP").innerText = currentAdventurer.hp;
-    document.getElementById("adventurerAppetite").innerText = currentAdventurer.appetite;
-
-    if (currentAdventurer.food != null)
+    if (currentAdventurer == null)
     {
-        document.getElementById("adventurerFood").innerText = currentAdventurer.food.name;
+        document.getElementById("adventurerStatBox").style.display = "none";
     }
     else
     {
-        document.getElementById("adventurerFood").innerText = "none";
+        document.getElementById("adventurerStatBox").style.display = "block";
+
+        document.getElementById("adventurerName").innerText = currentAdventurer.name;
+        document.getElementById("adventurerTitle").innerText = currentAdventurer.title;
+        document.getElementById("adventurerQuote").innerText = currentAdventurer.quote;
+        document.getElementById("adventurerATK").innerText = currentAdventurer.atk;
+        document.getElementById("adventurerDEF").innerText = currentAdventurer.def;
+        document.getElementById("adventurerHP").innerText = currentAdventurer.hp;
+        document.getElementById("adventurerAppetite").innerText = currentAdventurer.appetite;
+
+        if (currentAdventurer.food != null)
+        {
+            document.getElementById("adventurerFood").innerText = currentAdventurer.food.name;
+        }
+        else
+        {
+            document.getElementById("adventurerFood").innerText = "none";
+        }
     }
 }
 
-
-function meetNewAdventurer()
+function startNewDay()
 {
-    adventureStateMachine.changeState(ADVENTURE_STATES.intro);
+    hideAllButtons();
+
+    day += 1;
+    document.getElementById("dayDisplay").innerText = "Day " + day;
+
+    if (adventurers == null || adventurers.length == 0)
+    {
+        for (let i = 0; i < ADVENTURERS_PER_DAY; i++) {
+            adventurers.push(createRandomAdventurer());
+        }
+
+        console.log(`Created ${adventurers.length} adventurers.`);
+    }
+
+    currentAdventurerIndex = 0;
+    
+    adventureStateMachine.changeState(ADVENTURE_STATES.empty_restaurant);
 }
 
+//====================================
+// Empty Restaurant state
+//====================================
+function enterEmptyRestaurantState()
+{
+    hideAllButtons();
+    clearLog();
+    log("The restaurant is empty");
+
+    if (currentAdventurerIndex < adventurers.length)
+    {
+        showButton("greetAdventurerButton");
+    }
+    else
+    {
+        showButton("endDayButton");
+    }
+}
+
+function greetAdventurer()
+{
+    currentAdventurer = adventurers[currentAdventurerIndex];
+
+    if (!currentAdventurer.has_done_intro)
+    {
+        adventureStateMachine.changeState(ADVENTURE_STATES.intro);
+    }
+    else
+    {
+        adventureStateMachine.changeState(ADVENTURE_STATES.quest_recap);
+    }
+    
+}
+
+function exitEmptyRestaurantState()
+{
+    hideButton("greetAdventurerButton");
+    hideButton("endDayButton");
+}
+
+
+
+//====================================
+// Intro state
+//====================================
 //First meeting of an adventurer - do an introduction
 function doAdventurerIntro() 
 {
-    currentAdventurer = createRandomAdventurer();
     updateAdventurerStatBox();
-    document.getElementById("adventurerStatBox").style.display = "block";
 
     clearLog();
+    log(`${currentAdventurer.name} enters the restaurant.`);
     log("Hi, I'm " + currentAdventurer.name);
     log("I just moved into the area and heard about a great restaurant. People say it's the place to go for new adventurers!");
     log("I just bought my first armor and am really excited to go on a quest.");
 
+    currentAdventurer.has_done_intro = true;
+
     adventureStateMachine.changeState(ADVENTURE_STATES.describe_quest);
 }
 
+//====================================
+// Quest recap state
+//====================================
+function doQuestRecap()
+{
+    updateAdventurerStatBox();
+    clearLog();
+    log(`Hello again! It's me ${currentAdventurer.name} from yesterday.`);
+    if (currentAdventurer.food != null)
+    {
+        log(`You gave me ${currentAdventurer.food} to help me on my quest.`);
+    }
+    else
+    {
+        log(`You didn't give me any food for my quest!`);
+    }
+
+    log("I just returned from the goblin lair. Even the entrance was scary but I was strangely calm.", LOG_TYPES.INFO);
+    log("On the first level, I was attacked by two goblins but kept my wits and managed to press on.");
+
+    if (currentAdventurer.food == null)
+    {
+        log("On the second level, I was poisoned and started to feel really sick so I had to escape.", LOG_TYPES.BAD);
+        log("I did not complete my quest.", LOG_TYPES.BAD);
+    }
+    else
+    {
+        log("On the second level, I was poisoned and started to feel really sick. But then I ate my " + currentAdventurer.food.name + " and I felt great!", LOG_TYPES.GOOD);
+        log("I defeated the last of the goblins and found the treasure.", LOG_TYPES.GOOD);
+        log("I successfully completed my quest!", LOG_TYPES.GOOD);
+    }
+
+    //Handle outcome of quest
+    currentAdventurer.num_quests_completed += 1;
+    currentAdventurer.food = null;
+
+    updateAdventurerStatBox();
+
+    adventureStateMachine.changeState(ADVENTURE_STATES.describe_quest);
+}
+
+
+//====================================
+// Describe Quest state
+//====================================
+
 //Before each quest - describe what lies ahead
-function doQuestIntro()
+function doDescribeQuest()
 {
     clearLog();
-    log("I'm heading out to my first quest in the goblin cave.");
+    if (currentAdventurer.num_quests_completed == 0)
+    {
+        log("I'm heading out to my first quest in the goblin cave.");
+    }
+    else
+    {
+        log("I'm heading out to my next quest in another goblin cave.");
+    }
+    
     log("I'm a bit nervous. Do you have anything that might help soothe my nerves?");
 
-    adventureStateMachine.changeState(ADVENTURE_STATES.cooking);
+    adventureStateMachine.changeState(ADVENTURE_STATES.active_customer);
 }
+
+
+
+//====================================
+// Active customer state
+//====================================
+function enterActiveCustomerState()
+{
+    showButton("giveFoodToAdventurerButton");
+    showButton("waveByeButton");
+}
+
 
 function giveFoodToAdventurer()
 {
@@ -193,20 +348,56 @@ function giveFoodToAdventurer()
     currentAdventurer.setFood(testFood);
     log("You gave " + testFood.name + " to " + currentAdventurer.name);
     updateAdventurerStatBox();
+    log(`${currentAdventurer.name}: Thanks!`);
 
-    adventureStateMachine.changeState(ADVENTURE_STATES.quest_recap);
+    //TODO: consider appetite and decide how much food you can make for an adventurer
+    if (currentAdventurer.food != null)
+    {
+        hideButton("giveFoodToAdventurerButton");
+    }
 }
 
-//After each quest - recap what happened
-function doQuestRecap()
+function waveBye()
 {
-    clearLog();
-    log("I just returned from the goblin cave.");
-    log("Even the entrance was scary but I was strangely calm.", LOG_TYPES.INFO);
-    log("On the first level, I was attacked by two goblins but kept my wits and managed to press on.", LOG_TYPES.GOOD);
-    log("On the second level, I was poisoned and started to feel really sick so I had to escape.", LOG_TYPES.BAD);
-    log("I did not complete my quest.");
+    currentAdventurer = null;
+    currentAdventurerIndex += 1;
+    updateAdventurerStatBox();
+    adventureStateMachine.changeState(ADVENTURE_STATES.empty_restaurant);
 }
+
+function exitActiveCustomerState()
+{
+    hideButton("giveFoodToAdventurerButton");
+    hideButton("waveByeButton");
+}
+
+
+//====================================
+// End of Day state
+//=========================
+function enterEndOfDayState()
+{
+    showButton("startNextDayButton");
+}
+
+function doEndDay()
+{
+    adventureStateMachine.changeState(ADVENTURE_STATES.end_of_day);
+    clearLog();
+    log("What a lovely day. I hope those adventurers do well on their quests.");
+}
+
+function doStartNextDay()
+{
+    adventureStateMachine.changeState(ADVENTURE_STATES.new_day);
+}
+
+function exitEndOfDayState()
+{
+    hideButton("waveByeButton");
+}
+
+
 
 function log(msg, type)
 {

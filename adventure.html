@@ -19,6 +19,9 @@
   
 <div class="container">
 
+  <div>My First Restaurant</div>
+  <div id="dayDisplay">Day 1</div>
+
   <!-- Description & Personality -->
   <div id="adventurerStatBox" style="display: none;">
     <h1 id="adventurerName">Timmy</h1>
@@ -52,10 +55,13 @@
 
   <!-- Commands -->
   <div class="row">
-    <button id="meetNewAdventurerButton" onclick="meetNewAdventurer()" class="btn btn-primary">Meet New Adventurer</button>
-    <button id="doQuestIntroButton" onclick="doQuestIntro()" class="btn btn-primary">Describe Next Quest</button>
+    <button id="greetAdventurerButton" onclick="greetAdventurer()" class="btn btn-primary">Greet Adventurer</button>
+    <button id="doDescribeQuestButton" onclick="doDescribeQuest()" class="btn btn-primary">Describe Next Quest</button>
     <button id="giveFoodToAdventurerButton" onclick="giveFoodToAdventurer()" class="btn btn-primary">Give Test Food To Adventurer</button>
+    <button id="waveByeButton" onclick="waveBye()" class="btn btn-primary">Wave Bye</button>
     <button id="doQuestRecapButton" onclick="doQuestRecap()" class="btn btn-primary">Go on Quest and Recap</button>
+    <button id="endDayButton" onclick="doEndDay()" class="btn btn-primary">End of the day - Time to Close</button>
+    <button id="startNextDayButton" onclick="doStartNextDay()" class="btn btn-primary">Start Next Day</button>
   </div>
 
 
