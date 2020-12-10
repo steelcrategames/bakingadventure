@@ -99,6 +99,7 @@ function loadInventory(container, data)
 
 function bake(container)
 {
+    container.empty();
     var text = document.createElement("p").innerText = "You've baked a cake!";
     container.append(text);
     container.append(document.createElement("br"))
