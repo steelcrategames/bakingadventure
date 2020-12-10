@@ -97,6 +97,17 @@ function loadInventory(container, data)
     
 }
 
+function bake(container)
+{
+    var text = document.createElement("p").innerText = "You've baked a cake!";
+    container.append(text);
+    container.append(document.createElement("br"))
+    var serveButton = document.createElement("button");
+    serveButton.innerText = "Serve";
+    serveButton.setAttribute("class","btn btn-primary");
+    container.append(serveButton);
+}
+
 $( document ).ready(function() {
     $.ajax({
         type: "GET",
@@ -105,4 +116,5 @@ $( document ).ready(function() {
         success: function(data) {loadInventory($("#ingredients"), data);}
      });
     
+     $("#bakeButton").click(function() { bake($("#bakeResult")) });
 });
