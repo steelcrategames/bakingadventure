@@ -20,7 +20,6 @@
 <div class="container">
 
   <!-- Description & Personality -->
-  <button id="doAdventurerIntroButton" onclick="doAdventurerIntro()" class="btn btn-primary">Meet New Adventurer</button>
   <div id="adventurerStatBox" style="display: none;">
     <h1 id="adventurerName">Timmy</h1>
     <h6 id="adventurerTitle">the Novice Knight</h6>
@@ -39,23 +38,27 @@
         </ul>
       </div>
       <div class="col border">
-        <p>I am bringing a <span class="bg-dark text-white">BEEF STEW</span> with me.</p>
+        <p>Provisions:</p>
+        <p id="adventurerFood" class="bg-dark text-white"></p>
       </div>
     </div>
-  
-
-  <!-- Adventure log row -->
-  <div class="row">
-    <button id="doQuestIntroButton" onclick="doQuestIntro()" class="btn btn-primary">Describe Next Quest</button>
-    <button id="doQuestRecapButton" onclick="doQuestRecap()" class="btn btn-primary">Go on Quest and Recap</button>
-  </div>
 </div>
 
+  <!-- Adventure log -->
   <div class="card-body">
     <div class="card-title">Log</div>
     <p id="log" class="card-text"></p>
   </div>
-    
+
+  <!-- Commands -->
+  <div class="row">
+    <button id="meetNewAdventurerButton" onclick="meetNewAdventurer()" class="btn btn-primary">Meet New Adventurer</button>
+    <button id="doQuestIntroButton" onclick="doQuestIntro()" class="btn btn-primary">Describe Next Quest</button>
+    <button id="giveFoodToAdventurerButton" onclick="giveFoodToAdventurer()" class="btn btn-primary">Give Test Food To Adventurer</button>
+    <button id="doQuestRecapButton" onclick="doQuestRecap()" class="btn btn-primary">Go on Quest and Recap</button>
+  </div>
+
+
 </div>
 
 </body>
