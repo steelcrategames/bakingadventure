@@ -1,22 +1,22 @@
-let screens = ["screen-visitor", "screen-dialog-adventurer"]; // TODO: replace this with a find all with class
-let dialogViews = ["dialog-first-visit1", "dialog-heading-out", "dialog-return-visit1"]; // TODO: replace this with a find all with class
+let screens = ["screen-visitor", "screen-dialogue"]; // TODO: replace this with a find all with class
+let dialogViews = ["dialogue-first-visit1", "dialogue-heading-out", "dialogue-return-visit1"]; // TODO: replace this with a find all with class
 
 function talkToAdventurerFirstVisit()
 {
-    showView("screen-dialog-adventurer", screens);
-    showView("dialog-first-visit1", dialogViews);
+    showView("screen-dialogue", screens);
+    showView("dialogue-first-visit1", dialogViews);
 }
 
 function dialogHeadingOut()
 {
-    showView("screen-dialog-adventurer", screens);
-    showView("dialog-heading-out", dialogViews);
+    showView("screen-dialogue", screens);
+    showView("dialogue-heading-out", dialogViews);
 }
 
 function talkToAdventurerReturnVisit()
 {
-    showView("screen-dialog-adventurer", screens);
-    showView("dialog-return-visit1", dialogViews);
+    showView("screen-dialogue", screens);
+    showView("dialogue-return-visit1", dialogViews);
 }
 
 function setupScreens()
