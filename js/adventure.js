@@ -264,10 +264,10 @@ function giveFoodToHero()
 {
     startBaking();
 
-    let testFood = new Food("Plain Cake", 5, 10, 0, 0);
+    //let testFood = new Food("Plain Cake", 5, 10, 0, 0);
 
-    currentHero.setFood(testFood);
-    log("You gave " + testFood.name + " to " + currentHero.name);
+    //currentHero.setFood(testFood);
+    //log("You gave " + testFood.name + " to " + currentHero.name);
     updateHeroStatBox();
     log(`${currentHero.name}: Thanks!`);
 

@@ -47,15 +47,6 @@ class Ingredient
     }
 }
 
-class BakedGood
-{
-    constructor(name)
-    {
-        this.name = name;
-        this.effects = [];
-    }
-}
-
 class Effect
 {
     constructor(type, amount)
@@ -90,6 +81,7 @@ function loadIngredients(data)
 
 function loadInventory(container, data)
 {
+    selected = [];
     container.empty();
     loadIngredients(data);
 
@@ -136,29 +128,41 @@ function getBakeResultHTML(bakedGood)
     var result = document.createElement("div");
     var nameText = document.createElement("p").innerText = "You've baked a " + bakedGood.name + "!";
     result.append(nameText);
-    result.append(document.createElement("br"));
-
-    for(var i = 0; i < bakedGood.effects.length; i++)
-    {
-        result.append(document.createElement("p").innerText = bakedGood.effects[i].type + " " + bakedGood.effects[i].amount);
-        result.append(document.createElement("br"));
-    }
-
     return result;
 }
 
 function getBakedGood()
 {
-    var bakedGood = new BakedGood("Cake");
-
+    var hp_bonus = 0;
+    var atk_bonus = 0;
+    var hitChance_bonus = 0;
+    var def_bonus = 0;
+    
     for(var i = 0; i < selected.length; i++)
     {
         var ingredient = inventory.getIngredient(selected[i]);
         for(var j = 0; j < ingredient.effects.length; j++)
         {
-            bakedGood.effects.push(ingredient.effects[j])
+            var amount = parseFloat(ingredient.effects[j].amount);
+            switch(ingredient.effects[j].type)
+            {
+                case "hp":
+                    hp_bonus += amount;
+                    break;
+                case "atk":
+                    atk_bonus += amount;
+                    break;
+                case "def":
+                    def_bonus += amount;
+                    break;
+                case "hit":
+                    hitChance_bonus += amount;
+                    break;
+            }
         }
     }
+
+    var bakedGood = new Food("Cake", hp_bonus, atk_bonus, hitChance_bonus, def_bonus);
 
     return bakedGood;
 }
@@ -173,7 +177,7 @@ function bake(container)
     var serveButton = document.createElement("button");
     serveButton.innerText = "Serve";
     serveButton.setAttribute("class","btn btn-primary");
-    $(serveButton).click(function() { bakingComplete(); });
+    $(serveButton).click(function() { currentHero.setFood(bakedGood); bakingComplete(); });
     container.append(serveButton);
 }
 
