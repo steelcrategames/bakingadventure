@@ -1,12 +1,12 @@
-Name,Description
-Eggs,
-Flour,
-Salt,
-Sugar,
-Vanilla,
-Baking Soda,
-Lemon,
-Lime,
-Carrot,
-Ginger,
-Cocoa,
+Name,Description,Effect1,Effect1Amount,Effect2,Effect2Amount,Effect3,Effect3Amount,Effect4,Effect4Amount
+Eggs,,hp,5,atk,5,hit,1.05,def,5
+Flour,,hp,5,,,,,,
+Salt,,,,atk,5,,,,
+Sugar,,,,,,hit,1.05,,
+Vanilla,,,,,,,,def,5
+Baking Soda,,,,,,,,,
+Lemon,,,,,,,,,
+Lime,,,,,,,,,
+Carrot,,,,,,,,,
+Ginger,,,,,,,,,
+Cocoa,,,,,,,,,
