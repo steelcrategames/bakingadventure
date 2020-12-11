@@ -81,7 +81,7 @@ function simulateTurn(attacker, defender)
 {
     let isHit = rollHit(attacker.stats.getHitChance());
 
-    sim_log(`${attacker.name} rolls to hit (${attacker.stats.getHitChance()}%). ${isHit ? "HIT" : "MISS"}`);
+    sim_log(`${attacker.name} rolls to hit (${attacker.stats.getHitChance()}%) => ${isHit ? "HIT" : "MISS"}`);
 
     if (isHit)
     {

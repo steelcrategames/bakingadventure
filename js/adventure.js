@@ -300,7 +300,7 @@ function doEndDay()
 {
     adventureStateMachine.changeState(ADVENTURE_STATES.end_of_day);
     clearLog();
-    log("What a lovely day. I hope those heros do well on their quests.");
+    log("What a lovely day. I hope those heroes do well on their quests.");
 }
 
 function doStartNextDay()
@@ -341,8 +341,14 @@ function updateHeroStatBox()
         if (currentHero.stats.food.length > 0)
         {
             currentHero.stats.food.forEach(food => {
-                var item = document.createElement("li");    
-                item.appendChild(document.createTextNode(food.name));
+                let foodNameSpan = document.createElement("span");
+                foodNameSpan.appendChild(document.createTextNode(food.name));
+                foodNameSpan.setAttribute("data-toggle", "tooltip");
+                foodNameSpan.setAttribute("title", food.tooltip());
+                foodNameSpan.setAttribute("class", "bg-dark text-white");
+
+                let item = document.createElement("li");
+                item.appendChild(foodNameSpan);
                 document.getElementById("heroFood").appendChild(item);
             });
         }
