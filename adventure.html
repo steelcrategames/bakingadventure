@@ -2,26 +2,30 @@
   <p id="dayDisplay">Day 1</p> 
 
   <!-- Description & Personality -->
-  <div id="adventurerStatBox" style="display: none;">
-    <h1 id="adventurerName">Timmy</h1>
-    <h6 id="adventurerTitle">the Novice Knight</h6>
+  <div id="heroStatBox" style="display: none;">
+    <h1 id="heroName">Timmy</h1>
+    <h6 id="heroTitle">the Novice Knight</h6>
 
-    <blockquote class="blockquote" id="adventurerQuote">Timmy's the name and adventuring is my game!</blockquote>
+    <blockquote class="blockquote" id="heroQuote">Timmy's the name and adventuring is my game!</blockquote>
 
     <!-- Stats row -->
     <div class="row">
       <div class="col border">
         <p>Stats:</p>
         <ul>
-          <li>ATK: <span id="adventurerATK">5</span></li>
-          <li>DEF: <span id="adventurerDEF">5</span></li>
-          <li>HP: <span id="adventurerHP">5</span></li>
-          <li>Appetite: <span id="adventurerAppetite">Small</span></li>
+          <li>STR: <span id="heroSTR">5</span></li>
+          <li>DEX: <span id="heroDEX">5</span></li>
+          <li>CON: <span id="heroCON">5</span></li>
+          <li>INT: <span id="heroINT">5</span></li>
+          <li>WIS: <span id="heroWIS">5</span></li>
+          <li>CHR: <span id="heroCHR">5</span></li>
+          <li>HP: <span id="heroHP">5</span></li>
+          <li>Appetite: <span id="heroAppetite">Small</span></li>
         </ul>
       </div>
       <div class="col border">
         <p>Provisions:</p>
-        <p id="adventurerFood" class="bg-dark text-white"></p>
+        <p id="heroFood" class="bg-dark text-white"></p>
       </div>
     </div>
 </div>
@@ -34,9 +38,9 @@
 
   <!-- Commands -->
   <div class="row">
-    <button id="greetAdventurerButton" onclick="greetAdventurer()" class="btn btn-primary adv-btn">Greet Adventurer</button>
+    <button id="greetHeroButton" onclick="greetHero()" class="btn btn-primary adv-btn">Greet Hero</button>
     <button id="doDescribeQuestButton" onclick="doDescribeQuest()" class="btn btn-primary adv-btn">Describe Next Quest</button>
-    <button id="giveFoodToAdventurerButton" onclick="giveFoodToAdventurer()" class="btn btn-primary adv-btn">Give Test Food To Adventurer</button>
+    <button id="giveFoodToHeroButton" onclick="giveFoodToHero()" class="btn btn-primary adv-btn">Give Test Food To Hero</button>
     <button id="waveByeButton" onclick="waveBye()" class="btn btn-primary adv-btn">Wave Bye</button>
     <button id="doQuestRecapButton" onclick="doQuestRecap()" class="btn btn-primary adv-btn">Go on Quest and Recap</button>
     <button id="endDayButton" onclick="doEndDay()" class="btn btn-primary adv-btn">End of the day - Time to Close</button>
