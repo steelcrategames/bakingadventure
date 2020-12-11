@@ -12,5 +12,10 @@ class Quest {
 //Utility
 function createRandomQuest()
 {
-    return new Quest("Goblin Camp", 1, new Enemy("Goblin", 5, 1));
+    return new Quest(
+        "Goblin Camp", 
+        1, 
+        new Enemy(
+            "Goblin", 
+            new Stats(5, 1, 50, 1, "None")));
 }

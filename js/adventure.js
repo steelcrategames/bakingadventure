@@ -330,13 +330,10 @@ function updateHeroStatBox()
         document.getElementById("heroName").innerText = currentHero.name;
         document.getElementById("heroTitle").innerText = currentHero.title;
         document.getElementById("heroQuote").innerText = currentHero.quote;
-        document.getElementById("heroSTR").innerText = currentHero.stats.str;
-        document.getElementById("heroDEX").innerText = currentHero.stats.dex;
-        document.getElementById("heroCON").innerText = currentHero.stats.con;
-        document.getElementById("heroINT").innerText = currentHero.stats.int;
-        document.getElementById("heroWIS").innerText = currentHero.stats.wis;
-        document.getElementById("heroCHR").innerText = currentHero.stats.chr;
         document.getElementById("heroHP").innerText = currentHero.stats.max_hp;
+        document.getElementById("heroATK").innerText = currentHero.stats.atk;
+        document.getElementById("heroHitChance").innerText = `${currentHero.stats.hitChance}%`;
+        document.getElementById("heroDEF").innerText = currentHero.stats.def;
         document.getElementById("heroAppetite").innerText = currentHero.stats.appetite;
 
         if (currentHero.food != null)

@@ -6,7 +6,7 @@ class Hero
         this.title = title;
         this.quote = quote;
 
-        this.stats = new Stats(10, 10, 10, 10, 10, 10, "Small");
+        this.stats = new Stats(10, 5, 75, 2, "Small");
 
         this.food = null;
 
