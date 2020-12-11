@@ -1,3 +1,10 @@
+const QuestResult = {
+    INCOMPLETE: 0,
+    SUCCESS: 1,
+    FAILURE: 2
+};
+Object.freeze(QuestResult);
+
 class Quest {
     constructor(name, level, enemy)
     {
@@ -5,7 +12,7 @@ class Quest {
         this.level = level;
         this.enemy = enemy;
 
-        this.outcome
+        this.result = QuestResult.INCOMPLETE;
     }
 }
 

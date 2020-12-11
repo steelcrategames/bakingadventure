@@ -1,10 +1,11 @@
-const LOG_TYPES = {
+const LogTypes = {
     GOOD: "bg-success",
     INFO: "bg-info",
     DEFAULT: "",
     WARN: "bg-warning",
     BAD: "bg-danger"
-}
+};
+Object.freeze(LogTypes);
 
 const ADVENTURE_STATES = {
     new_day:
@@ -196,15 +197,20 @@ function doQuestRecap()
 
     log(`Quest: ${quest.name} Level: ${quest.level} Enemy: ${quest.enemy.name} Stats: ${quest.enemy.stats.to_string()}`);
 
-    let success = simulateQuest(currentHero);
+    simulateQuest(currentHero);
 
-    if (success)
+    //Print out the battle log, for now
+    currentHero.current_quest.log.forEach(msg => {
+        log(msg);
+    });
+
+    if (currentHero.current_quest.result == QuestResult.SUCCESS)
     {
-        log("I successfully completed my quest!", LOG_TYPES.GOOD);
+        log("I successfully completed my quest!", LogTypes.GOOD);
     }
     else
     {
-        log("I failed my quest!", LOG_TYPES.BAD);
+        log("I failed my quest!", LogTypes.BAD);
     }
 
     //Handle outcome of quest
