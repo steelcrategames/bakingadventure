@@ -90,6 +90,7 @@ function loadIngredients(data)
 
 function loadInventory(container, data)
 {
+    container.empty();
     loadIngredients(data);
 
     inventory.IngredientAmounts.forEach((value, key) => {
@@ -184,7 +185,7 @@ function loadBakingScreen()
         dataType: "text",
         success: function(data) {loadInventory($("#ingredients"), data);}
      });
-    
+     $("#bakeResult").empty();
      $("#bakeButton").click(function() { bake($("#bakeResult")) });
 }
 
