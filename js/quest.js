@@ -6,23 +6,23 @@ const QuestResult = {
 Object.freeze(QuestResult);
 
 class Quest {
-    constructor(name, level, enemy)
+    constructor(name, level, enemyTemplate)
     {
         this.name = name;
         this.level = level;
-        this.enemy = enemy;
+        this.enemyTemplate = enemyTemplate;
 
         this.result = QuestResult.INCOMPLETE;
     }
 }
 
 //Utility
-function createRandomQuest()
+function createRandomQuest(level)
 {
-    return new Quest(
-        "Goblin Camp", 
-        1, 
-        new Enemy(
-            "Goblin", 
-            new Stats(5, 1, 50, 1, "None")));
+    console.log(`Generating random quest of level ${level}.`);
+
+    let enemyTemplate = new Enemy("Goblin", new Stats(5, 1, 50, 1, 0));
+    enemyTemplate.scaleToLevel(level);
+
+    return new Quest("Goblin Camp", level, enemyTemplate);
 }
