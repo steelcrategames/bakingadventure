@@ -42,6 +42,8 @@ function setupScreens()
             });
         });
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
 }
 window.onload = setupScreens;
 

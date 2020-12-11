@@ -209,7 +209,6 @@ function doQuestRecap()
 
     //Handle outcome of quest
     currentHero.finishQuest();
-    currentHero.food = null;
 
     updateHeroStatBox();
 
@@ -354,6 +353,8 @@ function updateHeroStatBox()
             document.getElementById("heroFood").appendChild(item);
         }
     }
+
+    $('[data-toggle="tooltip"]').tooltip();
 }
 
 
