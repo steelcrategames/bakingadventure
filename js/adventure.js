@@ -179,6 +179,8 @@ function doHeroIntro()
 // Recap how yesterday's quest went, taking into consideration the food that was cooked
 function doQuestRecap()
 {
+    let quest = currentHero.current_quest;
+
     updateHeroStatBox();
     clearLog();
     log(`Hello again! It's me ${currentHero.name} from yesterday.`);
@@ -190,6 +192,8 @@ function doQuestRecap()
     {
         log(`You didn't give me any food for my quest!`);
     }
+
+    log(`Quest: ${quest.name} Level: ${quest.level} Enemy: ${quest.enemy.name} Stats: ${quest.enemy.stats.to_string()}`);
 
     let success = simulateQuest(currentHero);
 
@@ -254,19 +258,16 @@ function giveFoodToHero()
 {
     startBaking();
 
-    let testFood = {
-        name: "Beef Stew",
-        atk_bonus: 1
-    };
+    let testFood = new Food("Plain Cake", 10, 0, 0);
 
     currentHero.setFood(testFood);
     log("You gave " + testFood.name + " to " + currentHero.name);
     updateHeroStatBox();
     log(`${currentHero.name}: Thanks!`);
 
-    //TODO: consider appetite and decide how much food you can make for a hero
-    if (currentHero.food != null)
+    if (currentHero.stats.food.length >= currentHero.stats.appetite)
     {
+        log("Gosh that's plenty for me! I don't think I'd be able to eat anything else on my quest.");
         hideButton("giveFoodToHeroButton");
     }
 }
@@ -331,18 +332,25 @@ function updateHeroStatBox()
         document.getElementById("heroTitle").innerText = currentHero.title;
         document.getElementById("heroQuote").innerText = currentHero.quote;
         document.getElementById("heroHP").innerText = currentHero.stats.max_hp;
-        document.getElementById("heroATK").innerText = currentHero.stats.atk;
-        document.getElementById("heroHitChance").innerText = `${currentHero.stats.hitChance}%`;
-        document.getElementById("heroDEF").innerText = currentHero.stats.def;
+        document.getElementById("heroATK").innerText = currentHero.stats.base_atk;
+        document.getElementById("heroHitChance").innerText = `${currentHero.stats.base_hitChance}%`;
+        document.getElementById("heroDEF").innerText = currentHero.stats.base_def;
         document.getElementById("heroAppetite").innerText = currentHero.stats.appetite;
 
-        if (currentHero.food != null)
+        document.getElementById("heroFood").innerHTML = '';
+        if (currentHero.stats.food.length > 0)
         {
-            document.getElementById("heroFood").innerText = currentHero.food.name;
+            currentHero.stats.food.forEach(food => {
+                var item = document.createElement("li");    
+                item.appendChild(document.createTextNode(food.name));
+                document.getElementById("heroFood").appendChild(item);
+            });
         }
         else
         {
-            document.getElementById("heroFood").innerText = "none";
+            var item = document.createElement("li");    
+            item.appendChild(document.createTextNode("None"));
+            document.getElementById("heroFood").appendChild(item);
         }
     }
 }
