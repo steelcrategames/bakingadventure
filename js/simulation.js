@@ -37,10 +37,20 @@ class Stats {
         this.food.forEach(food => def_bonus += food.def_bonus)
         return this.base_def + def_bonus;
     }
+
+    getMaxHP()
+    {
+        let hp_bonus = 0;
+        this.food.forEach(food => hp_bonus += food.hp_bonus)
+        return this.max_hp + hp_bonus;
+    }
 }
 
 function simulateQuest(hero)
 {
+    //Update hero's HP, taking food into consideration
+    hero.stats.hp = hero.stats.getMaxHP();
+    sim_log(`${hero.name} has ${hero.stats.hp} HP for this quest.`);
     let quest = hero.current_quest;
     let enemy = quest.enemy;
 
@@ -51,7 +61,7 @@ function simulateQuest(hero)
 
         if (heroWin)
         {
-            console.log("Hero wins");
+            sim_log("Hero wins");
             return true;
         }
         else
@@ -60,7 +70,7 @@ function simulateQuest(hero)
 
             if (enemyWin)
             {
-                console.log("Enemy wins");
+                sim_log("Enemy wins");
                 return false;
             }
         }
@@ -71,7 +81,7 @@ function simulateTurn(attacker, defender)
 {
     let isHit = rollHit(attacker.stats.getHitChance());
 
-    console.log(`${attacker.name} rolls to hit (${attacker.stats.getHitChance()}%). ${isHit ? "HIT" : "MISS"}`);
+    sim_log(`${attacker.name} rolls to hit (${attacker.stats.getHitChance()}%). ${isHit ? "HIT" : "MISS"}`);
 
     if (isHit)
     {
@@ -79,23 +89,29 @@ function simulateTurn(attacker, defender)
         let def = defender.stats.getDef();
         let dmg = Math.max(0, atk - def);
 
-        console.log(`${attacker.name} attacks for ${atk} (def: ${def}), dealing ${dmg} damage!`);
+        sim_log(`${attacker.name} attacks for ${atk} (def: ${def}), dealing ${dmg} damage!`);
 
         defender.stats.hp -= dmg;
         
         if (defender.stats.hp <= 0)
         {
-            console.log(`${defender.name} is defeated!`);
+            sim_log(`${defender.name} is defeated!`);
             return true;
         }
         else
         {
-            console.log(`${defender.name} has ${defender.stats.hp} HP remaining.`);
+            sim_log(`${defender.name} has ${defender.stats.hp} HP remaining.`);
         }
     }
 }
 
 //Utility
+function sim_log(msg)
+{
+    console.log(msg);
+    log(msg);
+}
+
 function rollHit(hitChance)
 {
     return hitChance > (Math.random() * 100);

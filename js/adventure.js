@@ -184,9 +184,10 @@ function doQuestRecap()
     updateHeroStatBox();
     clearLog();
     log(`Hello again! It's me ${currentHero.name} from yesterday.`);
-    if (currentHero.food != null)
+    if (currentHero.stats.food.length > 0)
     {
-        log(`You gave me ${currentHero.food.name} to help me on my quest.`);
+        let foodList = currentHero.stats.food.map(food => food.name).join(", ");
+        log(`You gave me [${foodList}] to help me on my quest.`);
     }
     else
     {
@@ -258,7 +259,7 @@ function giveFoodToHero()
 {
     startBaking();
 
-    let testFood = new Food("Plain Cake", 10, 0, 0);
+    let testFood = new Food("Plain Cake", 5, 10, 0, 0);
 
     currentHero.setFood(testFood);
     log("You gave " + testFood.name + " to " + currentHero.name);
