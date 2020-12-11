@@ -195,7 +195,7 @@ function doQuestRecap()
         log(`You didn't give me any food for my quest!`);
     }
 
-    log(`Quest: ${quest.name} Level: ${quest.level} Enemy: ${quest.enemy.name} Stats: ${quest.enemy.stats.to_string()}`);
+    log(`Quest: ${quest.name} Level: ${quest.level} Enemy: ${quest.enemyTemplate.name} Stats: ${quest.enemyTemplate.stats.to_string()}`);
 
     simulateQuest(currentHero);
 
@@ -231,7 +231,9 @@ function doDescribeQuest()
     clearLog();
 
     //Choose a new quest for the adventurer
-    currentHero.setQuest(createRandomQuest());
+    let level = currentHero.getSuccessfulQuestCount() + 1;
+    let nextQuest = createRandomQuest(level);
+    currentHero.setQuest(nextQuest);
     let quest = currentHero.current_quest;
 
     if (currentHero.completed_quests.length == 0)
@@ -243,7 +245,7 @@ function doDescribeQuest()
         log(`I'm heading out to my next quest: ${quest.name}`);
     }
     
-    log(`It's a level ${quest.level} quest and I expect to find a ${quest.enemy.name} or two. Do you have anything that might help soothe my nerves?`);
+    log(`It's a level ${quest.level} quest and I expect to find a ${quest.enemyTemplate.name} or two. Do you have anything that might help soothe my nerves?`);
 
     adventureStateMachine.changeState(ADVENTURE_STATES.active_customer);
 }

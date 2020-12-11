@@ -35,6 +35,11 @@ class Hero
         this.stats.hp = this.stats.max_hp;
         this.stats.food = [];
     }
+
+    getSuccessfulQuestCount()
+    {
+         return this.completed_quests.filter(q => q.result == QuestResult.SUCCESS).length; 
+    }
 }
 
 function createRandomHero()

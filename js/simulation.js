@@ -9,7 +9,11 @@ function simulateQuest(hero)
     hero.stats.hp = hero.stats.getMaxHP();
     sim_log(`${hero.name} has ${hero.stats.hp} HP for this quest.`);
     
-    let enemy = quest.enemy;
+    let num_enemies_remaining = quest.level;
+    let enemyNum = 1;
+
+    let enemy = SpawnEnemy(quest.enemyTemplate, enemyNum);
+    sim_log(`${enemy.name} appears!`);
 
     while(true)
     {
@@ -18,9 +22,22 @@ function simulateQuest(hero)
 
         if (heroWin)
         {
-            sim_log("Hero wins");
             quest.result = QuestResult.SUCCESS;
-            return true;
+            num_enemies_remaining -= 1;
+
+            if (num_enemies_remaining > 0)
+            {
+                enemyNum += 1;
+                //Spawn another enemy
+                enemy = SpawnEnemy(quest.enemyTemplate, enemyNum);
+                sim_log(`${enemy.name} appears!`);
+            }
+            else
+            {
+                sim_log("Hero wins");
+                quest.result = QuestResult.SUCCESS;
+                return true;
+            }
         }
         else
         {
