@@ -80,13 +80,13 @@ function simulateTurn(attacker, defender)
         //Format nicely
         let atkTxt = "";
         $.each(atk, function(name, amount) {
-            atkTxt += `${name}: ${amount} `;
+            atkTxt += `${amount} ${getEmoji(name)} `;
         });
         atkTxt = atkTxt.trim();
 
         let defTxt = "";
         $.each(def, function(name, amount) {
-            defTxt += `${name}: ${amount} `;
+            defTxt += `${amount} ${getEmoji(name)} `;
         });
         defTxt = defTxt.trim();
 

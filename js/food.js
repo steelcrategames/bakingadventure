@@ -27,7 +27,7 @@ class Food
             $.each(this.atk_type_bonuses, function(name, amount) {
                 if (amount > 0)
                 {
-                    txt += `Attack +${amount} (${name})`;
+                    txt += `Attack +${amount} ${getEmoji(name)}`;
                 }
             });
         }
@@ -42,7 +42,7 @@ class Food
             $.each(this.def_type_bonuses, function(name, amount) {
                 if (amount > 0)
                 {
-                    txt += `Defence +${amount} (${name})`;
+                    txt += `Defence +${amount} ${getEmoji(name)}`;
                 }
             });
         }

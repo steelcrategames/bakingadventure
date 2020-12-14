@@ -29,7 +29,7 @@ class Stats {
     {
         let atkTxt = "";
         $.each(this.base_atk_types, function(name, amount) {
-            atkTxt += `${name}: ${amount} `;
+            atkTxt += `${amount} ${getEmoji(name)} `;
         });
         return atkTxt.trim();
     }
@@ -38,7 +38,7 @@ class Stats {
     {
         let defTxt = "";
         $.each(this.base_def_types, function(name, amount) {
-            defTxt += `${name}: ${amount} `;
+            defTxt += `${amount} ${getEmoji(name)} `;
         });
         return defTxt.trim();
     }
