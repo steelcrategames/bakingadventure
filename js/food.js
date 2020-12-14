@@ -1,12 +1,16 @@
 class Food
 {
-    constructor(name, hp_bonus, atk_bonus, hitChance_bonus, def_bonus)
+    constructor( { 
+            name,
+            hp_bonus = 0, atk_type_bonuses = {}, hitChance_bonus = 0, def_type_bonuses = {}
+        })
     {
         this.name = name;
         this.hp_bonus = hp_bonus;
-        this.atk_bonus = atk_bonus;
+        this.atk_type_bonuses = atk_type_bonuses;
         this.hitChance_bonus = hitChance_bonus;
-        this.def_bonus = def_bonus;
+        this.def_type_bonuses = def_type_bonuses;
+
     }
 
     tooltip()
@@ -18,9 +22,14 @@ class Food
             txt += `HP +${this.hp_bonus} `;
         }
 
-        if (this.atk_bonus > 0)
+        if (this.atk_type_bonuses != null)
         {
-            txt += `Attack +${this.atk_bonus} `;
+            $.each(this.atk_type_bonuses, function(name, amount) {
+                if (amount > 0)
+                {
+                    txt += `Attack +${amount} (${name})`;
+                }
+            });
         }
 
         if (this.hitChance_bonus > 0)
@@ -28,9 +37,14 @@ class Food
             txt += `Hit Chance +${this.hitChance_bonus}% `;
         }
 
-        if (this.def_bonus > 0)
+        if (this.def_type_bonuses != null)
         {
-            txt += `Defence +${this.def_bonus} `;
+            $.each(this.def_type_bonuses, function(name, amount) {
+                if (amount > 0)
+                {
+                    txt += `Defence +${amount} (${name})`;
+                }
+            });
         }
 
         return txt.trim();

@@ -6,9 +6,7 @@ class Hero
         this.title = title;
         this.quote = quote;
 
-        this.stats = new Stats(10, 5, 75, 2, 2);
-
-        this.food = null;
+        this.stats = new Stats({hp: 10, atk_types: { "physical": 5 }, hitChance: 75, def_types: { "physical": 2 }, appetite: 2});
 
         this.has_done_intro = false;
         this.completed_quests = [];

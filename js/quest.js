@@ -21,7 +21,14 @@ function createRandomQuest(level)
 {
     console.log(`Generating random quest of level ${level}.`);
 
-    let enemyTemplate = new Enemy("Goblin", new Stats(5, 1, 50, 1, 0));
+    let enemyTemplate = new Enemy("Goblin", 
+                            new Stats(
+                                {
+                                    hp: 5, 
+                                    atk_types: {"physical": 1}, 
+                                    hitChance: 50, 
+                                    def_types: {"physical": 1, "cold" : -10}
+                                }));
     enemyTemplate.scaleToLevel(level);
 
     return new Quest("Goblin Camp", level, enemyTemplate);

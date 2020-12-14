@@ -8,9 +8,16 @@ class Enemy {
     scaleToLevel(level)
     {
         this.stats.max_hp += level;
-        this.stats.base_atk += level;
+
+        $.each(this.base_atk_types, function(name, amount) {
+            this.base_atk_types[name] += level;
+        });
+        
         this.stats.base_hitChance += level * 5;
-        this.stats.base_def += level;
+
+        $.each(this.base_def_types, function(name, amount) {
+            this.base_def_types[name] += level;
+        });
     }
 }
 

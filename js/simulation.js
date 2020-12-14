@@ -63,9 +63,34 @@ function simulateTurn(attacker, defender)
     {
         let atk = attacker.stats.getAtk();
         let def = defender.stats.getDef();
-        let dmg = Math.max(0, atk - def);
+        let dmg = 0;
+        
+        //Calculate the amount of damage per type, combined into one "damage" total
+        $.each(atk, function(name, amount) {
+            let blockedAmount = 0;
+            
+            if (def.hasOwnProperty(name))
+            {
+                blockedAmount += def[name];
+            }
 
-        sim_log(`${attacker.name} attacks for ${atk} (def: ${def}), dealing ${dmg} damage!`);
+            dmg += Math.max(0, amount - blockedAmount);
+        });
+
+        //Format nicely
+        let atkTxt = "";
+        $.each(atk, function(name, amount) {
+            atkTxt += `${name}: ${amount} `;
+        });
+        atkTxt = atkTxt.trim();
+
+        let defTxt = "";
+        $.each(def, function(name, amount) {
+            defTxt += `${name}: ${amount} `;
+        });
+        defTxt = defTxt.trim();
+
+        sim_log(`${attacker.name} attacks for [${atkTxt}] (def: [${defTxt}]), dealing ${dmg} damage!`);
 
         defender.stats.hp -= dmg;
         

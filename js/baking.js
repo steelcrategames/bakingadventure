@@ -134,9 +134,9 @@ function getBakeResultHTML(bakedGood)
 function getBakedGood()
 {
     var hp_bonus = 0;
-    var atk_bonus = 0;
+    var atk_type_bonus = {};
     var hitChance_bonus = 0;
-    var def_bonus = 0;
+    var def_type_bonus = {};
     
     for(var i = 0; i < selected.length; i++)
     {
@@ -150,10 +150,16 @@ function getBakedGood()
                     hp_bonus += amount;
                     break;
                 case "atk":
-                    atk_bonus += amount;
+                    atk_type_bonus["physical"] = (atk_type_bonus["physical"] || 0) + amount;
+                    break;
+                case "cold_atk":
+                    atk_type_bonus["cold"] = (atk_type_bonus["cold"] || 0) +amount;
                     break;
                 case "def":
-                    def_bonus += amount;
+                    def_type_bonus["physical"] = (def_type_bonus["physical"] || 0) + amount;
+                    break;
+                case "cold_def":
+                    def_type_bonus["cold"] = (def_type_bonus["cold"] || 0) + amount;
                     break;
                 case "hit":
                     hitChance_bonus += amount;
@@ -162,7 +168,7 @@ function getBakedGood()
         }
     }
 
-    var bakedGood = new Food("Cake", hp_bonus, atk_bonus, hitChance_bonus, def_bonus);
+    var bakedGood = new Food({ name: "Cake", hp_bonus: hp_bonus, atk_type_bonuses: atk_type_bonus, hitChance_bonus: hitChance_bonus, def_type_bonuses: def_type_bonus });
 
     return bakedGood;
 }
