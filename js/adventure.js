@@ -264,12 +264,17 @@ function enterActiveCustomerState()
 
 function giveFoodToHero()
 {
+    //Kick off the baking flow
+    //Relies on "onFinishBaking" to be called afterwards to resume the conversation
     startBaking();
+}
 
-    //let testFood = new Food("Plain Cake", 5, 10, 0, 0);
+function onFinishBaking(food)
+{
+    currentHero.setFood(food);
+    log("You gave " + food.name + " to " + currentHero.name);
 
-    //currentHero.setFood(testFood);
-    //log("You gave " + testFood.name + " to " + currentHero.name);
+
     updateHeroStatBox();
     log(`${currentHero.name}: Thanks!`);
 

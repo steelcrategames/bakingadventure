@@ -177,8 +177,14 @@ function bake(container)
     var serveButton = document.createElement("button");
     serveButton.innerText = "Serve";
     serveButton.setAttribute("class","btn btn-primary");
-    $(serveButton).click(function() { currentHero.setFood(bakedGood); bakingComplete(); });
+    $(serveButton).click(() => serveBakedGood(bakedGood));
     container.append(serveButton);
+}
+
+function serveBakedGood(bakedGood)
+{
+    bakingComplete();
+    onFinishBaking(bakedGood);
 }
 
 function loadBakingScreen()
