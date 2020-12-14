@@ -1,3 +1,5 @@
+var MAX_INGREDIENTS = 2;
+
 class Inventory 
 {
     constructor()
@@ -61,6 +63,36 @@ class Effect
     }
 }
 
+class Recipe
+{
+    constructor(name, description, ingredients)
+    {
+        this.name = name;
+        this.description = description;
+        this.ingredients = ingredients;
+    }
+}
+
+var recipes = new Map();
+
+function populateRecipes(data)
+{
+    var dataCSV = $.csv.toObjects(data);
+    for(var i=0; i < dataCSV.length; i++)
+    {
+        var ingredients = [];
+        for(var j = 1; j <= MAX_INGREDIENTS; j++)
+        {
+            if(dataCSV[i]["Ingredient" + j]  != "")
+            {
+                ingredients.push(dataCSV[i]["Ingredient" + j]);
+            }
+        }
+
+        recipes.set(ingredients.sort(), new Recipe(dataCSV[i].Name, dataCSV[i].Description, ingredients));
+    }
+}
+
 var inventory;
 var selected = new Array();
 
@@ -116,7 +148,7 @@ function loadInventory(container, data)
                     selected.splice(selected.indexOf(item.id), 1);
                     item.style.backgroundColor = "";
                 }
-                else if (selected.length < 4)
+                else if (selected.length < MAX_INGREDIENTS)
                 {
                     selected.push(item.id);
                     item.style.backgroundColor = "#2F4F4F";
@@ -143,6 +175,13 @@ function getBakeResultHTML(bakedGood)
     var nameText = document.createElement("p").innerText = "You've baked a " + bakedGood.name + "!";
     result.append(nameText);
     return result;
+}
+
+function getFoodName()
+{
+    var name = recipes.get(selected.sort());
+
+    return name;
 }
 
 function createFood()
@@ -179,7 +218,7 @@ function createFood()
         }
     }
 
-    var bakedGood = new Food("Cake", hp_bonus, atk_bonus, hitChance_bonus, def_bonus);
+    var bakedGood = new Food(getFoodName(), hp_bonus, atk_bonus, hitChance_bonus, def_bonus);
 
     clearSelected();
 
@@ -190,7 +229,7 @@ function clearSelected()
 {
     for(var i = 0; i < selected.length; i++)
     {
-        document.getElementById(selected[i]).style.backgroundColor = "#FFFFFF";
+        document.getElementById(selected[i]).style.backgroundColor = "";
 
         updateItemHTML(selected[i], inventory.getAmount(selected[i]), document.getElementById(selected[i]));
     }
@@ -220,6 +259,12 @@ function serveBakedGood(bakedGood)
 
 function loadBakingScreen()
 {
+    $.ajax({
+        type: "GET",
+        url: "data/recipes.csv",
+        dataType: "text",
+        success: function(data) {populateRecipes(data);}
+     });
     $.ajax({
         type: "GET",
         url: "data/ingredients.csv",
