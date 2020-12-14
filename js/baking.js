@@ -73,10 +73,11 @@ class Recipe
     }
 }
 
-var recipes = new Map();
+var recipes = null;
 
 function populateRecipes(data)
-{
+{   
+    recipes = new Map();
     var dataCSV = $.csv.toObjects(data);
     for(var i=0; i < dataCSV.length; i++)
     {
@@ -89,11 +90,12 @@ function populateRecipes(data)
             }
         }
 
-        recipes.set(ingredients.sort(), new Recipe(dataCSV[i].Name, dataCSV[i].Description, ingredients));
+        var key = ingredients.sort().join();
+        recipes.set(key, new Recipe(dataCSV[i].Name, dataCSV[i].Description, ingredients));
     }
 }
 
-var inventory;
+var inventory = null;
 var selected = new Array();
 
 function loadIngredients(data)
@@ -179,9 +181,15 @@ function getBakeResultHTML(bakedGood)
 
 function getFoodName()
 {
-    var name = recipes.get(selected.sort());
-
-    return name;
+    var key = selected.sort().join();
+    if(recipes.has(key))
+    {
+        return recipes.get(key).name;
+    }
+    else
+    {
+        return "Soggy Mess";
+    }
 }
 
 function createFood()
@@ -232,7 +240,8 @@ function createFood()
         }
     }
 
-    var bakedGood = new Food({ name: "Cake", hp_bonus: hp_bonus, atk_type_bonuses: atk_type_bonus, hitChance_bonus: hitChance_bonus, def_type_bonuses: def_type_bonus });
+    var bakedGood = new Food({ name: getFoodName(), hp_bonus: hp_bonus, atk_type_bonuses: atk_type_bonus, hitChance_bonus: hitChance_bonus, def_type_bonuses: def_type_bonus });
+    clearSelected();
 
     return bakedGood;
 }
@@ -271,18 +280,25 @@ function serveBakedGood(bakedGood)
 
 function loadBakingScreen()
 {
-    $.ajax({
-        type: "GET",
-        url: "data/recipes.csv",
-        dataType: "text",
-        success: function(data) {populateRecipes(data);}
-     });
-    $.ajax({
-        type: "GET",
-        url: "data/ingredients.csv",
-        dataType: "text",
-        success: function(data) {loadInventory($("#ingredients"), data);}
-     });
+    if(recipes == null)
+    {
+        $.ajax({
+            type: "GET",
+            url: "data/recipes.csv",
+            dataType: "text",
+            success: function(data) {populateRecipes(data);}
+         });
+    }
+    if(inventory == null)
+    {
+        $.ajax({
+            type: "GET",
+            url: "data/ingredients.csv",
+            dataType: "text",
+            success: function(data) {loadInventory($("#ingredients"), data);}
+         });
+    }
+
      $("#bakeResult").empty();
      $("#bakeButton").click(function() { bake($("#bakeResult")) });
 }
