@@ -36,6 +36,11 @@ class Inventory
     {
         return this.Ingredients.get(name);
     }
+
+    getAmount(name)
+    {
+        return this.IngredientAmounts.get(this.Ingredients.get(name));
+    }
 }
 
 class Ingredient 
@@ -79,6 +84,14 @@ function loadIngredients(data)
     }
 }
 
+function updateItemHTML(name, value, item)
+{
+    item.innerHTML = "";
+    item.append(document.createElement("p").innerText = name);
+    item.append(document.createElement("br"));
+    item.append(document.createElement("p").innerText = value);
+}
+
 function loadInventory(container, data)
 {
     selected = [];
@@ -94,19 +107,20 @@ function loadInventory(container, data)
         item.setAttribute("title", getDescriptionHTML(key));
         item.setAttribute("id", id);
         item.setAttribute("class", "p-4 inventory-item");
-        item.append(document.createElement("p").innerText = key.name);
-        item.append(document.createElement("br"));
-        item.append(document.createElement("p").innerText = value);
+        updateItemHTML(key.name, value, item);
         $(item).click(function() {
-            if(selected.indexOf(item.id) > -1)
+            if(inventory.getAmount(item.id) > 0)
             {
-                selected.splice(selected.indexOf(item.id), 1);
-                item.style.backgroundColor = "#FFFFFF";
-            }
-            else if (selected.length < 4)
-            {
-                selected.push(item.id);
-                item.style.backgroundColor = "#2F4F4F";
+                if(selected.indexOf(item.id) > -1)
+                {
+                    selected.splice(selected.indexOf(item.id), 1);
+                    item.style.backgroundColor = "";
+                }
+                else if (selected.length < 4)
+                {
+                    selected.push(item.id);
+                    item.style.backgroundColor = "#2F4F4F";
+                }
             }
           });
         container.append(item);
@@ -131,7 +145,7 @@ function getBakeResultHTML(bakedGood)
     return result;
 }
 
-function getBakedGood()
+function createFood()
 {
     var hp_bonus = 0;
     var atk_bonus = 0;
@@ -141,6 +155,9 @@ function getBakedGood()
     for(var i = 0; i < selected.length; i++)
     {
         var ingredient = inventory.getIngredient(selected[i]);
+
+        inventory.removeIngredient(ingredient, 1);
+
         for(var j = 0; j < ingredient.effects.length; j++)
         {
             var amount = parseFloat(ingredient.effects[j].amount);
@@ -164,12 +181,26 @@ function getBakedGood()
 
     var bakedGood = new Food("Cake", hp_bonus, atk_bonus, hitChance_bonus, def_bonus);
 
+    clearSelected();
+
     return bakedGood;
+}
+
+function clearSelected()
+{
+    for(var i = 0; i < selected.length; i++)
+    {
+        document.getElementById(selected[i]).style.backgroundColor = "#FFFFFF";
+
+        updateItemHTML(selected[i], inventory.getAmount(selected[i]), document.getElementById(selected[i]));
+    }
+
+    selected = [];
 }
 
 function bake(container)
 {
-    var bakedGood = getBakedGood();
+    var bakedGood = createFood();
     container.empty();
     var bakeText = getBakeResultHTML(bakedGood);
     container.append(bakeText);
@@ -198,7 +229,3 @@ function loadBakingScreen()
      $("#bakeResult").empty();
      $("#bakeButton").click(function() { bake($("#bakeResult")) });
 }
-
-/*$( document ).ready(function() {
-
-});*/
