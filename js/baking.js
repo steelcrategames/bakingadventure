@@ -187,9 +187,9 @@ function getFoodName()
 function createFood()
 {
     var hp_bonus = 0;
-    var atk_bonus = 0;
+    var atk_type_bonus = {};
     var hitChance_bonus = 0;
-    var def_bonus = 0;
+    var def_type_bonus = {};
     
     for(var i = 0; i < selected.length; i++)
     {
@@ -200,27 +200,39 @@ function createFood()
         for(var j = 0; j < ingredient.effects.length; j++)
         {
             var amount = parseFloat(ingredient.effects[j].amount);
-            switch(ingredient.effects[j].type)
+
+            if (ingredient.effects[j].type.startsWith("atk_"))
             {
-                case "hp":
-                    hp_bonus += amount;
-                    break;
-                case "atk":
-                    atk_bonus += amount;
-                    break;
-                case "def":
-                    def_bonus += amount;
-                    break;
-                case "hit":
-                    hitChance_bonus += amount;
-                    break;
+                let type = ingredient.effects[j].type.slice(4);
+                atk_type_bonus[type] = (atk_type_bonus[type] || 0) + amount;
+            }
+            else if (ingredient.effects[j].type.startsWith("def_"))
+            {
+                let type = ingredient.effects[j].type.slice(4);
+                def_type_bonus[type] = (def_type_bonus[type] || 0) + amount;
+            }
+            else
+            {
+                switch(ingredient.effects[j].type)
+                {
+                    case "hp":
+                        hp_bonus += amount;
+                        break;
+                    case "atk":
+                        atk_type_bonus["physical"] = (atk_type_bonus["physical"] || 0) + amount;
+                        break;
+                    case "def":
+                        def_type_bonus["physical"] = (def_type_bonus["physical"] || 0) + amount;
+                        break;
+                    case "hit":
+                        hitChance_bonus += amount;
+                        break;
+                }
             }
         }
     }
 
-    var bakedGood = new Food(getFoodName(), hp_bonus, atk_bonus, hitChance_bonus, def_bonus);
-
-    clearSelected();
+    var bakedGood = new Food({ name: "Cake", hp_bonus: hp_bonus, atk_type_bonuses: atk_type_bonus, hitChance_bonus: hitChance_bonus, def_type_bonuses: def_type_bonus });
 
     return bakedGood;
 }

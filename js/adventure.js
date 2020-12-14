@@ -375,9 +375,9 @@ function updateHeroStatBox()
         document.getElementById("heroTitle").innerText = currentHero.title;
         document.getElementById("heroQuote").innerText = currentHero.quote;
         document.getElementById("heroHP").innerText = currentHero.stats.max_hp;
-        document.getElementById("heroATK").innerText = currentHero.stats.base_atk;
+        document.getElementById("heroATK").innerText = currentHero.stats.getAtk_string();
         document.getElementById("heroHitChance").innerText = `${currentHero.stats.base_hitChance}%`;
-        document.getElementById("heroDEF").innerText = currentHero.stats.base_def;
+        document.getElementById("heroDEF").innerText = currentHero.stats.getDef_string();
         document.getElementById("heroAppetite").innerText = currentHero.stats.appetite;
 
         document.getElementById("heroFood").innerHTML = '';

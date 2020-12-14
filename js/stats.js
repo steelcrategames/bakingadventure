@@ -1,10 +1,14 @@
 class Stats {
-    constructor(hp, atk, hitChance, def, appetite)
+    //ex
+    //atk_types: { "physical": 1 , "cold": 3 } 
+    //def_types: { "physical": 1 , "cold": 3 } 
+
+    constructor({hp, atk_types = {}, hitChance, def_types = {}, appetite = 0})
     {
         this.max_hp = hp;
-        this.base_atk = atk;
+        this.base_atk_types = atk_types;
         this.base_hitChance = hitChance;
-        this.base_def = def;
+        this.base_def_types = def_types;
         this.appetite = appetite;
 
         this.hp = this.max_hp;
@@ -14,14 +18,44 @@ class Stats {
 
     to_string()
     {
-        return `HP: ${this.hp} Def: ${this.base_def} Attack: ${this.base_atk} HitChance: ${this.base_hitChance}% Appetite: ${this.appetite}`;
+        let defTxt = this.getDef_string();
+
+        let atkTxt = this.getAtk_string();
+
+        return `HP: ${this.hp} Def: ${defTxt} Attack: ${atkTxt} HitChance: ${this.base_hitChance}% Appetite: ${this.appetite}`;
+    }
+
+    getAtk_string()
+    {
+        let atkTxt = "";
+        $.each(this.base_atk_types, function(name, amount) {
+            atkTxt += `${amount} ${getEmoji(name)} `;
+        });
+        return atkTxt.trim();
+    }
+
+    getDef_string()
+    {
+        let defTxt = "";
+        $.each(this.base_def_types, function(name, amount) {
+            defTxt += `${amount} ${getEmoji(name)} `;
+        });
+        return defTxt.trim();
     }
 
     getAtk()
     {
-        let atk_bonus = 0;
-        this.food.forEach(food => atk_bonus += food.atk_bonus)
-        return this.base_atk + atk_bonus;
+        let atk = {...this.base_atk_types};
+
+        this.food.forEach(food => 
+            {
+                $.each(food.atk_type_bonuses, function(name, amount)
+                {
+                    atk[name] = (atk[name] || 0) + amount;
+                });
+            });
+
+        return atk;
     }
 
     getHitChance()
@@ -33,9 +67,17 @@ class Stats {
 
     getDef()
     {
-        let def_bonus = 0;
-        this.food.forEach(food => def_bonus += food.def_bonus)
-        return this.base_def + def_bonus;
+        let def = {...this.base_def_types};
+
+        this.food.forEach(food => 
+            {
+                $.each(food.def_type_bonuses, function(name, amount)
+                {
+                    def[name] = (def[name] || 0) + amount;
+                });
+            });
+
+        return def;
     }
 
     getMaxHP()
