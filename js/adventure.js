@@ -31,8 +31,8 @@ const ADVENTURE_STATES = {
 
     describe_quest: 
     {
-        onEnter: () => showButton("doDescribeQuestButton"),
-        onExit: () => hideButton("doDescribeQuestButton")
+        onEnter: enterDescribeQuestState,
+        onExit: exitDescribeQuestState
     },
 
     active_customer:
@@ -195,14 +195,16 @@ function doQuestRecap()
         log(`You didn't give me any food for my quest!`);
     }
 
-    log(`Quest: ${quest.name} Level: ${quest.level} Enemy: ${quest.enemyTemplate.name} Stats: ${quest.enemyTemplate.stats.to_string()}`);
-
     simulateQuest(currentHero);
 
     //Print out the battle log, for now
+    clearCombatLog();
+    combatLog(`Quest: ${quest.name} Level: ${quest.level} Enemy: ${quest.enemyTemplate.name} Stats: ${quest.enemyTemplate.stats.to_string()}`);
     currentHero.current_quest.log.forEach(msg => {
-        log(msg);
+        combatLog(msg);
     });
+
+    showButton("showCombatLogButton");
 
     if (currentHero.current_quest.result == QuestResult.SUCCESS)
     {
@@ -221,11 +223,33 @@ function doQuestRecap()
     adventureStateMachine.changeState(ADVENTURE_STATES.describe_quest);
 }
 
+function clearCombatLog()
+{
+    var log = document.getElementById("combatLog");
+    log.innerHTML = '';
+}
+
+function combatLog(msg)
+{
+    var log = document.getElementById("combatLog");
+    var logMsg = document.createElement("p");
+    var span = document.createElement("span");
+    span.appendChild(document.createTextNode(msg));
+    logMsg.appendChild(span);
+    log.appendChild(logMsg);
+}
+
 
 //====================================
 // Describe Quest state
 //====================================
 //Before each quest - describe what lies ahead
+
+function enterDescribeQuestState()
+{
+    showButton("doDescribeQuestButton");
+}
+
 function doDescribeQuest()
 {
     clearLog();
@@ -248,6 +272,12 @@ function doDescribeQuest()
     log(`It's a level ${quest.level} quest and I expect to find a ${quest.enemyTemplate.name} or two. Do you have anything that might help soothe my nerves?`);
 
     adventureStateMachine.changeState(ADVENTURE_STATES.active_customer);
+}
+
+function exitDescribeQuestState()
+{
+    hideButton("showCombatLogButton");
+    hideButton("doDescribeQuestButton");
 }
 
 
