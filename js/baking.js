@@ -322,3 +322,19 @@ class Bakery
 }
 
 var bakery = new Bakery();
+
+function logAllRecipes()
+{
+    let recipeMap = new Map();
+    bakery.inventory.IngredientAmounts.forEach((value, key) => {
+        bakery.inventory.IngredientAmounts.forEach((value2, key2) => {
+            if(key != key2){
+                let rmKey = [key.name, key2.name].sort().join();
+                recipeMap.set(rmKey, ",," + key.name + "," + key2.name);
+                //console.log(",," + key.name + "," + key2.name);
+            }
+        });
+    });
+
+    recipeMap.forEach((value, key) =>{console.log(value);})
+}
