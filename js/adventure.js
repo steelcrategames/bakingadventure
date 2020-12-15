@@ -94,6 +94,7 @@ function loadAdventureScreen()
 // Update the day. Create heros if none exist.
 function startNewDay()
 {
+    showView(SCREENS.adventure, screens);
     hideAllButtons();
 
     day += 1;
