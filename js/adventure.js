@@ -13,10 +13,10 @@ const ADVENTURE_STATES = {
         onEnter: startNewDay
     },
 
-    empty_restaurant: 
+    empty_bakery: 
     {
-        onEnter: enterEmptyRestaurantState,
-        onExit: exitEmptyRestaurantState
+        onEnter: enterEmptyBakeryState,
+        onExit: exitEmptyBakeryState
     },
 
     intro: 
@@ -74,7 +74,6 @@ class StateMachine {
     }
 }
 
-const HEROS_PER_DAY = 1;
 var day = 0;
 var heros = [];
 var currentHero = {};
@@ -82,9 +81,21 @@ var currentHeroIndex = 0;
 var adventureStateMachine = new StateMachine(ADVENTURE_STATES);
 
 
-function loadAdventureScreen()
+function loadAdventureScreen(numHeroes)
 {
+    generateHeroes(numHeroes);
     adventureStateMachine.changeState(ADVENTURE_STATES.new_day);
+}
+
+function generateHeroes(numHeroes)
+{
+    heros = [];
+    for (let i = 0; i < numHeroes; i++) 
+    {
+        heros.push(createRandomHero());
+    }
+
+    console.log(`Created ${heros.length} heros.`);
 }
 
 
@@ -99,29 +110,34 @@ function startNewDay()
     day += 1;
     document.getElementById("dayDisplay").innerText = "Day " + day;
 
-    if (heros == null || heros.length == 0)
-    {
-        for (let i = 0; i < HEROS_PER_DAY; i++) {
-            heros.push(createRandomHero());
-        }
-
-        console.log(`Created ${heros.length} heros.`);
-    }
-
     currentHeroIndex = 0;
     
-    adventureStateMachine.changeState(ADVENTURE_STATES.empty_restaurant);
+    adventureStateMachine.changeState(ADVENTURE_STATES.empty_bakery);
 }
 
 //====================================
-// Empty Restaurant state
+// Empty Bakery state
 //====================================
 // Waiting for a customer, if there are any left today. Otherwise, closing up shop for the day!
-function enterEmptyRestaurantState()
+function enterEmptyBakeryState()
 {
     hideAllButtons();
     clearLog();
-    log("The restaurant is empty");
+
+    let remainingHeroCount = heros.length - currentHeroIndex;
+
+    if (remainingHeroCount > 1)
+    {
+        log(`The bakery is empty. There are ${remainingHeroCount} heroes waiting outside.`);
+    }
+    else if (remainingHeroCount == 1)
+    {
+        log(`The bakery is empty. There is one hero waiting outside.`);
+    }
+    else
+    {
+        log(`The bakery is empty. There are no more customers outside.`);
+    }
 
     if (currentHeroIndex < heros.length)
     {
@@ -147,7 +163,7 @@ function greetHero()
     }
 }
 
-function exitEmptyRestaurantState()
+function exitEmptyBakeryState()
 {
     hideButton("greetHeroButton");
     hideButton("endDayButton");
@@ -320,7 +336,7 @@ function waveBye()
     currentHero = null;
     currentHeroIndex += 1;
     updateHeroStatBox();
-    adventureStateMachine.changeState(ADVENTURE_STATES.empty_restaurant);
+    adventureStateMachine.changeState(ADVENTURE_STATES.empty_bakery);
 }
 
 function exitActiveCustomerState()
