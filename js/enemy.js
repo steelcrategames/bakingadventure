@@ -21,7 +21,7 @@ class Enemy {
     }
 
     getHTML() {
-        return `<span class="enemy">${this.name}</span>`;
+        return `<span class="enemy enemy-${this.name.toLowerCase()}">${this.name}</span>`;
     }
 }
 

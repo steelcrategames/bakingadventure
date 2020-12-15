@@ -22,6 +22,27 @@ const SettingModifiers = {
 };
 Object.freeze(SettingModifiers);
 
+
+const EnemyTemplates = {
+    GOBLIN: new Enemy("Goblin", 
+                new Stats(
+                    {
+                        hp: 10, 
+                        atk_types: {"physical": 3}, 
+                        hitChance: 50, 
+                        def_types: {"physical": 2}
+                    })),
+    SKELETON: new Enemy("Skeleton", 
+                new Stats(
+                    {
+                        hp: 7, 
+                        atk_types: {"physical": 2}, 
+                        hitChance: 30, 
+                        def_types: {"physical": 1}
+                    })),
+};
+Object.freeze(EnemyTemplates);
+
 class Quest {
     constructor(name, level, enemyTemplate)
     {
@@ -38,24 +59,16 @@ function createRandomQuest(level)
 {
     console.log(`Generating random quest of level ${level}.`);
 
-    var keys = Object.keys(SettingModifiers);
-    let mod = SettingModifiers[keys[ keys.length * Math.random() << 0]]; 
+    let mod = randSettingModifier(); 
+    let enemyTemplate = randEnemyTemplate(); 
 
+    //Mix in the modifiers
+    enemyTemplate.stats.atk_types = combine(enemyTemplate.stats.atk_types, mod.atk_types);
+    enemyTemplate.stats.def_types = combine(enemyTemplate.stats.def_types, mod.def_types);
 
-    let basic_atk_types = {"physical": 1};
-    let basic_def_types = {"physical": 1};
-
-    let enemyTemplate = new Enemy("Goblin", 
-                            new Stats(
-                                {
-                                    hp: 5, 
-                                    atk_types: combine(basic_atk_types, mod.atk_types), 
-                                    hitChance: 50, 
-                                    def_types: combine(basic_def_types, mod.def_types)
-                                }));
     enemyTemplate.scaleToLevel(level);
 
-    let questName = `${mod.name} Goblin Camp`.trim();
+    let questName = `${mod.name} ${enemyTemplate.name} Camp`.trim();
 
     return new Quest(questName, level, enemyTemplate);
 }
@@ -72,4 +85,16 @@ function combine(types_a, types_b)
         });
     }
     return combined;
+}
+
+function randSettingModifier()
+{
+    let keys = Object.keys(SettingModifiers);
+    return SettingModifiers[keys[ keys.length * Math.random() << 0]]; 
+}
+
+function randEnemyTemplate()
+{
+    let keys = Object.keys(EnemyTemplates);
+    return _.cloneDeep(EnemyTemplates[keys[ keys.length * Math.random() << 0]]); 
 }
