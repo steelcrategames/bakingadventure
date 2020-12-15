@@ -1,14 +1,9 @@
 Name,Description,Effect1,Effect1Amount,Effect2,Effect2Amount,Effect3,Effect3Amount,Effect4,Effect4Amount
-Eggs,,hp,5,atk,5,hit,5,def,5
-Flour,,hp,5,,,,,,
-Salt,,,,atk,5,,,,
-Sugar,,,,,,hit,5,,
-Vanilla,,,,,,,,def,5
-Baking Soda,,,,,,,,,
-Lemon,,,,,,,,,
-Lime,,,,,,,,,
-Carrot,,,,,,,,,
-Ginger,,,,,,,,,
-Cocoa,,,,,,,,,
-Mint,"",atk_ice,2,"","","","","",""
-Pepper,"",atk_fire,2,"","","","","",""
+Vanilla,,def,5,,,,,,
+Lemon,,hit,2,def,2,,,,
+Lime,,hp,1,atk,1,def,1,hit,1
+Carrot,,def,-6,atk,8,,,,
+Ginger,,def,10,hit,-5,,,,
+Cocoa,,hp,5,,,,,,
+Mint,,atk_ice,2,,,,,,
+Pepper,,atk_fire,2,,,,,,
