@@ -12,7 +12,7 @@ class Hero
         this.completed_quests = [];
     }
 
-    setFood(food)
+    addFood(food)
     {
         this.stats.food.push(food);
     }
