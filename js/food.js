@@ -25,7 +25,7 @@ class Food
         if (this.atk_type_bonuses != null)
         {
             $.each(this.atk_type_bonuses, function(name, amount) {
-                if (amount > 0)
+                if (amount != 0)
                 {
                     txt += `Attack +${amount} ${getEmoji(name)}`;
                 }
@@ -40,7 +40,7 @@ class Food
         if (this.def_type_bonuses != null)
         {
             $.each(this.def_type_bonuses, function(name, amount) {
-                if (amount > 0)
+                if (amount != 0)
                 {
                     txt += `Defence +${amount} ${getEmoji(name)}`;
                 }
