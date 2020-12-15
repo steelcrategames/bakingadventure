@@ -3,7 +3,8 @@ const LogTypes = {
     INFO: "bg-info",
     DEFAULT: "",
     WARN: "bg-warning",
-    BAD: "bg-danger"
+    BAD: "bg-danger",
+    ACTION: "log-action"
 };
 Object.freeze(LogTypes);
 
@@ -234,11 +235,11 @@ function doQuestRecap()
     if (currentHero.stats.food.length > 0)
     {
         let foodList = currentHero.stats.food.map(food => food.name).join(", ");
-        log(`You gave me [${foodList}] to help me on my quest.`);
+        log(`You gave me [${foodList}] to help me on my quest to ${quest.name}.`);
     }
     else
     {
-        log(`You didn't give me any food for my quest!`);
+        log(`You didn't give me any food for my quest to ${quest.name}!`);
     }
 
     simulateQuest(currentHero);
@@ -315,7 +316,7 @@ function doDescribeQuest()
         log(`I'm heading out to my next quest: ${quest.name}`);
     }
     
-    log(`It's a level ${quest.level} quest and I expect to find a ${quest.enemyTemplate.name} or two. Do you have anything that might help soothe my nerves?`);
+    log(`It's a level ${quest.level} quest and I expect to find a ${quest.enemyTemplate.getHTML()} or two. Do you have anything that might help soothe my nerves?`);
 
     adventureStateMachine.changeState(ADVENTURE_STATES.active_customer);
 }
@@ -348,11 +349,11 @@ function giveFoodToHero()
 function onFinishBaking(food)
 {
     currentHero.addFood(food);
-    log("You gave " + food.name + " to " + currentHero.name);
+    log("You gave " + food.getHTML() + " to " + currentHero.name, LogTypes.ACTION);
 
 
     updateHeroStatBox();
-    log(`${currentHero.name}: Thanks!`);
+    log(`Thanks!`);
 
     if (currentHero.stats.food.length >= currentHero.stats.appetite)
     {
@@ -432,14 +433,8 @@ function updateHeroStatBox()
         if (currentHero.stats.food.length > 0)
         {
             currentHero.stats.food.forEach(food => {
-                let foodNameSpan = document.createElement("span");
-                foodNameSpan.appendChild(document.createTextNode(food.name));
-                foodNameSpan.setAttribute("data-toggle", "tooltip");
-                foodNameSpan.setAttribute("title", food.tooltip());
-                foodNameSpan.setAttribute("class", "bg-dark text-white");
-
                 let item = document.createElement("li");
-                item.appendChild(foodNameSpan);
+                item.innerHTML = food.getHTML();
                 document.getElementById("heroFood").appendChild(item);
             });
         }
@@ -462,10 +457,8 @@ function log(msg, type)
 {
     var log = document.getElementById("log");
     var logMsg = document.createElement("p");
-    var span = document.createElement("span");
-    span.classList.add(type);
-    span.appendChild(document.createTextNode(msg));
-    logMsg.appendChild(span);
+    logMsg.classList.add(type);
+    logMsg.innerHTML = msg;
     log.appendChild(logMsg);
 }
 

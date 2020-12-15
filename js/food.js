@@ -49,4 +49,9 @@ class Food
 
         return txt.trim();
     }
+
+    getHTML()
+    {
+        return `<span class="bakedgood" data-toggle="tooltip" title="${this.tooltip()}">${this.name}</span>`;
+    }
 }

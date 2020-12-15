@@ -19,6 +19,10 @@ class Enemy {
             this.base_def_types[name] += level;
         });
     }
+
+    getHTML() {
+        return `<span class="enemy">${this.name}</span>`;
+    }
 }
 
 function SpawnEnemy(enemyTemplate, id)
