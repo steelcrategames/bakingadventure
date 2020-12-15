@@ -211,7 +211,7 @@ function doHeroIntro()
     updateHeroStatBox();
 
     clearLog();
-    log(`${currentHero.name} enters the restaurant.`);
+    log(`${currentHero.name} enters the restaurant.`, LogTypes.ACTION);
     log("Hi, I'm " + currentHero.name);
     log("I just moved into the area and heard about a great restaurant. People say it's the place to go for new adventurers!");
     log("I just bought my first armor and am really excited to go on a quest.");
@@ -234,8 +234,8 @@ function doQuestRecap()
     log(`Hello again! It's me ${currentHero.name} from yesterday.`);
     if (currentHero.stats.food.length > 0)
     {
-        let foodList = currentHero.stats.food.map(food => food.name).join(", ");
-        log(`You gave me [${foodList}] to help me on my quest to ${quest.name}.`);
+        let foodList = currentHero.stats.food.map(food => food.getHTML()).join(", ");
+        log(`You gave me ${foodList} to help me on my quest to ${quest.name}.`);
     }
     else
     {

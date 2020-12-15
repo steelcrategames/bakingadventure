@@ -22,3 +22,7 @@
     color: rgb(41, 39, 39);
     font-style: italic;
 }
+
+.log-window {
+    height: 25em;
+}

@@ -1,68 +1,77 @@
 <div class="container" id="adventure">
-
-  <!-- Description & Personality -->
-  <div id="heroStatBox" style="display: none;">
-    <h1 id="heroName">Timmy</h1>
-    <h6 id="heroTitle">the Novice Knight</h6>
-
-    <blockquote class="blockquote" id="heroQuote">Timmy's the name and adventuring is my game!</blockquote>
-
-
-    <!-- Stats -->
-    <div class="row">
-    <div class="col border">
-      <p>Stats:</p>
-      <ul>
-        <li><span data-toggle="tooltip" title="Hit Points">HP: <span id="heroHP">5</span></span></li>
-        <li><span data-toggle="tooltip" title="Enemy attacks are reduced by this amount.">Defence: <span id="heroDEF">5</span></span></li>
-        <li><span data-toggle="tooltip" title="Each hit will deal this amount of damage.">Attack: <span id="heroATK">5</span></span></li>
-        <li><span data-toggle="tooltip" title="Percentage chance to hit each round.">Hit Chance: <span id="heroHitChance">5</span></span></li>
-        <li><span data-toggle="tooltip" title="Max number of food items to bring on a quest.">Appetite: <span id="heroAppetite">Small</span></span></li>
-      </ul>
-    </div>
-
-    <!-- Food -->
-    <div class="col border">
-      <p>Provisions:</p>
-      <ul id="heroFood">
-      </ul>
-    </div>
-
-  </div>
-</div>
-
-
-  <!-- Adventure log -->
-  <div class="card-body">
-    <p id="log" class="card-text"></p>
-  </div>
-
-  <!-- Commands -->
   <div class="row">
-    <button id="giveFoodToHeroButton" onclick="giveFoodToHero()" class="btn btn-primary adv-btn">Bake Something for Hero</button>
-    <button id="waveByeButton" onclick="waveBye()" class="btn btn-primary adv-btn">Wave Bye</button>
-    <button id="showCombatLogButton" class="btn btn-primary adv-btn" data-toggle="modal" data-target="#combatLogModal">Show Combat Log</button>
-    <button id="doDescribeQuestButton" onclick="doDescribeQuest()" class="btn btn-primary adv-btn">Describe Next Quest</button>
-    <button id="startNextDayButton" onclick="doStartNextDay()" class="btn btn-primary adv-btn">Start Next Day</button>
-  </div>
-  </div>
 
-  <!-- Combat log modal -->
-  <!-- Modal -->
-  <div class="modal" id="combatLogModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Combat Log</h5>
-          <button type="button" class="close" data-dismiss="modal"></button>
+    <!-- Left side -->
+    <div class="col-3">
+      <!-- Description & Personality -->
+      <div id="heroStatBox" style="display: none;">
+        <h1 id="heroName">Timmy</h1>
+        <h6 id="heroTitle">the Novice Knight</h6>
+
+        <img id="hero-img" src="img/adventurer.jpg" class="adventurer-graphic" />
+
+        <blockquote class="blockquote" id="heroQuote">Timmy's the name and adventuring is my game!</blockquote>
+
+
+        <!-- Stats -->
+        <div class="col border">
+          <p>Stats:</p>
+          <ul>
+            <li><span data-toggle="tooltip" title="Hit Points">HP: <span id="heroHP">5</span></span></li>
+            <li><span data-toggle="tooltip" title="Enemy attacks are reduced by this amount.">Defence: <span id="heroDEF">5</span></span></li>
+            <li><span data-toggle="tooltip" title="Each hit will deal this amount of damage.">Attack: <span id="heroATK">5</span></span></li>
+            <li><span data-toggle="tooltip" title="Percentage chance to hit each round.">Hit Chance: <span id="heroHitChance">5</span></span></li>
+            <li><span data-toggle="tooltip" title="Max number of food items to bring on a quest.">Appetite: <span id="heroAppetite">Small</span></span></li>
+          </ul>
         </div>
-        <div class="modal-body" id="combatLog">
-          <p>This is a combat log.</p>
+
+        <!-- Food -->
+        <div class="col border">
+          <p>Provisions:</p>
+          <ul id="heroFood">
+          </ul>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+    </div>
+  </div> <!-- end left side -->
+
+    <!-- Right side -->
+    <div class="col">
+      <!-- Adventure log -->
+      <div class="border log-window">
+        <p id="log"></p>
+      </div>
+
+      <!-- Commands -->
+      <div class="text-right">
+        <button id="giveFoodToHeroButton" onclick="giveFoodToHero()" class="btn btn-primary adv-btn">Bake Something for Hero</button>
+        <button id="waveByeButton" onclick="waveBye()" class="btn btn-primary adv-btn">Wave Bye</button>
+        <button id="showCombatLogButton" class="btn btn-primary adv-btn" data-toggle="modal" data-target="#combatLogModal">Show Combat Log</button>
+        <button id="doDescribeQuestButton" onclick="doDescribeQuest()" class="btn btn-primary adv-btn">Describe Next Quest</button>
+        <button id="startNextDayButton" onclick="doStartNextDay()" class="btn btn-primary adv-btn">Start Next Day</button>
+      </div>
+    </div>
+
+    <!-- Combat log modal -->
+    <!-- Modal -->
+    <div class="modal" id="combatLogModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Combat Log</h5>
+            <button type="button" class="close" data-dismiss="modal"></button>
+          </div>
+          <div class="modal-body" id="combatLog">
+            <p>This is a combat log.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
+  </div> <!-- end left side -->
+
+  </div> <!-- end row -->
+</div> <!-- end container -->
