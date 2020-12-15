@@ -17,9 +17,16 @@ class Food
     {
         let txt = "";
 
-        if (this.hp_bonus > 0)
+        if (this.hp_bonus != 0)
         {
-            txt += `HP +${this.hp_bonus} `;
+            if (this.hp_bonus > 0)
+            {
+                txt += `HP +${this.hp_bonus} `;
+            }
+            else
+            {
+                txt += `HP ${this.hp_bonus} `;
+            }
         }
 
         if (this.atk_type_bonuses != null)
@@ -27,14 +34,28 @@ class Food
             $.each(this.atk_type_bonuses, function(name, amount) {
                 if (amount != 0)
                 {
-                    txt += `Attack +${amount} ${getEmoji(name)}`;
+                    if (amount > 0)
+                    {
+                        txt += `Attack +${amount} ${getEmoji(name)}`;
+                    }
+                    else
+                    {
+                        txt += `Attack ${amount} ${getEmoji(name)}`;
+                    }
                 }
             });
         }
 
-        if (this.hitChance_bonus > 0)
+        if (this.hitChance_bonus != 0)
         {
-            txt += `Hit Chance +${this.hitChance_bonus}% `;
+            if (this.hitChance_bonus > 0)
+            {
+                txt += `Hit Chance +${this.hitChance_bonus}% `;
+            }
+            else
+            {
+                txt += `Hit Chance ${this.hitChance_bonus}% `;
+            }
         }
 
         if (this.def_type_bonuses != null)
@@ -42,7 +63,14 @@ class Food
             $.each(this.def_type_bonuses, function(name, amount) {
                 if (amount != 0)
                 {
-                    txt += `Defence +${amount} ${getEmoji(name)}`;
+                    if (amount > 0)
+                    {
+                        txt += `Defence +${amount} ${getEmoji(name)}`;
+                    }
+                    else
+                    {
+                        txt += `Defence ${amount} ${getEmoji(name)}`;
+                    }
                 }
             });
         }
