@@ -13,10 +13,10 @@ const ADVENTURE_STATES = {
         onEnter: startNewDay
     },
 
-    empty_restaurant: 
+    empty_bakery: 
     {
-        onEnter: enterEmptyRestaurantState,
-        onExit: exitEmptyRestaurantState
+        onEnter: enterEmptyBakeryState,
+        onExit: exitEmptyBakeryState
     },
 
     intro: 
@@ -74,7 +74,6 @@ class StateMachine {
     }
 }
 
-const HEROS_PER_DAY = 1;
 var day = 0;
 var heros = [];
 var currentHero = {};
@@ -82,9 +81,21 @@ var currentHeroIndex = 0;
 var adventureStateMachine = new StateMachine(ADVENTURE_STATES);
 
 
-function loadAdventureScreen()
+function loadAdventureScreen(numHeroes)
 {
+    generateHeroes(numHeroes);
     adventureStateMachine.changeState(ADVENTURE_STATES.new_day);
+}
+
+function generateHeroes(numHeroes)
+{
+    heros = [];
+    for (let i = 0; i < numHeroes; i++) 
+    {
+        heros.push(createRandomHero());
+    }
+
+    console.log(`Created ${heros.length} heros.`);
 }
 
 
@@ -94,49 +105,82 @@ function loadAdventureScreen()
 // Update the day. Create heros if none exist.
 function startNewDay()
 {
+    showView(SCREENS.dayTitle, screens);
     hideAllButtons();
 
     day += 1;
-    document.getElementById("dayDisplay").innerText = "Day " + day;
-
-    if (heros == null || heros.length == 0)
-    {
-        for (let i = 0; i < HEROS_PER_DAY; i++) {
-            heros.push(createRandomHero());
-        }
-
-        console.log(`Created ${heros.length} heros.`);
-    }
+    $("[id=dayDisplay]").text("Day " + day);
 
     currentHeroIndex = 0;
 
     bakery.handleNewDay();
     
-    adventureStateMachine.changeState(ADVENTURE_STATES.empty_restaurant);
+    adventureStateMachine.changeState(ADVENTURE_STATES.empty_bakery);
 }
 
 //====================================
-// Empty Restaurant state
+// Empty Bakery state
 //====================================
 // Waiting for a customer, if there are any left today. Otherwise, closing up shop for the day!
-function enterEmptyRestaurantState()
+function enterEmptyBakeryState()
 {
+    showView(SCREENS.screenVisitor, screens);
+
     hideAllButtons();
     clearLog();
-    log("The restaurant is empty");
+
+    let remainingHeroCount = heros.length - currentHeroIndex;
+    let heroesOutsideCount = remainingHeroCount - 1;
+    let bakeryMsg = "";
+    let bakerySubMsg = "";
+
+    if (heroesOutsideCount > 1)
+    {
+        //Many heroes waiting outside
+        bakeryMsg = "A hero approaches!";
+        bakerySubMsg = `There are also ${heroesOutsideCount} heroes waiting outside.`;
+        document.getElementById("hero-img").style.display = "";
+    }
+    else if (heroesOutsideCount == 1)
+    {
+        //Just one more hero after the current hero
+        bakeryMsg = "A hero approaches!";
+        bakerySubMsg = "There is also one more hero waiting outside.";
+        document.getElementById("hero-img").style.display = "";
+    }
+    else if (remainingHeroCount == 1)
+    {
+        //Last customer is in the bakery
+        bakeryMsg = "A hero approaches!"
+        bakerySubMsg = "There are no more customers outside";
+        document.getElementById("hero-img").style.display = "";
+    }
+    else
+    {
+        //No heroes left at all
+        bakeryMsg = "The bakery is empty"
+        bakerySubMsg = "There are no more customers outside";
+        document.getElementById("hero-img").style.display = "none";
+    }
+
+    document.getElementById("bakeryMessage").innerText = bakeryMsg;
+    document.getElementById("bakerySubMessage").innerText = bakerySubMsg;
 
     if (currentHeroIndex < heros.length)
     {
         showButton("greetHeroButton");
+        hideButton("endDayButton");
     }
     else
     {
         showButton("endDayButton");
+        hideButton("greetHeroButton");
     }
 }
 
 function greetHero()
 {
+    showView(SCREENS.adventure, screens);
     currentHero = heros[currentHeroIndex];
 
     if (!currentHero.has_done_intro)
@@ -149,7 +193,7 @@ function greetHero()
     }
 }
 
-function exitEmptyRestaurantState()
+function exitEmptyBakeryState()
 {
     hideButton("greetHeroButton");
     hideButton("endDayButton");
@@ -303,7 +347,7 @@ function giveFoodToHero()
 
 function onFinishBaking(food)
 {
-    currentHero.setFood(food);
+    currentHero.addFood(food);
     log("You gave " + food.name + " to " + currentHero.name);
 
 
@@ -322,7 +366,7 @@ function waveBye()
     currentHero = null;
     currentHeroIndex += 1;
     updateHeroStatBox();
-    adventureStateMachine.changeState(ADVENTURE_STATES.empty_restaurant);
+    adventureStateMachine.changeState(ADVENTURE_STATES.empty_bakery);
 }
 
 function exitActiveCustomerState()
@@ -338,6 +382,7 @@ function exitActiveCustomerState()
 // No more customers left
 function enterEndOfDayState()
 {
+    showView(SCREENS.adventure, screens);
     showButton("startNextDayButton");
 }
 
@@ -351,6 +396,7 @@ function doEndDay()
 function doStartNextDay()
 {
     adventureStateMachine.changeState(ADVENTURE_STATES.new_day);
+    showView(SCREENS.dayTitle, screens);
 }
 
 function exitEndOfDayState()
@@ -437,7 +483,7 @@ function getRndInteger(min, max) {
 
 function showButton(buttonName)
 {
-    document.getElementById(buttonName).style.display = "block";
+    document.getElementById(buttonName).style.display = "";
 }
 
 function hideButton(buttonName)
