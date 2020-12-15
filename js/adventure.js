@@ -302,7 +302,7 @@ function giveFoodToHero()
 
 function onFinishBaking(food)
 {
-    currentHero.setFood(food);
+    currentHero.addFood(food);
     log("You gave " + food.name + " to " + currentHero.name);
 
 

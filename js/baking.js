@@ -300,5 +300,6 @@ function loadBakingScreen()
     }
 
      $("#bakeResult").empty();
+     $("#bakeButton").unbind("click"); //Ben: prevent multiple click handlers
      $("#bakeButton").click(function() { bake($("#bakeResult")) });
 }
