@@ -105,10 +105,11 @@ function generateHeroes(numHeroes)
 // Update the day. Create heros if none exist.
 function startNewDay()
 {
+    showView(SCREENS.dayTitle, screens);
     hideAllButtons();
 
     day += 1;
-    document.getElementById("dayDisplay").innerText = "Day " + day;
+    $("[id=dayDisplay]").text("Day " + day);
 
     currentHeroIndex = 0;
     
@@ -121,36 +122,63 @@ function startNewDay()
 // Waiting for a customer, if there are any left today. Otherwise, closing up shop for the day!
 function enterEmptyBakeryState()
 {
+    showView(SCREENS.screenVisitor, screens);
+
     hideAllButtons();
     clearLog();
 
     let remainingHeroCount = heros.length - currentHeroIndex;
+    let heroesOutsideCount = remainingHeroCount - 1;
+    let bakeryMsg = "";
+    let bakerySubMsg = "";
 
-    if (remainingHeroCount > 1)
+    if (heroesOutsideCount > 1)
     {
-        log(`The bakery is empty. There are ${remainingHeroCount} heroes waiting outside.`);
+        //Many heroes waiting outside
+        bakeryMsg = "A hero approaches!";
+        bakerySubMsg = `There are also ${heroesOutsideCount} heroes waiting outside.`;
+        document.getElementById("hero-img").style.display = "";
+    }
+    else if (heroesOutsideCount == 1)
+    {
+        //Just one more hero after the current hero
+        bakeryMsg = "A hero approaches!";
+        bakerySubMsg = "There is also one more hero waiting outside.";
+        document.getElementById("hero-img").style.display = "";
     }
     else if (remainingHeroCount == 1)
     {
-        log(`The bakery is empty. There is one hero waiting outside.`);
+        //Last customer is in the bakery
+        bakeryMsg = "A hero approaches!"
+        bakerySubMsg = "There are no more customers outside";
+        document.getElementById("hero-img").style.display = "";
     }
     else
     {
-        log(`The bakery is empty. There are no more customers outside.`);
+        //No heroes left at all
+        bakeryMsg = "The bakery is empty"
+        bakerySubMsg = "There are no more customers outside";
+        document.getElementById("hero-img").style.display = "none";
     }
+
+    document.getElementById("bakeryMessage").innerText = bakeryMsg;
+    document.getElementById("bakerySubMessage").innerText = bakerySubMsg;
 
     if (currentHeroIndex < heros.length)
     {
         showButton("greetHeroButton");
+        hideButton("endDayButton");
     }
     else
     {
         showButton("endDayButton");
+        hideButton("greetHeroButton");
     }
 }
 
 function greetHero()
 {
+    showView(SCREENS.adventure, screens);
     currentHero = heros[currentHeroIndex];
 
     if (!currentHero.has_done_intro)
@@ -352,6 +380,7 @@ function exitActiveCustomerState()
 // No more customers left
 function enterEndOfDayState()
 {
+    showView(SCREENS.adventure, screens);
     showButton("startNextDayButton");
 }
 
@@ -365,6 +394,7 @@ function doEndDay()
 function doStartNextDay()
 {
     adventureStateMachine.changeState(ADVENTURE_STATES.new_day);
+    showView(SCREENS.dayTitle, screens);
 }
 
 function exitEndOfDayState()
@@ -451,7 +481,7 @@ function getRndInteger(min, max) {
 
 function showButton(buttonName)
 {
-    document.getElementById(buttonName).style.display = "block";
+    document.getElementById(buttonName).style.display = "";
 }
 
 function hideButton(buttonName)
