@@ -22,7 +22,7 @@ function talkToAdventurerReturnVisit()
 function startBaking()
 {
     showView("baking", screens);
-    loadBakingScreen();
+    bakery.loadBakingScreen();
 }
 
 function bakingComplete()

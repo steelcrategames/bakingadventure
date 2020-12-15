@@ -22,7 +22,7 @@ class Inventory
         }
         else
         {
-            var q = this.IngredientAmounts.get(ingredient) + quantity;
+            let q = this.IngredientAmounts.get(ingredient) + quantity;
             if(q < 0)
                 q = 0;
             this.IngredientAmounts.set(ingredient, q);
@@ -42,6 +42,13 @@ class Inventory
     getAmount(name)
     {
         return this.IngredientAmounts.get(this.Ingredients.get(name));
+    }
+
+    receiveStock(amount)
+    {
+        this.IngredientAmounts.forEach((value, key) => {
+            this.addIngredient(key, amount);
+        });
     }
 }
 
@@ -73,232 +80,244 @@ class Recipe
     }
 }
 
-var recipes = null;
-
-function populateRecipes(data)
-{   
-    recipes = new Map();
-    var dataCSV = $.csv.toObjects(data);
-    for(var i=0; i < dataCSV.length; i++)
-    {
-        var ingredients = [];
-        for(var j = 1; j <= MAX_INGREDIENTS; j++)
+class Bakery
+{
+    populateRecipes(data)
+    {   
+        this.recipes = new Map();
+        let dataCSV = $.csv.toObjects(data);
+        for(let i=0; i < dataCSV.length; i++)
         {
-            if(dataCSV[i]["Ingredient" + j]  != "")
+            let ingredients = [];
+            for(let j = 1; j <= MAX_INGREDIENTS; j++)
             {
-                ingredients.push(dataCSV[i]["Ingredient" + j]);
-            }
-        }
-
-        var key = ingredients.sort().join();
-        recipes.set(key, new Recipe(dataCSV[i].Name, dataCSV[i].Description, ingredients));
-    }
-}
-
-var inventory = null;
-var selected = new Array();
-
-function loadIngredients(data)
-{
-    inventory = new Inventory();
-
-    var dataCSV = $.csv.toObjects(data);
-    for(var i=0; i < dataCSV.length; i++)
-    {
-        var effects = [];
-        for(var j = 1; j < 5; j++)
-        {
-            if(dataCSV[i]["Effect" + j]  != "")
-            {
-                effects.push(new Effect(dataCSV[i]["Effect" + j], dataCSV[i]["Effect" + j + "Amount"]));
-            }
-        }
-
-        inventory.addIngredient(new Ingredient(dataCSV[i]["Name"], effects), 1);
-    }
-}
-
-function updateItemHTML(name, value, item)
-{
-    item.innerHTML = "";
-    item.append(document.createElement("p").innerText = name);
-    item.append(document.createElement("br"));
-    item.append(document.createElement("p").innerText = value);
-}
-
-function loadInventory(container, data)
-{
-    selected = [];
-    container.empty();
-    loadIngredients(data);
-
-    inventory.IngredientAmounts.forEach((value, key) => {
-        var id = key.name;
-        var item = document.createElement("div");
-        item.setAttribute("data-toggle","tooltip");
-        item.setAttribute("data-placement", "top");
-        item.setAttribute("data-html", "true");
-        item.setAttribute("title", getDescriptionHTML(key));
-        item.setAttribute("id", id);
-        item.setAttribute("class", "p-4 inventory-item");
-        updateItemHTML(key.name, value, item);
-        $(item).click(function() {
-            if(inventory.getAmount(item.id) > 0)
-            {
-                if(selected.indexOf(item.id) > -1)
+                if(dataCSV[i]["Ingredient" + j]  != "")
                 {
-                    selected.splice(selected.indexOf(item.id), 1);
-                    item.style.backgroundColor = "";
-                }
-                else if (selected.length < MAX_INGREDIENTS)
-                {
-                    selected.push(item.id);
-                    item.style.backgroundColor = "#2F4F4F";
+                    ingredients.push(dataCSV[i]["Ingredient" + j]);
                 }
             }
-          });
-        container.append(item);
-    });
-}
 
-function getDescriptionHTML(ingredient)
-{
-    var description = "<em>" + ingredient.name + "</em><br>";
-    for(var i = 0; i < ingredient.effects.length; i++)
-    {
-        description += "<p>" + ingredient.effects[i].type + " " + ingredient.effects[i].amount + "</p>"
-    }
-    return description;
-}
-
-function getBakeResultHTML(bakedGood)
-{
-    var result = document.createElement("div");
-    var nameText = document.createElement("p").innerText = "You've baked a " + bakedGood.name + "!";
-    result.append(nameText);
-    return result;
-}
-
-function getFoodName()
-{
-    var key = selected.sort().join();
-    if(recipes.has(key))
-    {
-        return recipes.get(key).name;
-    }
-    else
-    {
-        return "Soggy Mess";
-    }
-}
-
-function createFood()
-{
-    var hp_bonus = 0;
-    var atk_type_bonus = {};
-    var hitChance_bonus = 0;
-    var def_type_bonus = {};
-    
-    for(var i = 0; i < selected.length; i++)
-    {
-        var ingredient = inventory.getIngredient(selected[i]);
-
-        inventory.removeIngredient(ingredient, 1);
-
-        for(var j = 0; j < ingredient.effects.length; j++)
-        {
-            var amount = parseFloat(ingredient.effects[j].amount);
-
-            if (ingredient.effects[j].type.startsWith("atk_"))
-            {
-                let type = ingredient.effects[j].type.slice(4);
-                atk_type_bonus[type] = (atk_type_bonus[type] || 0) + amount;
-            }
-            else if (ingredient.effects[j].type.startsWith("def_"))
-            {
-                let type = ingredient.effects[j].type.slice(4);
-                def_type_bonus[type] = (def_type_bonus[type] || 0) + amount;
-            }
-            else
-            {
-                switch(ingredient.effects[j].type)
-                {
-                    case "hp":
-                        hp_bonus += amount;
-                        break;
-                    case "atk":
-                        atk_type_bonus["physical"] = (atk_type_bonus["physical"] || 0) + amount;
-                        break;
-                    case "def":
-                        def_type_bonus["physical"] = (def_type_bonus["physical"] || 0) + amount;
-                        break;
-                    case "hit":
-                        hitChance_bonus += amount;
-                        break;
-                }
-            }
+            let key = ingredients.sort().join();
+            this.recipes.set(key, new Recipe(dataCSV[i].Name, dataCSV[i].Description, ingredients));
         }
     }
 
-    var bakedGood = new Food({ name: getFoodName(), hp_bonus: hp_bonus, atk_type_bonuses: atk_type_bonus, hitChance_bonus: hitChance_bonus, def_type_bonuses: def_type_bonus });
-    clearSelected();
-
-    return bakedGood;
-}
-
-function clearSelected()
-{
-    for(var i = 0; i < selected.length; i++)
+    loadIngredients(data)
     {
-        document.getElementById(selected[i]).style.backgroundColor = "";
+        this.inventory = new Inventory();
 
-        updateItemHTML(selected[i], inventory.getAmount(selected[i]), document.getElementById(selected[i]));
+        let dataCSV = $.csv.toObjects(data);
+        for(let i=0; i < dataCSV.length; i++)
+        {
+            let effects = [];
+            for(let j = 1; j < 5; j++)
+            {
+                if(dataCSV[i]["Effect" + j]  != "")
+                {
+                    effects.push(new Effect(dataCSV[i]["Effect" + j], dataCSV[i]["Effect" + j + "Amount"]));
+                }
+            }
+
+            this.inventory.addIngredient(new Ingredient(dataCSV[i]["Name"], effects), 0);
+        }
     }
 
-    selected = [];
-}
-
-function bake(container)
-{
-    var bakedGood = createFood();
-    container.empty();
-    var bakeText = getBakeResultHTML(bakedGood);
-    container.append(bakeText);
-    container.append(document.createElement("br"))
-    var serveButton = document.createElement("button");
-    serveButton.innerText = "Serve";
-    serveButton.setAttribute("class","btn btn-primary");
-    $(serveButton).click(() => serveBakedGood(bakedGood));
-    container.append(serveButton);
-}
-
-function serveBakedGood(bakedGood)
-{
-    bakingComplete();
-    onFinishBaking(bakedGood);
-}
-
-function loadBakingScreen()
-{
-    if(recipes == null)
+    updateItemHTML(name, value, item)
     {
+        item.innerHTML = "";
+        item.append(document.createElement("p").innerText = name);
+        item.append(document.createElement("br"));
+        item.append(document.createElement("p").innerText = value);
+    }
+
+    loadInventory(data)
+    {
+        this.selected = [];
+        this.loadIngredients(data);
+    }
+
+    updateIngredientsContainer(container)
+    {
+        container.empty();
+        this.inventory.IngredientAmounts.forEach((value, key) => {
+            let id = key.name;
+            let item = document.createElement("div");
+            item.setAttribute("data-toggle","tooltip");
+            item.setAttribute("data-placement", "top");
+            item.setAttribute("data-html", "true");
+            item.setAttribute("title", this.getDescriptionHTML(key));
+            item.setAttribute("id", id);
+            item.setAttribute("class", "p-4 inventory-item");
+            this.updateItemHTML(key.name, value, item);
+            let bakery = this;
+            $(item).click(function() {
+                if(bakery.inventory.getAmount(item.id) > 0)
+                {
+                    if(bakery.selected.indexOf(item.id) > -1)
+                    {
+                        bakery.selected.splice(selected.indexOf(item.id), 1);
+                        item.style.backgroundColor = "";
+                    }
+                    else if (bakery.selected.length < MAX_INGREDIENTS)
+                    {
+                        bakery.selected.push(item.id);
+                        item.style.backgroundColor = "#2F4F4F";
+                    }
+                }
+            });
+            container.append(item);
+        });
+    }
+
+    getDescriptionHTML(ingredient)
+    {
+        let description = "<em>" + ingredient.name + "</em><br>";
+        for(let i = 0; i < ingredient.effects.length; i++)
+        {
+            description += "<p>" + ingredient.effects[i].type + " " + ingredient.effects[i].amount + "</p>"
+        }
+        return description;
+    }
+
+    getBakeResultHTML(bakedGood)
+    {
+        let result = document.createElement("div");
+        let nameText = document.createElement("p").innerText = "You've baked a " + bakedGood.name + "!";
+        result.append(nameText);
+        return result;
+    }
+
+    getFoodName()
+    {
+        let key = this.selected.sort().join();
+        if(this.recipes.has(key))
+        {
+            return this.recipes.get(key).name;
+        }
+        else
+        {
+            return "Soggy Mess";
+        }
+    }
+
+    createFood()
+    {
+        let hp_bonus = 0;
+        let atk_type_bonus = {};
+        let hitChance_bonus = 0;
+        let def_type_bonus = {};
+        
+        for(let i = 0; i < this.selected.length; i++)
+        {
+            let ingredient = this.inventory.getIngredient(this.selected[i]);
+
+            this.inventory.removeIngredient(ingredient, 1);
+
+            for(let j = 0; j < ingredient.effects.length; j++)
+            {
+                let amount = parseFloat(ingredient.effects[j].amount);
+
+                if (ingredient.effects[j].type.startsWith("atk_"))
+                {
+                    let type = ingredient.effects[j].type.slice(4);
+                    atk_type_bonus[type] = (atk_type_bonus[type] || 0) + amount;
+                }
+                else if (ingredient.effects[j].type.startsWith("def_"))
+                {
+                    let type = ingredient.effects[j].type.slice(4);
+                    def_type_bonus[type] = (def_type_bonus[type] || 0) + amount;
+                }
+                else
+                {
+                    switch(ingredient.effects[j].type)
+                    {
+                        case "hp":
+                            hp_bonus += amount;
+                            break;
+                        case "atk":
+                            atk_type_bonus["physical"] = (atk_type_bonus["physical"] || 0) + amount;
+                            break;
+                        case "def":
+                            def_type_bonus["physical"] = (def_type_bonus["physical"] || 0) + amount;
+                            break;
+                        case "hit":
+                            hitChance_bonus += amount;
+                            break;
+                    }
+                }
+            }
+        }
+
+        let bakedGood = new Food({ name: this.getFoodName(), hp_bonus: hp_bonus, atk_type_bonuses: atk_type_bonus, hitChance_bonus: hitChance_bonus, def_type_bonuses: def_type_bonus });
+        this.clearSelected();
+
+        return bakedGood;
+    }
+
+    clearSelected()
+    {
+        for(let i = 0; i < this.selected.length; i++)
+        {
+            document.getElementById(this.selected[i]).style.backgroundColor = "";
+
+            this.updateItemHTML(this.selected[i], this.inventory.getAmount(this.selected[i]), document.getElementById(this.selected[i]));
+        }
+
+        this.selected = [];
+    }
+
+    bake(container)
+    {
+        let bakedGood = this.createFood();
+        container.empty();
+        let bakeText = this.getBakeResultHTML(bakedGood);
+        container.append(bakeText);
+        container.append(document.createElement("br"))
+        let serveButton = document.createElement("button");
+        serveButton.innerText = "Serve";
+        serveButton.setAttribute("class","btn btn-primary");
+        $(serveButton).click(() => this.serveBakedGood(bakedGood));
+        container.append(serveButton);
+    }
+
+    serveBakedGood(bakedGood)
+    {
+        bakingComplete();
+        onFinishBaking(bakedGood);
+    }
+
+    //Update stock levels
+    handleNewDay()
+    {
+        this.inventory.receiveStock(2);
+    }
+
+    loadBakingScreen()
+    {
+        this.updateIngredientsContainer($("#ingredients"));
+        $("#bakeResult").empty();
+        $("#bakeButton").click(function() { bakery.bake($("#bakeResult")) });
+    }
+
+    constructor()
+    {
+        this.selected = new Array();
+        let bakery = this;
+
         $.ajax({
             type: "GET",
             url: "data/recipes.csv",
             dataType: "text",
-            success: function(data) {populateRecipes(data);}
-         });
-    }
-    if(inventory == null)
-    {
+            success: function(data) {bakery.populateRecipes(data);}
+        });
+
         $.ajax({
             type: "GET",
             url: "data/ingredients.csv",
             dataType: "text",
-            success: function(data) {loadInventory($("#ingredients"), data);}
-         });
+            success: function(data) {bakery.loadInventory(data);}
+        });
     }
-
-     $("#bakeResult").empty();
-     $("#bakeButton").click(function() { bake($("#bakeResult")) });
 }
+
+var bakery = new Bakery();

@@ -109,6 +109,8 @@ function startNewDay()
     }
 
     currentHeroIndex = 0;
+
+    bakery.handleNewDay();
     
     adventureStateMachine.changeState(ADVENTURE_STATES.empty_restaurant);
 }
