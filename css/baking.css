@@ -75,6 +75,10 @@
     font-size: 30px;
 }
 
+#baking-result .btn {
+    margin-right: 10px;
+}
+
 .ingredients-table .spacer {
     width: 64px;
     height: 1px;
