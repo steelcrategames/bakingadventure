@@ -42,6 +42,9 @@
 #baking-sel-details {
     padding-top: 15px;
     padding-bottom: 15px;
+}
+
+#baking-sel-details, #baking-result {
     border: solid 3px;
 }
 
