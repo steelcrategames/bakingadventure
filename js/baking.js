@@ -67,6 +67,7 @@ class Effect
     {
         this.type = type;
         this.amount = amount;
+        this.known = false;
     }
 }
 
@@ -145,7 +146,8 @@ class Bakery
             item.setAttribute("data-toggle","tooltip");
             item.setAttribute("data-placement", "top");
             item.setAttribute("data-html", "true");
-            item.setAttribute("title", this.getDescriptionHTML(key));
+            item.setAttribute("title", "");
+            item.setAttribute("data-original-title", this.getDescriptionHTML(key));
             item.setAttribute("id", id);
             item.setAttribute("class", "p-4 inventory-item");
             this.updateItemHTML(key.name, value, item);
@@ -155,7 +157,7 @@ class Bakery
                 {
                     if(bakery.selected.indexOf(item.id) > -1)
                     {
-                        bakery.selected.splice(selected.indexOf(item.id), 1);
+                        bakery.selected.splice(bakery.selected.indexOf(item.id), 1);
                         item.style.backgroundColor = "";
                     }
                     else if (bakery.selected.length < MAX_INGREDIENTS)
@@ -174,7 +176,14 @@ class Bakery
         let description = "<em>" + ingredient.name + "</em><br>";
         for(let i = 0; i < ingredient.effects.length; i++)
         {
-            description += "<p>" + ingredient.effects[i].type + " " + ingredient.effects[i].amount + "</p>"
+            if(ingredient.effects[i].known)
+            {
+                description += "<p>" + ingredient.effects[i].type + " " + ingredient.effects[i].amount + "</p>"
+            }
+            else
+            {
+                description += "<p>?????</p>"; 
+            }
         }
         return description;
     }
@@ -200,6 +209,41 @@ class Bakery
         }
     }
 
+    consolidateEffects()
+    {
+        let effectTypes = new Map();
+        let consolidatedEffects = [];
+        for(let i = 0; i < this.selected.length; i++)
+        {
+            let ingredient = this.inventory.getIngredient(this.selected[i]);
+            for(let j = 0; j < ingredient.effects.length; j++)
+            {
+                let effect = ingredient.effects[j];
+                if(!effectTypes.has(effect.type))
+                {
+                    effectTypes.set(effect.type, []);
+                }
+                else
+                {
+                    effectTypes.get(effect.type).push()
+                }
+            }
+        }
+
+        effectTypes.forEach((value, key) => {
+            if(value.length > 1)
+            {
+                for(let i = 0; i < value.length; i++)
+                {
+                    value[i].known = true;
+                    consolidatedEffects.push(value[i]);
+                }
+            }
+        });
+
+        return consolidatedEffects;
+    }
+
     createFood()
     {
         let hp_bonus = 0;
@@ -212,38 +256,40 @@ class Bakery
             let ingredient = this.inventory.getIngredient(this.selected[i]);
 
             this.inventory.removeIngredient(ingredient, 1);
+        }
 
-            for(let j = 0; j < ingredient.effects.length; j++)
+        let effects = this.consolidateEffects();
+        
+        for(let j = 0; j < effects.length; j++)
+        {
+            let amount = parseFloat(effects[j].amount);
+
+            if (effects[j].type.startsWith("atk_"))
             {
-                let amount = parseFloat(ingredient.effects[j].amount);
-
-                if (ingredient.effects[j].type.startsWith("atk_"))
+                let type = ingredient.effects[j].type.slice(4);
+                atk_type_bonus[type] = (atk_type_bonus[type] || 0) + amount;
+            }
+            else if (ingredient.effects[j].type.startsWith("def_"))
+            {
+                let type = ingredient.effects[j].type.slice(4);
+                def_type_bonus[type] = (def_type_bonus[type] || 0) + amount;
+            }
+            else
+            {
+                switch(effects[j].type)
                 {
-                    let type = ingredient.effects[j].type.slice(4);
-                    atk_type_bonus[type] = (atk_type_bonus[type] || 0) + amount;
-                }
-                else if (ingredient.effects[j].type.startsWith("def_"))
-                {
-                    let type = ingredient.effects[j].type.slice(4);
-                    def_type_bonus[type] = (def_type_bonus[type] || 0) + amount;
-                }
-                else
-                {
-                    switch(ingredient.effects[j].type)
-                    {
-                        case "hp":
-                            hp_bonus += amount;
-                            break;
-                        case "atk":
-                            atk_type_bonus["physical"] = (atk_type_bonus["physical"] || 0) + amount;
-                            break;
-                        case "def":
-                            def_type_bonus["physical"] = (def_type_bonus["physical"] || 0) + amount;
-                            break;
-                        case "hit":
-                            hitChance_bonus += amount;
-                            break;
-                    }
+                    case "hp":
+                        hp_bonus += amount;
+                        break;
+                    case "atk":
+                        atk_type_bonus["physical"] = (atk_type_bonus["physical"] || 0) + amount;
+                        break;
+                    case "def":
+                        def_type_bonus["physical"] = (def_type_bonus["physical"] || 0) + amount;
+                        break;
+                    case "hit":
+                        hitChance_bonus += amount;
+                        break;
                 }
             }
         }
