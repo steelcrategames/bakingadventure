@@ -39,6 +39,26 @@
     margin-bottom: 1em;
 }
 
+#baking-sel-details {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border: solid 3px;
+}
+
+.baking-sel-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#baking-sel-details table {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#baking-sel-additional-effects {
+    padding-left: 15px;
+}
+
 .ingredients-table td {
     height: 64px;
     background-size: contain;
