@@ -38,3 +38,33 @@
     padding: 0.5em;
     margin-bottom: 1em;
 }
+
+.ingredients-table td {
+    height: 64px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    text-align: right;
+    vertical-align: bottom;
+}
+
+#baking-result td {
+    vertical-align: middle;
+    font-size: 30px;
+}
+
+.ingredients-table .spacer {
+    width: 64px;
+    height: 1px;
+}
+
+.ingredients-table .lemon {
+    background-image: url("../img/cupcake-sword.png");
+}
+
+.ingredients-table .unknown {
+    background-image: url("../img/unknown.png");
+}
+
+.ingredients-table .blank {
+    background-image: none;
+}
