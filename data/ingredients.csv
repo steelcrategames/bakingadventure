@@ -1,5 +1,5 @@
 Name,Description,Effect1,Effect1Amount,Effect2,Effect2Amount,Effect3,Effect3Amount,Effect4,Effect4Amount
-Vanilla,,def,5,,,,,,
+Vanilla,,def,5,hit,5,atk_ice,1,atk_fire,1
 Lemon,,hit,2,def,2,,,,
 Lime,,hp,1,atk,1,def,1,hit,1
 Carrot,,def,-6,atk,8,,,,
