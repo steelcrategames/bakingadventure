@@ -15,7 +15,9 @@ function simulateQuest(hero)
     let enemy = SpawnEnemy(quest.enemyTemplate, enemyNum);
     sim_log(`${enemy.name} appears!`);
 
-    while(true)
+    let max_rounds = 100;
+
+    while(max_rounds > 0)
     {
         //Hero attacks first
         let heroWin = simulateTurn(hero, enemy);
@@ -50,7 +52,13 @@ function simulateQuest(hero)
                 return false;
             }
         }
+
+        max_rounds -= 1;
     }
+
+    sim_log("Hero got tired after 100 rounds and went home.");
+    quest.result = QuestResult.FAILURE;
+    return false;
 }
 
 function simulateTurn(attacker, defender)
