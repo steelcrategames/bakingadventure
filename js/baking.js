@@ -256,24 +256,23 @@ class Bakery
         }
     }
 
-    consolidateEffects()
+    consolidateEffects(ingredients)
     {
         let effectTypes = new Map();
         let consolidatedEffects = [];
-        for(let i = 0; i < this.selected.length; i++)
+        for(let i = 0; i < ingredients.length; i++)
         {
-            let ingredient = this.inventory.getIngredient(this.selected[i]);
+            let ingredient = this.inventory.getIngredient(ingredients[i]);
             for(let j = 0; j < ingredient.effects.length; j++)
             {
                 let effect = ingredient.effects[j];
                 if(!effectTypes.has(effect.type))
                 {
                     effectTypes.set(effect.type, []);
+                    
                 }
-                else
-                {
-                    effectTypes.get(effect.type).push()
-                }
+
+                effectTypes.get(effect.type).push(effect)
             }
         }
 
@@ -305,7 +304,7 @@ class Bakery
             this.inventory.removeIngredient(ingredient, 1);
         }
 
-        let effects = this.consolidateEffects();
+        let effects = this.consolidateEffects(this.selected);
         
         for(let j = 0; j < effects.length; j++)
         {
@@ -313,12 +312,12 @@ class Bakery
 
             if (effects[j].type.startsWith("atk_"))
             {
-                let type = ingredient.effects[j].type.slice(4);
+                let type = effects[j].type.slice(4);
                 atk_type_bonus[type] = (atk_type_bonus[type] || 0) + amount;
             }
-            else if (ingredient.effects[j].type.startsWith("def_"))
+            else if (effects[j].type.startsWith("def_"))
             {
-                let type = ingredient.effects[j].type.slice(4);
+                let type = effects[j].type.slice(4);
                 def_type_bonus[type] = (def_type_bonus[type] || 0) + amount;
             }
             else
@@ -439,12 +438,41 @@ function logAllRecipes()
     bakery.inventory.IngredientAmounts.forEach((value, key) => {
         bakery.inventory.IngredientAmounts.forEach((value2, key2) => {
             if(key != key2){
-                let rmKey = [key.name, key2.name].sort().join();
-                recipeMap.set(rmKey, ",," + key.name + "," + key2.name);
-                //console.log(",," + key.name + "," + key2.name);
+                if(bakery.consolidateEffects([key.name, key2.name]).length > 0)
+                {
+                    let rmKey = [key.name, key2.name].sort().join();
+                    recipeMap.set(rmKey, ",," + key.name + "," + key2.name);
+                    //console.log(",," + key.name + "," + key2.name);
+                }
             }
         });
     });
 
     recipeMap.forEach((value, key) =>{console.log(value);})
+}
+
+function generateIngredients()
+{
+    let effectTypes = ["hit", "hp", "def", "atk", "atk_fire", "atk_ice", "def_fire", "def_ice"];
+    let ingredients = [];
+
+
+    for(let i = 0; i < 10; i++)
+    {
+        let ingString = ',,'
+
+        let effectTypesCopy = [...effectTypes];
+        for(let j = 0; j < 4; j++)
+        {
+            let index = Math.floor(Math.random() * effectTypesCopy.length);
+            ingString += effectTypesCopy[index];
+            effectTypesCopy.splice(index, 1);
+            ingString += ",";
+            ingString += Math.floor(Math.random() * 5) + 1; 
+            ingString += ",";
+        }
+
+        ingredients.push(ingString);
+        console.log(ingString);
+    }
 }

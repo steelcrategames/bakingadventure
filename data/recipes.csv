@@ -6,24 +6,41 @@ Roll,,Ginger,Vanilla
 Bun,,Cocoa,Vanilla
 Muffin,,Mint,Vanilla
 Brownie,,Pepper,Vanilla
-Cake,,Lime,Lemon
-Cookie,,Carrot,Lemon
-Cracker,,Ginger,Lemon
-Pastry,,Cocoa,Lemon
-Pie,,Mint,Lemon
-Tart,,Pepper,Lemon
-Torte,,Carrot,Lime
-Viennoiserie,,Ginger,Lime
-Flatbread,,Cocoa,Lime
-Donut,,Mint,Lime
-Strudel,,Pepper,Lime
-Pudding,,Ginger,Carrot
-Beaver Tail,,Cocoa,Carrot
-Canoli,,Mint,Carrot
-Cinnamon Roll,,Pepper,Carrot
-Éclair,,Cocoa,Ginger
-Baguette,,Mint,Ginger
-Crepes,,Pepper,Ginger
-Croissant,,Mint,Cocoa
-Cronut,,Pepper,Cocoa
-Croquembouche,,Pepper,Mint
+Cake,,Apple,Vanilla
+Cookie,,Cherry,Vanilla
+Cracker,,Lime,Lemon
+Pastry,,Carrot,Lemon
+Pie,,Ginger,Lemon
+Tart,,Cocoa,Lemon
+Torte,,Mint,Lemon
+Viennoiserie,,Pepper,Lemon
+Flatbread,,Apple,Lemon
+Donut,,Cherry,Lemon
+Strudel,,Carrot,Lime
+Pudding,,Ginger,Lime
+Beaver Tail,,Cocoa,Lime
+Canoli,,Mint,Lime
+Cinnamon Roll,,Pepper,Lime
+Éclair,,Apple,Lime
+Baguette,,Cherry,Lime
+Crepes,,Ginger,Carrot
+Croissant,,Cocoa,Carrot
+Cronut,,Mint,Carrot
+Croquembouche,,Pepper,Carrot
+Puff,,Apple,Carrot
+Danish,,Cherry,Carrot
+Macaron,,Cocoa,Ginger
+Mooncake,,Mint,Ginger
+Pain au chocolat,,Pepper,Ginger
+Profiterole,,Apple,Ginger
+Sad cake,,Cherry,Ginger
+Turnover,,Mint,Cocoa
+Bonbons,,Pepper,Cocoa
+Cupcake,,Apple,Cocoa
+Souffle,,Cherry,Cocoa
+Mousse,,Pepper,Mint
+Gingerbread,,Apple,Mint
+Fancies,,Cherry,Mint
+Mochi,,Apple,Pepper
+Sweetroll,,Cherry,Pepper
+Battenberg,,Cherry,Apple
