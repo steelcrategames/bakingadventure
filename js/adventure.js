@@ -317,7 +317,7 @@ function doDescribeQuest()
         log(`I'm heading out to my next quest: ${quest.name}`);
     }
     
-    log(`It's a level ${quest.level} quest and I expect to find a ${quest.enemyTemplate.getHTML()} or two. Do you have anything that might help soothe my nerves?`);
+    log(`It's a level ${quest.actual_level} quest and I expect to find a ${quest.enemyTemplate.getHTML()} or two. Do you have anything that might help soothe my nerves?`);
 
     adventureStateMachine.changeState(ADVENTURE_STATES.active_customer);
 }

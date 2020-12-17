@@ -23,32 +23,13 @@ const SettingModifiers = {
 Object.freeze(SettingModifiers);
 
 
-// const EnemyTemplates = {
-//     GOBLIN: new Enemy("Goblin", 
-//                 new Stats(
-//                     {
-//                         hp: 10, 
-//                         atk_types: {"physical": 3}, 
-//                         hitChance: 50, 
-//                         def_types: {"physical": 2}
-//                     })),
-//     SKELETON: new Enemy("Skeleton", 
-//                 new Stats(
-//                     {
-//                         hp: 7, 
-//                         atk_types: {"physical": 2}, 
-//                         hitChance: 30, 
-//                         def_types: {"physical": 1}
-//                     })),
-// };
-// Object.freeze(EnemyTemplates);
-
 class Quest {
-    constructor(name, min_level, max_level, enemyTemplate)
+    constructor({name, min_level, max_level, actual_level, enemyTemplate})
     {
         this.name = name;
         this.min_level = min_level;
         this.max_level = max_level;
+        this.actual_level = actual_level;
         this.enemyTemplate = enemyTemplate;
 
         this.result = QuestResult.INCOMPLETE;
@@ -67,18 +48,11 @@ class QuestGenerator
             type: "GET",
             url: "data/enemy_templates.csv",
             dataType: "text",
-            success: function(data) { generator.populateEnemyTemplates(data); }
-        });
-
-        $.ajax({
-            type: "GET",
-            url: "data/quests.csv",
-            dataType: "text",
-            success: function(data) { generator.populateQuestTemplates(data); }
+            success: function(data) { generator.populateEnemyTemplates(generator, data); }
         });
     }
 
-    populateEnemyTemplates(data)
+    populateEnemyTemplates(generator, data)
     {
         let dataCSV = $.csv.toObjects(data);
         for(let i = 0; i < dataCSV.length; i++)
@@ -121,6 +95,13 @@ class QuestGenerator
 
             console.log(`Added enemy template ${enemyTemplate.name}: ${enemyTemplate.stats.to_string()}`);
         }
+
+        $.ajax({
+            type: "GET",
+            url: "data/quests.csv",
+            dataType: "text",
+            success: function(data) { generator.populateQuestTemplates(data); }
+        });
     }
 
     populateQuestTemplates(data)
@@ -135,12 +116,12 @@ class QuestGenerator
 
             if (!(enemyTemplateName in this.enemyTemplates))
             {
-                console.log(`Could not find enemy template ${enemyTemplateName} for use in Quest ${name}`);
+                console.error(`Could not find enemy template ${enemyTemplateName} for use in Quest ${name}`);
             }
             else
             {
                 let enemyTemplate = this.enemyTemplates[enemyTemplateName];
-                let questTemplate = new Quest(name, min_level, max_level, enemyTemplate);
+                let questTemplate = new Quest({ name: name, min_level: min_level, max_level: max_level, enemyTemplate: enemyTemplate });
                 this.questTemplates[name] = questTemplate;
 
                 console.log(`Added quest template: ${name}`);
@@ -161,6 +142,7 @@ class QuestGenerator
         enemyTemplate.stats.atk_types = combine(enemyTemplate.stats.atk_types, mod.atk_types);
         enemyTemplate.stats.def_types = combine(enemyTemplate.stats.def_types, mod.def_types);
 
+        questTemplate.actual_level = level;
         //enemyTemplate.scaleToLevel(level);
 
         questTemplate.name = `${mod.name} ${questTemplate.name}`.trim();
@@ -174,6 +156,11 @@ class QuestGenerator
             return desiredLevel >= questTemplate.min_level  &&
                     desiredLevel <= questTemplate.max_level;
           });
+
+        if (filtered.length == 0)
+        {
+            console.error(`No quest templates available for level ${level}!`);
+        }
 
         let keys = Object.keys(filtered);
         return _.cloneDeep(filtered[keys[ keys.length * Math.random() << 0]]); 

@@ -1,3 +1,4 @@
 name,hp,hitChance,atk_1_type,atk_1_amount,atk_2_type,atk_2_amount,def_1_type,def_1_amount,def_2_type,def_2_amount
 Goblin,10,50,physical,3,"","",physical,2,"",""
 Skeleton,5,30,physical,2,"","",physical,1,"",""
+Troll,20,60,physical,5,"","",physical,8,ice,-3
