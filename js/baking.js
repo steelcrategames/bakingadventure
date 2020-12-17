@@ -256,13 +256,13 @@ class Bakery
         }
     }
 
-    consolidateEffects()
+    consolidateEffects(ingredients)
     {
         let effectTypes = new Map();
         let consolidatedEffects = [];
-        for(let i = 0; i < this.selected.length; i++)
+        for(let i = 0; i < ingredients.length; i++)
         {
-            let ingredient = this.inventory.getIngredient(this.selected[i]);
+            let ingredient = this.inventory.getIngredient(ingredients[i]);
             for(let j = 0; j < ingredient.effects.length; j++)
             {
                 let effect = ingredient.effects[j];
@@ -304,7 +304,7 @@ class Bakery
             this.inventory.removeIngredient(ingredient, 1);
         }
 
-        let effects = this.consolidateEffects();
+        let effects = this.consolidateEffects(this.selected);
         
         for(let j = 0; j < effects.length; j++)
         {
@@ -438,9 +438,12 @@ function logAllRecipes()
     bakery.inventory.IngredientAmounts.forEach((value, key) => {
         bakery.inventory.IngredientAmounts.forEach((value2, key2) => {
             if(key != key2){
-                let rmKey = [key.name, key2.name].sort().join();
-                recipeMap.set(rmKey, ",," + key.name + "," + key2.name);
-                //console.log(",," + key.name + "," + key2.name);
+                if(bakery.consolidateEffects([key.name, key2.name]).length > 0)
+                {
+                    let rmKey = [key.name, key2.name].sort().join();
+                    recipeMap.set(rmKey, ",," + key.name + "," + key2.name);
+                    //console.log(",," + key.name + "," + key2.name);
+                }
             }
         });
     });
