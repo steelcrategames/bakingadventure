@@ -166,12 +166,21 @@ class Bakery
         {
             let effectRow = document.createElement("tr");
             effectsTable.append(effectRow);
-            let effectTypeTD = document.createElement("td");
-            effectRow.append(effectTypeTD);
-            effectTypeTD.innerText = ingredient.effects[i].type;
-            let effectAmountTD = document.createElement("td");
-            effectRow.append(effectAmountTD);
-            effectAmountTD.innerText = ingredient.effects[i].amount;
+            if(ingredient.effects[i].known)
+            {
+                let effectTypeTD = document.createElement("td");
+                effectRow.append(effectTypeTD);
+                effectTypeTD.innerText = ingredient.effects[i].type;
+                let effectAmountTD = document.createElement("td");
+                effectRow.append(effectAmountTD);
+                effectAmountTD.innerText = ingredient.effects[i].amount;
+            }
+            else
+            {
+                let effectTypeTD = document.createElement("td");
+                effectRow.append(effectTypeTD);
+                effectTypeTD.innerText = "????";
+            }
         }
     }
 
