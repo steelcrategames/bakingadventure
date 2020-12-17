@@ -353,7 +353,7 @@ class Bakery
 
     createFood()
     {    
-        let bakedGood = getFoodFromSelected();
+        let bakedGood = this.getFoodFromSelected();
 
         for(let i = 0; i < this.selected.length; i++)
         {
