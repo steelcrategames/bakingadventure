@@ -1,6 +1,10 @@
 name,min_level,max_level,enemy_template
-Skeleton Crypt,1,2,Skeleton
-Goblin Camp,1,3,Goblin
-Lava Drenched Goblin Camp,2,4,Fiery Goblin
-Frosty Goblin Camp,2,4,Icy Goblin
-Troll Lair,3,5,Troll
+Dusty Cellar,1,1,Rat
+Goblin Camp,1,1,Goblin
+Skeleton Crypt,2,2,Skeleton
+Hydra Den,,,Hydra
+Troll Warren,3,3,Troll
+Ooze Pit,4,4,Gelatinous Cube
+Cursed Forest,5,5,Owlbear
+Corrupted Summoning Stones,8,8,Demon
+Dragon's Lair,9,9,Dragon

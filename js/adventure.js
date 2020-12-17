@@ -116,7 +116,10 @@ function startNewDay()
     currentHeroIndex = 0;
 
     bakery.handleNewDay();
-    
+}
+
+function openBakery()
+{    
     adventureStateMachine.changeState(ADVENTURE_STATES.empty_bakery);
 }
 
@@ -166,7 +169,7 @@ function enterEmptyBakeryState()
     }
 
     document.getElementById("bakeryMessage").innerText = bakeryMsg;
-    document.getElementById("bakerySubMessage").innerText = bakerySubMsg;
+    //document.getElementById("bakerySubMessage").innerText = bakerySubMsg;
 
     if (currentHeroIndex < heros.length)
     {

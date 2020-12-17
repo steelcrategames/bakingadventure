@@ -37,7 +37,8 @@ function talkToAdventurerReturnVisit()
 
 function startNewGame(numHeroes)
 {
-    loadAdventureScreen(numHeroes);
+    generateHeroes(numHeroes);
+    startNewDay();
 }
 
 function startBaking()
