@@ -142,7 +142,7 @@ class Bakery
         this.loadIngredients(data);
     }
 
-    updateDescriptionPane(ingredient)
+    updateDescriptionPane(name, effects)
     {
         let descriptionPane = $("#baking-sel-details");
 
@@ -157,21 +157,30 @@ class Bakery
         titleImg.setAttribute("src", "img/cupcake-sword.png");
         titleImg.setAttribute("style", "width: 128px;");
         title.append(document.createElement("br"));
-        title.append(document.createElement("span").innerText = ingredient.name);
+        title.append(document.createElement("span").innerText = name);
 
         let effectsTable = document.createElement("table");
         descriptionPane.append(effectsTable);
         effectsTable.setAttribute("style", "text-align: left;");
-        for(let i = 0; i < ingredient.effects.length; i++)
+        for(let i = 0; i < effects.length; i++)
         {
             let effectRow = document.createElement("tr");
             effectsTable.append(effectRow);
-            let effectTypeTD = document.createElement("td");
-            effectRow.append(effectTypeTD);
-            effectTypeTD.innerText = ingredient.effects[i].type;
-            let effectAmountTD = document.createElement("td");
-            effectRow.append(effectAmountTD);
-            effectAmountTD.innerText = ingredient.effects[i].amount;
+            if(effects[i].known)
+            {
+                let effectTypeTD = document.createElement("td");
+                effectRow.append(effectTypeTD);
+                effectTypeTD.innerText = effects[i].type;
+                let effectAmountTD = document.createElement("td");
+                effectRow.append(effectAmountTD);
+                effectAmountTD.innerText = effects[i].amount;
+            }
+            else
+            {
+                let effectTypeTD = document.createElement("td");
+                effectRow.append(effectTypeTD);
+                effectTypeTD.innerText = "????";
+            }
         }
     }
 
@@ -192,7 +201,8 @@ class Bakery
 
             let bakery = this;
             $(item).hover(function () {
-                    bakery.updateDescriptionPane(bakery.inventory.getIngredient(item.id));
+                    let ingredient = bakery.inventory.getIngredient(item.id);
+                    bakery.updateDescriptionPane(ingredient.name, ingredient.effects);
                     
                 }, function () {
                     // out
@@ -256,7 +266,7 @@ class Bakery
         }
     }
 
-    consolidateEffects(ingredients)
+    consolidateEffects(ingredients, shouldDiscover = true)
     {
         let effectTypes = new Map();
         let consolidatedEffects = [];
@@ -281,7 +291,10 @@ class Bakery
             {
                 for(let i = 0; i < value.length; i++)
                 {
-                    value[i].known = true;
+                    if(shouldDiscover)
+                    {
+                        value[i].known = true;
+                    }
                     consolidatedEffects.push(value[i]);
                 }
             }
@@ -290,20 +303,13 @@ class Bakery
         return consolidatedEffects;
     }
 
-    createFood()
+    getFoodFromSelected()
     {
         let hp_bonus = 0;
         let atk_type_bonus = {};
         let hitChance_bonus = 0;
         let def_type_bonus = {};
         
-        for(let i = 0; i < this.selected.length; i++)
-        {
-            let ingredient = this.inventory.getIngredient(this.selected[i]);
-
-            this.inventory.removeIngredient(ingredient, 1);
-        }
-
         let effects = this.consolidateEffects(this.selected);
         
         for(let j = 0; j < effects.length; j++)
@@ -341,6 +347,20 @@ class Bakery
         }
 
         let bakedGood = new Food({ name: this.getFoodName(), hp_bonus: hp_bonus, atk_type_bonuses: atk_type_bonus, hitChance_bonus: hitChance_bonus, def_type_bonuses: def_type_bonus });
+
+        return bakedGood;
+    }
+
+    createFood()
+    {    
+        let bakedGood = this.getFoodFromSelected();
+
+        for(let i = 0; i < this.selected.length; i++)
+        {
+            let ingredient = this.inventory.getIngredient(this.selected[i]);
+
+            this.inventory.removeIngredient(ingredient, 1);
+        }
         this.clearSelected();
 
         return bakedGood;
@@ -361,18 +381,52 @@ class Bakery
 
     updateSelected()
     {
+        $("#ingredient-chosen-1").unbind("mouseenter mouseleave");
+        $("#ingredient-chosen-2").unbind("mouseenter mouseleave");
+        $("#bakeButton").unbind("mouseenter mouseleave");
         $("#ingredient-chosen-1").attr("class", "blank");
         $("#ingredient-chosen-2").attr("class", "blank");
-
+        let bakery = this;
         if(this.selected.length > 0)
         {
             $("#ingredient-chosen-1").attr("class", "lemon");
+            $("#ingredient-chosen-1").hover(function () {
+                let ingredient = bakery.inventory.getIngredient(bakery.selected[0]);
+                bakery.updateDescriptionPane(ingredient.name, ingredient.effects);
+            }, function () {
+                // out
+            });
         }
         if(this.selected.length > 1)
         {
             $("#ingredient-chosen-2").attr("class", "lemon");
-        }
+            $("#ingredient-chosen-2").hover(function () {
+                let ingredient = bakery.inventory.getIngredient(bakery.selected[1]); 
+                bakery.updateDescriptionPane(ingredient.name, ingredient.effects);
+            }, function () {
+                // out
+            });
 
+            let foodName = this.getFoodName();
+            if(foodName != "Soggy Mess")
+            {
+                $("#baking-result-preview").attr("class", "lemon");
+            }
+            else
+            {
+                $("#baking-result-preview").attr("class", "unknown");
+            }
+
+            $("#baking-result-preview").hover(function () {
+                bakery.updateDescriptionPane(foodName, bakery.consolidateEffects(bakery.selected, false));
+            }, function () {
+                // out
+            });
+        }
+        else
+        {
+            $("#baking-result-preview").attr("class", "unknown");
+        }
     }
 
     bake(container)
@@ -404,6 +458,7 @@ class Bakery
     loadBakingScreen()
     {
         this.updateIngredientsContainer($("#ingredients-table"));
+        this.updateSelected();
         $("#bakeResult").empty();
         $("#bakeButton").unbind("click"); //Ben: prevent multiple click handlers
         $("#bakeButton").click(function() { bakery.bake($("#bakeResult")) });
