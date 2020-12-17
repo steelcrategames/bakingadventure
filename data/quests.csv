@@ -1,0 +1,6 @@
+name,min_level,max_level,enemy_template
+Skeleton Crypt,1,2,Skeleton
+Goblin Camp,1,3,Goblin
+Lava Drenched Goblin Camp,2,4,Fiery Goblin
+Frosty Goblin Camp,2,4,Icy Goblin
+Troll Lair,3,5,Troll

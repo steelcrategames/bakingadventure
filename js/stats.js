@@ -5,9 +5,9 @@ class Stats {
 
     constructor({hp, atk_types = {}, hitChance, def_types = {}, appetite = 0})
     {
-        this.max_hp = hp;
+        this.max_hp = Number(hp);
         this.base_atk_types = atk_types;
-        this.base_hitChance = hitChance;
+        this.base_hitChance = Number(hitChance);
         this.base_def_types = def_types;
         this.appetite = appetite;
 

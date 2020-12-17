@@ -80,6 +80,7 @@ var heros = [];
 var currentHero = {};
 var currentHeroIndex = 0;
 var adventureStateMachine = new StateMachine(ADVENTURE_STATES);
+var questGenerator = new QuestGenerator();
 
 
 function loadAdventureScreen(numHeroes)
@@ -303,7 +304,7 @@ function doDescribeQuest()
 
     //Choose a new quest for the adventurer
     let level = currentHero.getSuccessfulQuestCount() + 1;
-    let nextQuest = createRandomQuest(level);
+    let nextQuest = questGenerator.createRandomQuest(level);
     currentHero.setQuest(nextQuest);
     let quest = currentHero.current_quest;
 
@@ -316,7 +317,7 @@ function doDescribeQuest()
         log(`I'm heading out to my next quest: ${quest.name}`);
     }
     
-    log(`It's a level ${quest.level} quest and I expect to find a ${quest.enemyTemplate.getHTML()} or two. Do you have anything that might help soothe my nerves?`);
+    log(`It's a level ${quest.actual_level} quest and I expect to find a ${quest.enemyTemplate.getHTML()} or two. Do you have anything that might help soothe my nerves?`);
 
     adventureStateMachine.changeState(ADVENTURE_STATES.active_customer);
 }
