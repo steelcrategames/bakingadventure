@@ -1,0 +1,3 @@
+name,min_level,max_level,enemy_template
+Goblin Camp,1,3,Goblin
+Skeleton Crypt,2,4,Skeleton

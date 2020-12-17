@@ -5,20 +5,20 @@ class Enemy {
         this.stats = stats;
     }
 
-    scaleToLevel(level)
-    {
-        this.stats.max_hp += level;
+    // scaleToLevel(level)
+    // {
+    //     this.stats.max_hp += level;
 
-        $.each(this.base_atk_types, function(name, amount) {
-            this.base_atk_types[name] += level;
-        });
+    //     $.each(this.base_atk_types, function(name, amount) {
+    //         this.base_atk_types[name] += level;
+    //     });
         
-        this.stats.base_hitChance += level * 5;
+    //     this.stats.base_hitChance += level * 5;
 
-        $.each(this.base_def_types, function(name, amount) {
-            this.base_def_types[name] += level;
-        });
-    }
+    //     $.each(this.base_def_types, function(name, amount) {
+    //         this.base_def_types[name] += level;
+    //     });
+    // }
 
     getHTML() {
         return `<span class="enemy enemy-${this.name.toLowerCase()}">${this.name}</span>`;

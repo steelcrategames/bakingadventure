@@ -80,6 +80,7 @@ var heros = [];
 var currentHero = {};
 var currentHeroIndex = 0;
 var adventureStateMachine = new StateMachine(ADVENTURE_STATES);
+var questGenerator = new QuestGenerator();
 
 
 function loadAdventureScreen(numHeroes)
@@ -303,7 +304,7 @@ function doDescribeQuest()
 
     //Choose a new quest for the adventurer
     let level = currentHero.getSuccessfulQuestCount() + 1;
-    let nextQuest = createRandomQuest(level);
+    let nextQuest = questGenerator.createRandomQuest(level);
     currentHero.setQuest(nextQuest);
     let quest = currentHero.current_quest;
 
