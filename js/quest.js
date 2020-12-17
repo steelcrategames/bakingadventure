@@ -5,24 +5,6 @@ const QuestResult = {
 };
 Object.freeze(QuestResult);
 
-const SettingModifiers = {
-    NORMAL: { 
-        name: "run of the mill"
-    },
-    FROSTY: { 
-        name: "frosty",
-        atk_types: { "ice": 3 }, 
-        def_types: { "physical": 10, "ice": 3, "fire": -5 }
-    },
-    FIREY: {
-        name: "lava drenched",
-        atk_types: { "fire": 3 }, 
-        def_types: { "physical": 10, "ice": -5, "fire": 3 }
-    }
-};
-Object.freeze(SettingModifiers);
-
-
 class Quest {
     constructor({name, min_level, max_level, actual_level, enemyTemplate})
     {
@@ -135,17 +117,17 @@ class QuestGenerator
 
         let questTemplate = this.randQuestTemplate(level);
 
-        let mod = randSettingModifier();
+        //let mod = randSettingModifier();
         let enemyTemplate = questTemplate.enemyTemplate; 
 
         //Mix in the modifiers
-        enemyTemplate.stats.atk_types = combine(enemyTemplate.stats.atk_types, mod.atk_types);
-        enemyTemplate.stats.def_types = combine(enemyTemplate.stats.def_types, mod.def_types);
+        // enemyTemplate.stats.atk_types = combine(enemyTemplate.stats.atk_types, mod.atk_types);
+        // enemyTemplate.stats.def_types = combine(enemyTemplate.stats.def_types, mod.def_types);
 
         questTemplate.actual_level = level;
         //enemyTemplate.scaleToLevel(level);
 
-        questTemplate.name = `${mod.name} ${questTemplate.name}`.trim();
+        //questTemplate.name = `${mod.name} ${questTemplate.name}`.trim();
 
         return questTemplate;
     }
