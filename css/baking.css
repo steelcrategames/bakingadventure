@@ -39,12 +39,18 @@
     margin-bottom: 1em;
 }
 
+.baking-window {
+    width:550px;
+    background-color: palegoldenrod;
+    margin-bottom: 10px;
+}
+
 #baking-sel-details {
     padding-top: 15px;
     padding-bottom: 15px;
 }
 
-#baking-sel-details, #baking-result {
+#baking-sel-details, #baking-result, #baked-result-ingredients {
     border: solid 3px;
 }
 
@@ -58,7 +64,7 @@
     margin-bottom: 15px;
 }
 
-#baking-sel-additional-effects {
+#baking-sel-additional-effects, #baked-additional-effects {
     padding-left: 15px;
 }
 
@@ -70,7 +76,7 @@
     vertical-align: bottom;
 }
 
-#baking-result td {
+#baking-result td, #baked-result-ingredients td {
     vertical-align: middle;
     font-size: 30px;
 }

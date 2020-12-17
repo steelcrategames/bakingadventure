@@ -1,5 +1,5 @@
 <div id="baking">
-  <div class="container" style="width:550px; background-color: palegoldenrod;">
+  <div class="container baking-window">
     <div class="row">
       <div class="col" id="baking-sel-details">
         <div class="baking-sel-title" style="text-align: center;">
@@ -74,5 +74,55 @@
   <hr />
   <div id="bakeResult">
   
+  </div>
+
+  <div>
+    <div class="container baking-window" style="text-align: center;">
+      <h2>You baked a <span id="baked-type">cake</span>!</h2>
+      <div class="d-flex justify-content-center">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="img/cupcake-sword.png" style="width: 128px; margin-top: 20px" />
+            </div>
+            <div class="col-md-8" style="text-align: left;">
+              <div class="card-body">
+                <table style="text-align: left;">
+                  <tr id="baked-effect1">
+                    <td id="baked-effect1-stat">hp</td>
+                    <td id="baked-effect1-change">+5</td>
+                  </tr>
+                  <tr id="baked-effect2">
+                    <td id="baked-effect2-stat">atk</td>
+                    <td id="baked-effect2-change">+2</td>
+                  </tr>
+                  <tr id="baked-effect3">
+                    <td id="baked-effect3-stat">?</td>
+                    <td id="baked-effect3-change">?</td>
+                  </tr>
+                  <tr id="baked-effect4">
+                    <td id="baked-effect4-stat">?</td>
+                    <td id="baked-effect4-change">?</td>
+                  </tr>
+                </table>
+                <ul id="baked-additional-effects">
+                  <li>Fire Protection</li>
+                  <li>Ice Protection</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+      </div>
+      <br />
+      <table id="baked-result-ingredients" class="ingredients-table" style="margin: 0 auto;">
+        <tr>
+          <td>Ingredients:</td>
+          <td id="baked-ingredient-1" class="lemon"><div class="spacer"></div><br /></td>
+          <td>+</td>
+          <td id="baked-ingredient-2" class="blank"><div class="spacer"></div><br /></td>
+        </tr>
+      </table>
+      <br /><br />
+      <button id="bakeButton" class="btn btn-primary" type="button" style="margin-bottom: 10px">Next</button>
+    </div>
   </div>
 </div>

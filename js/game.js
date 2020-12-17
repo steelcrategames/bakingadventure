@@ -7,6 +7,7 @@ const SCREENS = {
     screenVisitor : "screen-visitor",
     screenDialog : "screen-dialogue",
     baking: "baking",
+    bakeResult: "bakeResult",
     adventure: "adventure",
     prologue: "screen-prologue",
     dayTitle: "screen-day-title",
