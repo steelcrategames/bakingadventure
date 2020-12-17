@@ -125,10 +125,15 @@ class Bakery
 
     updateItemHTML(name, value, item)
     {
+        let id = name;
         item.innerHTML = "";
-        item.append(document.createElement("p").innerText = name);
+        item.setAttribute("id", id);
+        item.setAttribute("class", "lemon");
+        let div = document.createElement("div");
+        div.setAttribute("class", "spacer");
+        item.append(div);
         item.append(document.createElement("br"));
-        item.append(document.createElement("p").innerText = value);
+        item.append(document.createElement("span").innerText = "x" + value);
     }
 
     loadInventory(data)
@@ -137,21 +142,62 @@ class Bakery
         this.loadIngredients(data);
     }
 
+    updateDescriptionPane(ingredient)
+    {
+        let descriptionPane = $("#baking-sel-details");
+
+        descriptionPane.empty();
+
+        let title = document.createElement("div")
+        descriptionPane.append(title);
+        title.setAttribute("class", "baking-sel-title");
+        title.setAttribute("style", "text-align:center;");
+        let titleImg = document.createElement("img");
+        title.append(titleImg);
+        titleImg.setAttribute("src", "img/cupcake-sword.png");
+        titleImg.setAttribute("style", "width: 128px;");
+        title.append(document.createElement("br"));
+        title.append(document.createElement("span").innerText = ingredient.name);
+
+        let effectsTable = document.createElement("table");
+        descriptionPane.append(effectsTable);
+        effectsTable.setAttribute("style", "text-align: left;");
+        for(let i = 0; i < ingredient.effects.length; i++)
+        {
+            let effectRow = document.createElement("tr");
+            effectsTable.append(effectRow);
+            let effectTypeTD = document.createElement("td");
+            effectRow.append(effectTypeTD);
+            effectTypeTD.innerText = ingredient.effects[i].type;
+            let effectAmountTD = document.createElement("td");
+            effectRow.append(effectAmountTD);
+            effectAmountTD.innerText = ingredient.effects[i].amount;
+        }
+    }
+
     updateIngredientsContainer(container)
     {
         container.empty();
+        let i = 0;
+        let row = null;
         this.inventory.IngredientAmounts.forEach((value, key) => {
-            let id = key.name;
-            let item = document.createElement("div");
-            item.setAttribute("data-toggle","tooltip");
-            item.setAttribute("data-placement", "top");
-            item.setAttribute("data-html", "true");
-            item.setAttribute("title", "");
-            item.setAttribute("data-original-title", this.getDescriptionHTML(key));
-            item.setAttribute("id", id);
-            item.setAttribute("class", "p-4 inventory-item");
+            if(i++ % 4 == 0)
+            {
+                row = document.createElement("tr");
+                container.append(row);
+            }
+
+            let item = document.createElement("td");
             this.updateItemHTML(key.name, value, item);
+
             let bakery = this;
+            $(item).hover(function () {
+                    bakery.updateDescriptionPane(bakery.inventory.getIngredient(item.id));
+                    
+                }, function () {
+                    // out
+                }
+            );
             $(item).click(function() {
                 if(bakery.inventory.getAmount(item.id) > 0)
                 {
@@ -165,6 +211,7 @@ class Bakery
                         bakery.selected.push(item.id);
                         item.style.backgroundColor = "#2F4F4F";
                     }
+                    bakery.updateSelected()
                 }
             });
             container.append(item);
@@ -310,6 +357,23 @@ class Bakery
         }
 
         this.selected = [];
+        this.updateSelected();
+    }
+
+    updateSelected()
+    {
+        $("#ingredient-chosen-1").attr("class", "blank");
+        $("#ingredient-chosen-2").attr("class", "blank");
+
+        if(this.selected.length > 0)
+        {
+            $("#ingredient-chosen-1").attr("class", "lemon");
+        }
+        if(this.selected.length > 1)
+        {
+            $("#ingredient-chosen-2").attr("class", "lemon");
+        }
+
     }
 
     bake(container)
@@ -340,7 +404,7 @@ class Bakery
 
     loadBakingScreen()
     {
-        this.updateIngredientsContainer($("#ingredients"));
+        this.updateIngredientsContainer($("#ingredients-table"));
         $("#bakeResult").empty();
         $("#bakeButton").unbind("click"); //Ben: prevent multiple click handlers
         $("#bakeButton").click(function() { bakery.bake($("#bakeResult")) });
