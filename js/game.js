@@ -92,7 +92,7 @@ window.onload = setupScreens;
 
 function loadScreen(screenFile, callback)
 {
-    $("#body").append($("<div>").load(screenFile, callback));
+    $("#main-game").append($("<div>").load(screenFile, callback));
 }
 
 function showView(viewID, viewList)

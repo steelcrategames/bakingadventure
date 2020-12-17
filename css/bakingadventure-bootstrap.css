@@ -4749,7 +4749,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 
 .jumbotron {
-  padding: 2rem 1rem;
+  padding: 0 2rem 0.25rem 2rem;
   margin-bottom: 2rem;
   color: white;
   background-color: #70b9f1;
@@ -4757,7 +4757,7 @@ a.badge-dark:focus, a.badge-dark.focus {
 }
 @media (min-width: 576px) {
   .jumbotron {
-    padding: 4rem 2rem;
+    padding: 0 2rem 0.25rem 2rem;
   }
 }
 
