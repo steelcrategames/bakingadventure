@@ -479,7 +479,6 @@ class Bakery
         $("#baking-result-window").hide();
         this.updateIngredientsContainer($("#ingredients-table"));
         this.updateSelected();
-        this.inventory.receiveStock(2);
         $("#bakeButton").unbind("click"); //Ben: prevent multiple click handlers
         $("#bakeButton").click(function() { bakery.bake($("#bakeResult")) });
     }
