@@ -1,10 +1,10 @@
 name,min_level,max_level,enemy_template
 Dusty Cellar,1,1,Rat
-Goblin Camp,1,1,Goblin
-Skeleton Crypt,2,2,Skeleton
-Hydra Den,,,Hydra
-Troll Warren,3,3,Troll
-Ooze Pit,4,4,Gelatinous Cube
-Cursed Forest,5,5,Owlbear
+Goblin Camp,2,2,Goblin
+Skeleton Crypt,3,3,Skeleton
+Hydra Den,4,4,Hydra
+Troll Warren,5,5,Troll
+Ooze Pit,6,6,Gelatinous Cube
+Cursed Forest,7,7,Owlbear
 Corrupted Summoning Stones,8,8,Demon
 Dragon's Lair,9,9,Dragon
