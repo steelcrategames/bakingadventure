@@ -117,6 +117,12 @@ class QuestGenerator
 
         let questTemplate = this.randQuestTemplate(level);
 
+        if (questTemplate == null)
+        {
+            //No more quests! Game over.
+            return null;
+        }
+
         //let mod = randSettingModifier();
         let enemyTemplate = questTemplate.enemyTemplate; 
 
@@ -145,6 +151,13 @@ class QuestGenerator
         }
 
         let keys = Object.keys(filtered);
+
+        if (keys.length == 0)
+        {
+            //No more quests! Game over.
+            return null;
+        }
+
         return _.cloneDeep(filtered[keys[ keys.length * Math.random() << 0]]); 
     }
 }

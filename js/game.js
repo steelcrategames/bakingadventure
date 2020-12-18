@@ -11,9 +11,10 @@ const SCREENS = {
     adventure: "adventure",
     prologue: "screen-prologue",
     dayTitle: "screen-day-title",
-    heroCount: "hero-choice"
+    heroCount: "hero-choice",
+    endGame: "screen-endgame"
 }
-let screens = [SCREENS.screenVisitor, SCREENS.screenDialog, SCREENS.baking, SCREENS.adventure, SCREENS.prologue, SCREENS.dayTitle, SCREENS.heroCount];
+let screens = [SCREENS.screenVisitor, SCREENS.screenDialog, SCREENS.baking, SCREENS.adventure, SCREENS.prologue, SCREENS.dayTitle, SCREENS.heroCount, SCREENS.endGame];
 
 let dialogViews = ["dialogue-first-visit1", "dialogue-heading-out", "dialogue-return-visit1"]; // TODO: replace this with a find all with class
 
@@ -77,8 +78,10 @@ function setupScreens()
                 loadScreen("adventure.html", function() {
                     loadScreen("screen-prologue.html", function() {
                         loadScreen("hero_choice.html", function() {
-                            loadScreen("screen-day-title.html", function() {
-                                showView(SCREENS.prologue, screens);
+                            loadScreen("screen-endgame.html", function() {
+                                loadScreen("screen-day-title.html", function() {
+                                    showView(SCREENS.prologue, screens);
+                                });
                             });
                         });
                     });

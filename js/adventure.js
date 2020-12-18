@@ -454,6 +454,13 @@ function doDescribeQuest()
     //Choose a new quest for the adventurer
     let level = currentHero.getSuccessfulQuestCount() + 1;
     let nextQuest = questGenerator.createRandomQuest(level);
+
+    if (nextQuest == null)
+    {
+        showView(SCREENS.endGame, screens);
+        return;
+    }
+
     currentHero.setQuest(nextQuest);
     let quest = currentHero.current_quest;
 
@@ -541,7 +548,7 @@ function doEndDay()
 {
     adventureStateMachine.changeState(ADVENTURE_STATES.end_of_day);
     clearLog();
-    log("What a lovely day. I hope those heroes do well on their quests.");
+    log(`What a lovely day. I hope the hero does well on their quest.`);
 }
 
 function doStartNextDay()
