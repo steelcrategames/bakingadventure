@@ -260,12 +260,155 @@ function doQuestRecap()
 
     showButton("showCombatLogButton");
 
+    let stats = quest.stats;
+
+    if (stats.hero.misses == 0)
+    {
+        log("My blade struck true with every swing.");
+    }
+    else if (stats.hero.hits == 0)
+    {
+        log("I never landed a single blow!");
+    }
+
+    if (stats.hero.hits > 5)
+    {
+        log(`I hacked and hacked and hacked away at the ${quest.enemyTemplate.name}.`);
+    }
+
+    if (stats.hero.hits > 0)
+    {
+        let dmgTotal = stats.enemy.getDmgTakenTotal();
+        let dmgPerHit = dmgTotal / stats.hero.hits;
+
+        if (stats.enemy.dmg_blocked["physical"] > 10)
+        {
+            log("My blows landed only with a dull thud, garnering less reaction than I expected.");
+        }
+        else if (stats.enemy.dmg_taken["physical"] > 10)
+        {
+            log(`I rained down heavy blows with all my might.`);
+        }
+
+        if (stats.enemy.dmg_blocked["fire"] > 10)
+        {
+            log(`Flames seemed to do little to disturb the ${quest.enemyTemplate.name}.`);
+        }
+        else if (stats.enemy.dmg_taken["fire"] > 10)
+        {
+            log(`My flames scorched and sharred the beast.`);
+        }
+
+        if (stats.enemy.dmg_blocked["ice"] > 10)
+        {
+            log(`If ice bothers the ${quest.enemyTemplate.name}, it does not show it.`);
+        }
+        else if (stats.enemy.dmg_taken["ice"] > 10)
+        {
+            log(`The beast was chilled to its very core!`);
+        }
+
+        if (dmgTotal == 0)
+        {
+            log(`My blows seemed to have no effect whatsoever!`);
+        }
+        else if (dmgPerHit <= 2)
+        {
+            log(`Each strike seemed to do little to phase the ${quest.enemyTemplate.name}.`);
+        }
+    }
+
+    if (stats.enemy.hits > 0)
+    {
+        if (stats.hero.getDmgTakenTotal() == 0)
+        {
+            log(`The ${quest.enemyTemplate.name}'s strikes could not break my defences.`);
+        }
+
+        if (stats.hero.dmg_taken["physical"] > 5)
+        {
+            log(`Each strike from the ${quest.enemyTemplate.name} felt like a thousand hammers.`);
+        }
+        else if (stats.hero.dmg_blocked["physical"] > 5)
+        {
+            log("My armor helped shield me from the blows.");
+        }
+        
+        if (stats.hero.dmg_taken["fire"] > 5)
+        {
+            log(`The scorching heat of the ${quest.enemyTemplate.name}'s attacks left me seared and charred.`);
+        }
+        else if (stats.hero.dmg_blocked["fire"] > 5)
+        {
+            log("I felt an odd calm as the flames washed over me, warming my face.");
+        }
+
+        if (stats.hero.dmg_taken["ice"] > 5)
+        {
+            log(`The ${quest.enemyTemplate.name}'s attacks chilled me to my core.`);
+        }
+        else if (stats.hero.dmg_blocked["ice"] > 5)
+        {
+            log("I felt an odd calm as the frost washed over me, cooling my face.");
+        }
+    }
+
+    if (stats.enemy.misses > 0 && stats.enemy.hits == 0)
+    {
+        log(`The ${quest.enemyTemplate.name} flailed wildly but could not land a single blow.`);
+    }
+
+
     if (currentHero.current_quest.result == QuestResult.SUCCESS)
     {
+        if (stats.hero.getDmgTakenTotal() > currentHero.max_hp)
+        {
+            //Would have died if not for HP bonuses
+            log("I didn't think I would be able to survive, but the baked goods provided me with the endurance I needed!");
+        }
+
+        if (stats.num_rounds > 10)
+        {
+            log("Eventually, I persevered!");
+        }
+
+        if (stats.hero.getDmgTakenTotal() == 0)
+        {
+            log("I escaped with nary a scratch.");
+        }
+        else if (currentHero.stats.getMaxHP() - stats.hero.getDmgTakenTotal() < 5)
+        {
+            log("I was lucky to escape with my life.");
+        }
+
         log("I successfully completed my quest!", LogTypes.GOOD);
     }
     else
     {
+
+        let enemyHP = quest.enemyTemplate.stats.getMaxHP();
+        let enemyHPLeft = enemyHP - stats.enemy.getDmgTakenTotal();
+        let percentHPLeft = enemyHPLeft / enemyHP;
+
+        if (percentHPLeft > 0.75)
+        {
+            log(`The ${quest.enemyTemplate.name} barely seemed to break a sweat.`);
+        }
+        else if (percentHPLeft < 0.35)
+        {
+            log(`I know I had the ${quest.enemyTemplate.name} on the ropes, but I just couldn't finish the fight.`);
+        }
+
+        if (stats.enemy.hits <= 2)
+        {
+            log(`The ${quest.enemyTemplate.name} struck with such ferocity I could not withstand the punishment.`);
+        }
+
+        if (stats.num_rounds == 100)
+        {
+            log("It was an epic battle back and forth, but eventually I became exhausted and had to retreat.");
+        }
+
         log("I failed my quest!", LogTypes.BAD);
     }
 
