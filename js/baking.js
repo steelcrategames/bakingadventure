@@ -457,10 +457,12 @@ class Bakery
     updateResultsWindow(name, effects)
     {
         $("#baked-type")[0].innerText = name;
-
+        $("#baking-results-title-image")[0].setAttribute("src", bakery.getFoodImage());
         let effectsTable = $("#result-effects-table")[0];
         effectsTable.innerHTML = "";
         effectsTable.setAttribute("style", "text-align: left;");
+        $("#baked-ingredient-1")[0].style.backgroundImage = "url('../img/" + bakery.selected[0] + ".png')";
+        $("#baked-ingredient-2")[0].style.backgroundImage = "url('../img/" + bakery.selected[1] + ".png')";
         for(let i = 0; i < effects.length; i++)
         {
             let effectRow = document.createElement("tr");
