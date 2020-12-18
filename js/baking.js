@@ -129,7 +129,7 @@ class Bakery
         let id = name;
         item.innerHTML = "";
         item.setAttribute("id", id);
-        item.style.backgroundImage = "url('./img/" + name + ".png')";
+        item.style.backgroundImage = "url('img/" + name.toLowerCase() + ".png')";
         let div = document.createElement("div");
         div.setAttribute("class", "spacer");
         item.append(div);
@@ -203,7 +203,7 @@ class Bakery
             let bakery = this;
             $(item).hover(function () {
                     let ingredient = bakery.inventory.getIngredient(item.id);
-                    bakery.updateDescriptionPane(ingredient.name, ingredient.effects, "img/" + ingredient.name + ".png");
+                    bakery.updateDescriptionPane(ingredient.name, ingredient.effects, "img/" + ingredient.name.toLowerCase() + ".png");
                     
                 }, function () {
                     // out
@@ -414,10 +414,10 @@ class Bakery
         if(this.selected.length > 0)
         {
             let ingredient = bakery.inventory.getIngredient(bakery.selected[0]);
-            document.getElementById("ingredient-chosen-1").style.backgroundImage = "url('./img/" + ingredient.name + ".png')";
+            document.getElementById("ingredient-chosen-1").style.backgroundImage = "url('img/" + ingredient.name.toLowerCase() + ".png')";
             $("#ingredient-chosen-1").hover(function () {
                 let ingredient = bakery.inventory.getIngredient(bakery.selected[0]);
-                bakery.updateDescriptionPane(ingredient.name, ingredient.effects, "img/" + ingredient.name + ".png");
+                bakery.updateDescriptionPane(ingredient.name, ingredient.effects, "img/" + ingredient.name.toLowerCase() + ".png");
             }, function () {
                 // out
             });
@@ -426,15 +426,15 @@ class Bakery
         {
             document.getElementById("ingredient-chosen-1").style.backgroundImage = "none";
             document.getElementById("ingredient-chosen-2").style.backgroundImage = "none";
-            document.getElementById("baking-result-preview").style.backgroundImage = "url('./img/unknown.png')";
+            document.getElementById("baking-result-preview").style.backgroundImage = "url('img/unknown.png')";
         }
         if(this.selected.length > 1)
         {
             let ingredient = bakery.inventory.getIngredient(bakery.selected[1]);
-            document.getElementById("ingredient-chosen-2").style.backgroundImage = "url('./img/" + ingredient.name + ".png')";
+            document.getElementById("ingredient-chosen-2").style.backgroundImage = "url('img/" + ingredient.name.toLowerCase() + ".png')";
             $("#ingredient-chosen-2").hover(function () {
                 let ingredient = bakery.inventory.getIngredient(bakery.selected[1]); 
-                bakery.updateDescriptionPane(ingredient.name, ingredient.effects, "img/" + ingredient.name + ".png");
+                bakery.updateDescriptionPane(ingredient.name, ingredient.effects, "img/" + ingredient.name.toLowerCase() + ".png");
             }, function () {
                 // out
             });
@@ -450,7 +450,7 @@ class Bakery
         else
         {
             document.getElementById("ingredient-chosen-2").style.backgroundImage = "none";
-            document.getElementById("baking-result-preview").style.backgroundImage = "url('./img/unknown.png')";
+            document.getElementById("baking-result-preview").style.backgroundImage = "url('img/unknown.png')";
         }
     }
 
@@ -461,8 +461,8 @@ class Bakery
         let effectsTable = $("#result-effects-table")[0];
         effectsTable.innerHTML = "";
         effectsTable.setAttribute("style", "text-align: left;");
-        $("#baked-ingredient-1")[0].style.backgroundImage = "url('./img/" + bakery.selected[0] + ".png')";
-        $("#baked-ingredient-2")[0].style.backgroundImage = "url('./img/" + bakery.selected[1] + ".png')";
+        $("#baked-ingredient-1")[0].style.backgroundImage = "url('img/" + bakery.selected[0].toLowerCase() + ".png')";
+        $("#baked-ingredient-2")[0].style.backgroundImage = "url('img/" + bakery.selected[1].toLowerCase() + ".png')";
         for(let i = 0; i < effects.length; i++)
         {
             let effectRow = document.createElement("tr");
