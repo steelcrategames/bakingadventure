@@ -257,13 +257,22 @@ class Bakery
     getFoodImage()
     {
         let key = this.selected.sort().join();
-        if(this.recipes.has(key))
+        if(this.recipes.has(key) && this.recipes.get(key).known)
         {
             return "img/bakedgoods/" + this.recipes.get(key).image;
         }
         else
         {
             return "img/unknown.png";
+        }
+    }
+
+    discoverRecipe()
+    {
+        let key = this.selected.sort().join();
+        if(this.recipes.has(key))
+        {
+            this.recipes.get(key).known = true;
         }
     }
 
@@ -470,6 +479,7 @@ class Bakery
         $("#baking-window").hide();
         $("#baking-result-window").show();
         let bakedGood = this.createFood();
+        this.discoverRecipe();
         this.updateResultsWindow(bakedGood.name, this.consolidateEffects(this.selected, false));
         this.clearSelected();
         $("#serveButton").unbind("click");
