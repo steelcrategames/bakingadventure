@@ -403,6 +403,7 @@ class Bakery
         {
             document.getElementById("ingredient-chosen-1").style.backgroundImage = "none";
             document.getElementById("ingredient-chosen-2").style.backgroundImage = "none";
+            document.getElementById("baking-result-preview").style.backgroundImage = "url('../img/unknown.png')";
         }
         if(this.selected.length > 1)
         {
@@ -418,11 +419,11 @@ class Bakery
             let foodName = this.getFoodName();
             if(foodName != "Soggy Mess")
             {
-                $("#baking-result-preview").attr("class", "lemon");
+                document.getElementById("baking-result-preview").style.backgroundImage = "url('../img/" + "buns-01" + ".png')";
             }
             else
             {
-                $("#baking-result-preview").attr("class", "unknown");
+                document.getElementById("baking-result-preview").style.backgroundImage = "url('../img/unknown.png')";
             }
 
             $("#baking-result-preview").hover(function () {
@@ -434,7 +435,7 @@ class Bakery
         else
         {
             document.getElementById("ingredient-chosen-2").style.backgroundImage = "none";
-            $("#baking-result-preview").attr("class", "unknown");
+            document.getElementById("baking-result-preview").style.backgroundImage = "url('../img/unknown.png')";
         }
     }
 
