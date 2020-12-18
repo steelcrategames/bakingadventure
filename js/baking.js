@@ -461,8 +461,7 @@ class Bakery
         let effectsTable = $("#result-effects-table")[0];
         effectsTable.innerHTML = "";
         effectsTable.setAttribute("style", "text-align: left;");
-        $("#baked-ingredient-1")[0].style.backgroundImage = "url('img/" + bakery.selected[0].toLowerCase() + ".png')";
-        $("#baked-ingredient-2")[0].style.backgroundImage = "url('img/" + bakery.selected[1].toLowerCase() + ".png')";
+        
         for(let i = 0; i < effects.length; i++)
         {
             let effectRow = document.createElement("tr");
@@ -474,6 +473,8 @@ class Bakery
             effectRow.append(effectAmountTD);
             effectAmountTD.innerText = effects[i].amount;
         }
+        $("#baked-ingredient-1")[0].style.backgroundImage = "url('img/" + bakery.selected[0].toLowerCase() + ".png')";
+        $("#baked-ingredient-2")[0].style.backgroundImage = "url('img/" + bakery.selected[1].toLowerCase() + ".png')";
     }
 
     bake()
