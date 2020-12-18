@@ -435,6 +435,7 @@ class Bakery
         $("#baked-type")[0].innerText = name;
 
         let effectsTable = $("#result-effects-table")[0];
+        effectsTable.innerHTML = "";
         effectsTable.setAttribute("style", "text-align: left;");
         for(let i = 0; i < effects.length; i++)
         {
