@@ -390,7 +390,8 @@ class Bakery
         let bakery = this;
         if(this.selected.length > 0)
         {
-            $("#ingredient-chosen-1").attr("class", "lemon");
+            let ingredient = bakery.inventory.getIngredient(bakery.selected[0]);
+            document.getElementById("ingredient-chosen-1").style.backgroundImage = "url('../img/" + ingredient.name + ".png')";
             $("#ingredient-chosen-1").hover(function () {
                 let ingredient = bakery.inventory.getIngredient(bakery.selected[0]);
                 bakery.updateDescriptionPane(ingredient.name, ingredient.effects);
@@ -398,9 +399,15 @@ class Bakery
                 // out
             });
         }
+        else
+        {
+            document.getElementById("ingredient-chosen-1").style.backgroundImage = "none";
+            document.getElementById("ingredient-chosen-2").style.backgroundImage = "none";
+        }
         if(this.selected.length > 1)
         {
-            $("#ingredient-chosen-2").attr("class", "lemon");
+            let ingredient = bakery.inventory.getIngredient(bakery.selected[1]);
+            document.getElementById("ingredient-chosen-2").style.backgroundImage = "url('../img/" + ingredient.name + ".png')";
             $("#ingredient-chosen-2").hover(function () {
                 let ingredient = bakery.inventory.getIngredient(bakery.selected[1]); 
                 bakery.updateDescriptionPane(ingredient.name, ingredient.effects);
@@ -426,6 +433,7 @@ class Bakery
         }
         else
         {
+            document.getElementById("ingredient-chosen-2").style.backgroundImage = "none";
             $("#baking-result-preview").attr("class", "unknown");
         }
     }
