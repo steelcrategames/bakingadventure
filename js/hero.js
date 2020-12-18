@@ -32,6 +32,20 @@ class Hero
         //Rest & Recover
         this.stats.hp = this.stats.max_hp;
         this.stats.food = [];
+
+        //Set appetite based quest count
+        switch(this.getSuccessfulQuestCount())
+        {
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                this.stats.appetite = 3;
+                break;
+            default:
+                this.stats.appetite = 2;
+                break;
+        }
     }
 
     getSuccessfulQuestCount()
