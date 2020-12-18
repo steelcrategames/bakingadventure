@@ -16,28 +16,41 @@ class Stats {
         this.food = []
     }
 
-    to_string()
+    to_string(withFoodBonuses = false)
     {
-        let defTxt = this.getDef_string();
+        let defTxt = this.getDef_string(withFoodBonuses);
 
-        let atkTxt = this.getAtk_string();
+        let atkTxt = this.getAtk_string(withFoodBonuses);
 
-        return `HP: ${this.hp} Def: ${defTxt} Attack: ${atkTxt} HitChance: ${this.base_hitChance}% Appetite: ${this.appetite}`;
+        let hitTxt = this.getHitChance(withFoodBonuses);
+    
+        if (withFoodBonuses)
+        {
+            return `HP: ${this.getMaxHP()} Def: ${defTxt} Attack: ${atkTxt} HitChance: ${this.base_hitChance}% Appetite: ${this.appetite}`;
+        }
+        else
+        {
+            return `Base HP: ${this.hp} Base Def: ${defTxt} Base Attack: ${atkTxt} Base HitChance: ${this.base_hitChance}% Appetite: ${this.appetite}`;
+        }
     }
 
-    getAtk_string()
+    getAtk_string(withFoodBonuses = false)
     {
+        let atkTypes = withFoodBonuses ? this.getAtk() : this.base_atk_types;
+
         let atkTxt = "";
-        $.each(this.base_atk_types, function(name, amount) {
+        $.each(atkTypes, function(name, amount) {
             atkTxt += `${amount} ${getEmoji(name)} `;
         });
         return atkTxt.trim();
     }
 
-    getDef_string()
+    getDef_string(withFoodBonuses = false)
     {
+        let defTypes = withFoodBonuses ? this.getDef() : this.base_def_types;
+
         let defTxt = "";
-        $.each(this.base_def_types, function(name, amount) {
+        $.each(defTypes, function(name, amount) {
             defTxt += `${amount} ${getEmoji(name)} `;
         });
         return defTxt.trim();
@@ -58,11 +71,18 @@ class Stats {
         return atk;
     }
 
-    getHitChance()
+    getHitChance(withFoodBonuses = false)
     {
-        let hitChance_bonus = 0;
-        this.food.forEach(food => hitChance_bonus += food.hitChance_bonus)
-        return this.base_hitChance + hitChance_bonus;
+        if (withFoodBonuses)
+        {
+            let hitChance_bonus = 0;
+            this.food.forEach(food => hitChance_bonus += food.hitChance_bonus)
+            return this.base_hitChance + hitChance_bonus;
+        }
+        else
+        {
+            return this.base_hitChance;
+        }
     }
 
     getDef()

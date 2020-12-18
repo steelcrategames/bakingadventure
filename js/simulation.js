@@ -7,7 +7,6 @@ function simulateQuest(hero)
 
     //Update hero's HP, taking food into consideration
     hero.stats.hp = hero.stats.getMaxHP();
-    sim_log(`${hero.name} has ${hero.stats.hp} HP for this quest.`);
     
     let num_enemies_remaining = 1; //TODO: figure out when we want multiple enemies. Previously: quest.actual_level
     let enemyNum = 1;

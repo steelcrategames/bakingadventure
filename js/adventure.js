@@ -250,7 +250,10 @@ function doQuestRecap()
 
     //Print out the battle log, for now
     clearCombatLog();
-    combatLog(`Quest: ${quest.name} Level: ${quest.level} Enemy: ${quest.enemyTemplate.name} Stats: ${quest.enemyTemplate.stats.to_string()}`);
+    combatLog(`Quest: ${quest.name} Level: ${quest.actual_level} Enemy: ${quest.enemyTemplate.name}`);
+    combatLog(`${quest.enemyTemplate.name} Stats: ${quest.enemyTemplate.stats.to_string()}`);
+    combatLog(`${currentHero.name} base stats: ${currentHero.stats.to_string(false)}`);
+    combatLog(`${currentHero.name} stats w/ food: ${currentHero.stats.to_string(true)}`);
     currentHero.current_quest.log.forEach(msg => {
         combatLog(msg);
     });
@@ -320,7 +323,7 @@ function doDescribeQuest()
         log(`I'm heading out to my next quest: ${quest.name}`);
     }
     
-    log(`It's a level ${quest.actual_level} quest and I expect to find a ${quest.enemyTemplate.getHTML()} or two. Do you have anything that might help soothe my nerves?`);
+    log(`It's a level ${quest.actual_level} quest and I expect to find a ${quest.enemyTemplate.getHTML()} or two. Do you have anything that could help me on my quest?`);
 
     adventureStateMachine.changeState(ADVENTURE_STATES.active_customer);
 }
