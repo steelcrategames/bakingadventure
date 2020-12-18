@@ -289,14 +289,16 @@ class Bakery
         effectTypes.forEach((value, key) => {
             if(value.length > 1)
             {
+                let effect = new Effect(value[0].type, 0);
                 for(let i = 0; i < value.length; i++)
                 {
                     if(shouldDiscover)
                     {
                         value[i].known = true;
                     }
-                    consolidatedEffects.push(value[i]);
+                    effect.amount += parseInt(value[i].amount);
                 }
+                consolidatedEffects.push(effect);
             }
         });
 
@@ -361,7 +363,6 @@ class Bakery
 
             this.inventory.removeIngredient(ingredient, 1);
         }
-        this.clearSelected();
 
         return bakedGood;
     }
@@ -429,18 +430,34 @@ class Bakery
         }
     }
 
-    bake(container)
+    updateResultsWindow(name, effects)
     {
+        $("#baked-type")[0].innerText = name;
+
+        let effectsTable = $("#result-effects-table")[0];
+        effectsTable.setAttribute("style", "text-align: left;");
+        for(let i = 0; i < effects.length; i++)
+        {
+            let effectRow = document.createElement("tr");
+            effectsTable.append(effectRow);
+            let effectTypeTD = document.createElement("td");
+            effectRow.append(effectTypeTD);
+            effectTypeTD.innerText = effects[i].type;
+            let effectAmountTD = document.createElement("td");
+            effectRow.append(effectAmountTD);
+            effectAmountTD.innerText = effects[i].amount;
+        }
+    }
+
+    bake()
+    {
+        $("#baking-window").hide();
+        $("#baking-result-window").show();
         let bakedGood = this.createFood();
-        container.empty();
-        let bakeText = this.getBakeResultHTML(bakedGood);
-        container.append(bakeText);
-        container.append(document.createElement("br"))
-        let serveButton = document.createElement("button");
-        serveButton.innerText = "Serve";
-        serveButton.setAttribute("class","btn btn-primary");
-        $(serveButton).click(() => this.serveBakedGood(bakedGood));
-        container.append(serveButton);
+        this.updateResultsWindow(bakedGood.name, this.consolidateEffects(this.selected, false));
+        this.clearSelected();
+        $("#serveButton").unbind("click");
+        $("#serveButton").click(() => this.serveBakedGood(bakedGood));
     }
 
     serveBakedGood(bakedGood)
@@ -457,9 +474,11 @@ class Bakery
 
     loadBakingScreen()
     {
+        $("#baking-window").show();
+        $("#baking-result-window").hide();
         this.updateIngredientsContainer($("#ingredients-table"));
         this.updateSelected();
-        $("#bakeResult").empty();
+        this.inventory.receiveStock(2);
         $("#bakeButton").unbind("click"); //Ben: prevent multiple click handlers
         $("#bakeButton").click(function() { bakery.bake($("#bakeResult")) });
     }
