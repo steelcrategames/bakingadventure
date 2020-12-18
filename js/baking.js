@@ -470,7 +470,7 @@ class Bakery
     //Update stock levels
     handleNewDay()
     {
-        this.inventory.receiveStock(2);
+        this.inventory.receiveStock(1);
     }
 
     loadBakingScreen()
