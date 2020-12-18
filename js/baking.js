@@ -272,7 +272,7 @@ class Bakery
         let key = this.selected.sort().join();
         if(this.recipes.has(key))
         {
-            return this.recipes.get(key).image;
+            return this.recipes.get(key).name;
         }
         else
         {
@@ -433,7 +433,7 @@ class Bakery
             document.getElementById("baking-result-preview").style.backgroundImage = "url('" + this.getFoodImage() + "')";
 
             $("#baking-result-preview").hover(function () {
-                bakery.updateDescriptionPane(foodName, bakery.consolidateEffects(bakery.selected, false));
+                bakery.updateDescriptionPane(bakery.getFoodName(), bakery.consolidateEffects(bakery.selected, false));
             }, function () {
                 // out
             });
