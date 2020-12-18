@@ -128,7 +128,7 @@ class Bakery
         let id = name;
         item.innerHTML = "";
         item.setAttribute("id", id);
-        item.setAttribute("class", "lemon");
+        item.style.backgroundImage = "url('../img/" + name + ".png')";
         let div = document.createElement("div");
         div.setAttribute("class", "spacer");
         item.append(div);
@@ -154,7 +154,7 @@ class Bakery
         title.setAttribute("style", "text-align:center;");
         let titleImg = document.createElement("img");
         title.append(titleImg);
-        titleImg.setAttribute("src", "img/cupcake-sword.png");
+        titleImg.setAttribute("src", "img/" + name + ".png");
         titleImg.setAttribute("style", "width: 128px;");
         title.append(document.createElement("br"));
         title.append(document.createElement("span").innerText = name);
@@ -219,7 +219,7 @@ class Bakery
                     else if (bakery.selected.length < MAX_INGREDIENTS)
                     {
                         bakery.selected.push(item.id);
-                        item.style.backgroundColor = "#2F4F4F";
+                        item.style.backgroundColor = "#70b9f1";
                     }
                     bakery.updateSelected()
                 }
@@ -481,6 +481,9 @@ class Bakery
         this.updateSelected();
         $("#bakeButton").unbind("click"); //Ben: prevent multiple click handlers
         $("#bakeButton").click(function() { bakery.bake($("#bakeResult")) });
+
+        let descriptionPane = $("#baking-sel-details");
+        descriptionPane.empty();
     }
 
     constructor()

@@ -50,7 +50,7 @@
 
 .baking-window {
     width:550px;
-    background-color: palegoldenrod;
+    background-color: #ffe69a;
     margin-bottom: 10px;
 }
 
@@ -79,7 +79,7 @@
 
 .ingredients-table td {
     height: 64px;
-    background-size: contain;
+    background-size: 50px;
     background-repeat: no-repeat;
     text-align: right;
     vertical-align: bottom;
