@@ -143,7 +143,7 @@ class Bakery
         this.loadIngredients(data);
     }
 
-    updateDescriptionPane(name, effects)
+    updateDescriptionPane(name, effects, image)
     {
         let descriptionPane = $("#baking-sel-details");
 
@@ -155,7 +155,7 @@ class Bakery
         title.setAttribute("style", "text-align:center;");
         let titleImg = document.createElement("img");
         title.append(titleImg);
-        titleImg.setAttribute("src", "img/" + name + ".png");
+        titleImg.setAttribute("src", image);
         titleImg.setAttribute("style", "width: 128px;");
         title.append(document.createElement("br"));
         title.append(document.createElement("span").innerText = name);
@@ -203,7 +203,7 @@ class Bakery
             let bakery = this;
             $(item).hover(function () {
                     let ingredient = bakery.inventory.getIngredient(item.id);
-                    bakery.updateDescriptionPane(ingredient.name, ingredient.effects);
+                    bakery.updateDescriptionPane(ingredient.name, ingredient.effects, "img/" + ingredient.name + ".png");
                     
                 }, function () {
                     // out
@@ -408,7 +408,7 @@ class Bakery
             document.getElementById("ingredient-chosen-1").style.backgroundImage = "url('../img/" + ingredient.name + ".png')";
             $("#ingredient-chosen-1").hover(function () {
                 let ingredient = bakery.inventory.getIngredient(bakery.selected[0]);
-                bakery.updateDescriptionPane(ingredient.name, ingredient.effects);
+                bakery.updateDescriptionPane(ingredient.name, ingredient.effects, "img/" + ingredient.name + ".png");
             }, function () {
                 // out
             });
@@ -425,7 +425,7 @@ class Bakery
             document.getElementById("ingredient-chosen-2").style.backgroundImage = "url('../img/" + ingredient.name + ".png')";
             $("#ingredient-chosen-2").hover(function () {
                 let ingredient = bakery.inventory.getIngredient(bakery.selected[1]); 
-                bakery.updateDescriptionPane(ingredient.name, ingredient.effects);
+                bakery.updateDescriptionPane(ingredient.name, ingredient.effects, "img/" + ingredient.name + ".png");
             }, function () {
                 // out
             });
@@ -433,7 +433,7 @@ class Bakery
             document.getElementById("baking-result-preview").style.backgroundImage = "url('" + this.getFoodImage() + "')";
 
             $("#baking-result-preview").hover(function () {
-                bakery.updateDescriptionPane(bakery.getFoodName(), bakery.consolidateEffects(bakery.selected, false));
+                bakery.updateDescriptionPane(bakery.getFoodName(), bakery.consolidateEffects(bakery.selected, false), bakery.getFoodImage());
             }, function () {
                 // out
             });
