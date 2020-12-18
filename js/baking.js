@@ -73,11 +73,12 @@ class Effect
 
 class Recipe
 {
-    constructor(name, description, ingredients)
+    constructor(name, description, ingredients, image)
     {
         this.name = name;
         this.description = description;
         this.ingredients = ingredients;
+        this.image = image;
     }
 }
 
@@ -99,7 +100,7 @@ class Bakery
             }
 
             let key = ingredients.sort().join();
-            this.recipes.set(key, new Recipe(dataCSV[i].Name, dataCSV[i].Description, ingredients));
+            this.recipes.set(key, new Recipe(dataCSV[i].Name, dataCSV[i].Description, ingredients, dataCSV[i].Image));
         }
     }
 
@@ -253,12 +254,25 @@ class Bakery
         return result;
     }
 
+    getFoodImage()
+    {
+        let key = this.selected.sort().join();
+        if(this.recipes.has(key))
+        {
+            return "img/bakedgoods/" + this.recipes.get(key).image;
+        }
+        else
+        {
+            return "img/unknown.png";
+        }
+    }
+
     getFoodName()
     {
         let key = this.selected.sort().join();
         if(this.recipes.has(key))
         {
-            return this.recipes.get(key).name;
+            return this.recipes.get(key).image;
         }
         else
         {
@@ -416,15 +430,7 @@ class Bakery
                 // out
             });
 
-            let foodName = this.getFoodName();
-            if(foodName != "Soggy Mess")
-            {
-                document.getElementById("baking-result-preview").style.backgroundImage = "url('../img/" + "buns-01" + ".png')";
-            }
-            else
-            {
-                document.getElementById("baking-result-preview").style.backgroundImage = "url('../img/unknown.png')";
-            }
+            document.getElementById("baking-result-preview").style.backgroundImage = "url('" + this.getFoodImage() + "')";
 
             $("#baking-result-preview").hover(function () {
                 bakery.updateDescriptionPane(foodName, bakery.consolidateEffects(bakery.selected, false));
